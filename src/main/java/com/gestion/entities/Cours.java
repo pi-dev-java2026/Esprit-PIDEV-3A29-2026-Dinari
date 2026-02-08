@@ -6,7 +6,7 @@ public class Cours {
 
     private int idCours;
     private String nomCours;
-    private String contenu; // chemin du fichier (PDF, DOC, etc.)
+    private String contenu;
     private String description;
     private LocalDate dateCreation;
 
