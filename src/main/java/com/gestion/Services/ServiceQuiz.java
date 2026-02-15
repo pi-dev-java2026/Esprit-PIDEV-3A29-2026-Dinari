@@ -142,4 +142,16 @@ public class ServiceQuiz {
 
         return new Quiz(idQuiz, idCours, titre, dbToList(listeStr), repCorrect, score, dateCreation);
     }
+    public String getTitreById(int idQuiz) throws SQLException {
+        String sql = "SELECT titre FROM quiz WHERE id_quiz=?";
+        try (Connection con = DB.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idQuiz);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getString("titre");
+            }
+        }
+        return null;
+    }
+
 }

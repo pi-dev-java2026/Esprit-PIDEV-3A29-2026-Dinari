@@ -1,14 +1,14 @@
 package com.gestion.Services;
 
-import com.gestion.utils.DB;
 import com.gestion.entities.Cours;
+import com.gestion.utils.DB;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceCours{
+public class ServiceCours {
 
     public int add(Cours c) throws SQLException {
         String sql = "INSERT INTO cours(nom_cours, contenu, description, date_creation) VALUES (?, ?, ?, ?)";

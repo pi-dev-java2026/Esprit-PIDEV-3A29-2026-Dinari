@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.AjouterCours"
+            prefWidth="700.0" prefHeight="450.0">
+
+    <children>
+        <VBox spacing="14.0"
+              AnchorPane.topAnchor="0.0"
+              AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0">
+
+            <padding>
+                <Insets top="20" right="25" bottom="25" left="25"/>
+            </padding>
+
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Button text="⬅ Retour"
+                        onAction="#goListeCours"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #2563EB;
+                               -fx-padding: 8 10;
+                               -fx-background-radius: 10;"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <Label text="Ajouter Cours"
+                   style="-fx-font-size: 26px; -fx-font-weight: bold;"
+                   VBox.vgrow="NEVER"/>
+
+            <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                <GridPane hgap="12" vgap="12" maxWidth="520"
+                          style="-fx-background-color: white;
+                 -fx-background-radius: 12;
+                 -fx-padding: 20;
+                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 12, 0, 0, 3);">
+
+                    <Label text="Nom du cours:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <TextField fx:id="tfNom" promptText="Ex: Java avancé"
+                               GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                    <Label text="Description:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <TextField fx:id="tfDescription" promptText="Ex: cours pour débutants..."
+                               GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                    <Label text="Contenu:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <TextArea fx:id="taContenu"
+                              promptText="Ecrire le contenu du cours..."
+                              wrapText="true"
+                              prefRowCount="6"
+                              GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                    <Button text="Ajouter"
+                            onAction="#ajouterCours"
+                            GridPane.rowIndex="3" GridPane.columnIndex="1"
+                            style="-fx-background-color: #2E86DE;
+                   -fx-text-fill: white;
+                   -fx-font-size: 14px;
+                   -fx-padding: 10 22;
+                   -fx-background-radius: 10;"/>
+                </GridPane>
+            </VBox>
+
+        </VBox>
+    </children>
+</AnchorPane>

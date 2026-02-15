@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.ListeCours"
+            stylesheets="@app.css"
+            prefWidth="1050.0" prefHeight="650.0">
+
+    <left>
+        <VBox prefWidth="230.0" styleClass="sidebar">
+            <Label text="DINARI" styleClass="brand"/>
+            <Label text="FINTECH MANAGEMENT" styleClass="brand-sub"/>
+
+            <Separator opacity="0.2"/>
+
+            <Button text="🏠 Home" styleClass="nav-btn" onAction="#goHome"/>
+
+            <Button text="📘 Cours"
+                    styleClass="nav-btn nav-btn-active"
+                    onAction="#goListeCours"/>
+
+            <Button text="📝 Quiz"
+                    styleClass="nav-btn"
+                    onAction="#goListeQuiz"/>
+            <Button text="🧺 Panier" styleClass="nav-btn" onAction="#goPanier"/>
+            <Button text="⭐ AjouterAvis" styleClass="nav-btn" onAction="#goAjouterAvis"/>
+            <Button text="⭐ ListeAvis" styleClass="nav-btn" onAction="#goListeAvis"/>
+
+
+
+            <Button text="➕ Ajouter Cours"
+                    styleClass="nav-btn"
+                    onAction="#goAjouterCours"/>
+
+            <Button text="➕ Ajouter Quiz"
+                    styleClass="nav-btn"
+                    onAction="#goAjouterQuiz"/>
+
+            <Button text="💰 Dépenses" styleClass="nav-btn"/>
+            <Button text="⭐ Abonnement" styleClass="nav-btn"/>
+            <Button text="📊 Budget" styleClass="nav-btn"/>
+
+            <Pane VBox.vgrow="ALWAYS"/>
+
+            <Label text="Utilisateur" styleClass="sidebar-footer"/>
+            <Label text="admin@..." styleClass="sidebar-footer"/>
+        </VBox>
+    </left>
+
+
+    <center>
+        <VBox styleClass="content">
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Liste des Cours" styleClass="page-title"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Button text="Rafraîchir" styleClass="ghost-btn" onAction="#refresh"/>
+            </HBox>
+
+            <HBox styleClass="toolbar" alignment="CENTER_LEFT">
+                <TextField fx:id="tfSearch" promptText="Rechercher..." styleClass="input" HBox.hgrow="ALWAYS"/>
+                <Button text="Appliquer" styleClass="primary-btn" onAction="#apply"/>
+                <Button text="Reset" styleClass="ghost-btn" onAction="#reset"/>
+            </HBox>
+
+            <ListView fx:id="listViewCours" VBox.vgrow="ALWAYS"/>
+
+        </VBox>
+    </center>
+
+</BorderPane>

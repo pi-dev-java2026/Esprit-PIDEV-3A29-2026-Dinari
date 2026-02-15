@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.ListeAvis"
+            stylesheets="@app.css"
+            prefWidth="1050.0" prefHeight="650.0">
+
+    <left>
+        <VBox prefWidth="230.0" styleClass="sidebar">
+            <Label text="DINARI" styleClass="brand"/>
+            <Label text="FINTECH MANAGEMENT" styleClass="brand-sub"/>
+            <Separator opacity="0.2"/>
+
+            <Button text="📘 Cours" styleClass="nav-btn" onAction="#goListeCours"/>
+            <Button text="📝 Quiz" styleClass="nav-btn" onAction="#goListeQuiz"/>
+            <Button text="⭐ Avis" styleClass="nav-btn nav-btn-active" onAction="#goListeAvis"/>
+
+            <Pane VBox.vgrow="ALWAYS"/>
+            <Label text="Utilisateur" styleClass="sidebar-footer"/>
+            <Label text="admin@..." styleClass="sidebar-footer"/>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox styleClass="content" spacing="14">
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Liste des Avis" styleClass="page-title"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Button text="Rafraîchir" styleClass="ghost-btn" onAction="#refresh"/>
+            </HBox>
+
+            <HBox styleClass="toolbar" alignment="CENTER_LEFT">
+                <TextField fx:id="tfSearch" promptText="Rechercher..." styleClass="input" HBox.hgrow="ALWAYS"/>
+                <Button text="Reset" styleClass="ghost-btn" onAction="#reset"/>
+            </HBox>
+
+            <ListView fx:id="listViewAvis" VBox.vgrow="ALWAYS"/>
+
+        </VBox>
+    </center>
+
+</BorderPane>

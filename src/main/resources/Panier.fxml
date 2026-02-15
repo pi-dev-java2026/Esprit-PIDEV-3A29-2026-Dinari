@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.PanierController"
+            fx:id="rootPane"
+            stylesheets="@app.css"
+            prefWidth="1050.0" prefHeight="650.0">
+
+    <left>
+        <VBox prefWidth="230.0" styleClass="sidebar">
+            <Label text="DINARI" styleClass="brand"/>
+            <Label text="FINTECH MANAGEMENT" styleClass="brand-sub"/>
+
+            <Separator opacity="0.2"/>
+
+            <Button text="📘 Cours" styleClass="nav-btn" onAction="#goListeCours"/>
+            <Button text="📝 Quiz" styleClass="nav-btn" onAction="#goListeQuiz"/>
+            <Button text="🧺 Panier" styleClass="nav-btn nav-btn-active" onAction="#goPanier"/>
+            <Button text="⭐ Avis" styleClass="nav-btn" onAction="#goAjouterAvis"/>
+
+            <Pane VBox.vgrow="ALWAYS"/>
+
+            <Label text="Utilisateur" styleClass="sidebar-footer"/>
+            <Label text="admin@..." styleClass="sidebar-footer"/>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox styleClass="content" spacing="14">
+            <Label text="🧺 Mon Panier" styleClass="page-title"/>
+
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="Cours dans le panier"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Button text="🗑 Vider" styleClass="danger-btn" onAction="#clearPanierCours"/>
+            </HBox>
+
+            <ListView fx:id="listViewPanierCours" VBox.vgrow="ALWAYS"/>
+        </VBox>
+    </center>
+
+</BorderPane>

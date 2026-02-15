@@ -10,9 +10,7 @@ public class Cours {
     private String description;
     private LocalDate dateCreation;
 
-
     public Cours() {}
-
 
     public Cours(String nomCours, String contenu, String description, LocalDate dateCreation) {
         this.nomCours = nomCours;
@@ -20,7 +18,6 @@ public class Cours {
         this.description = description;
         this.dateCreation = dateCreation;
     }
-
 
     public Cours(int idCours, String nomCours, String contenu, String description, LocalDate dateCreation) {
         this.idCours = idCours;
@@ -30,43 +27,18 @@ public class Cours {
         this.dateCreation = dateCreation;
     }
 
-    public int getIdCours() {
-        return idCours;
-    }
+    public int getIdCours() { return idCours; }
+    public void setIdCours(int idCours) { this.idCours = idCours; }
 
-    public void setIdCours(int idCours) {
-        this.idCours = idCours;
-    }
+    public String getNomCours() { return nomCours; }
+    public void setNomCours(String nomCours) { this.nomCours = nomCours; }
 
-    public String getNomCours() {
-        return nomCours;
-    }
+    public String getContenu() { return contenu; }
+    public void setContenu(String contenu) { this.contenu = contenu; }
 
-    public void setNomCours(String nomCours) {
-        this.nomCours = nomCours;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public String getContenu() {
-        return contenu;
-    }
-
-    public void setContenu(String contenu) {
-        this.contenu = contenu;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDate getDateCreation() {
-        return dateCreation;
-    }
-
-    public void setDateCreation(LocalDate dateCreation) {
-        this.dateCreation = dateCreation;
-    }
+    public LocalDate getDateCreation() { return dateCreation; }
+    public void setDateCreation(LocalDate dateCreation) { this.dateCreation = dateCreation; }
 }

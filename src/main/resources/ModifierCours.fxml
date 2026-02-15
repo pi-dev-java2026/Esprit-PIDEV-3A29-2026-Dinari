@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.ModifierCours"
+            stylesheets="@app.css"
+            prefWidth="1050.0" prefHeight="650.0">
+
+    <left>
+        <VBox prefWidth="230.0" styleClass="sidebar">
+            <Label text="DINARI" styleClass="brand"/>
+            <Label text="FINTECH MANAGEMENT" styleClass="brand-sub"/>
+            <Separator opacity="0.2"/>
+            <Button text="📘 Cours" styleClass="nav-btn" onAction="#goListeCours"/>
+            <Pane VBox.vgrow="ALWAYS"/>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox styleClass="content" spacing="14">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button text="⬅ Retour" styleClass="ghost-btn" onAction="#goListeCours"/>
+                <Label text="Modifier Cours" styleClass="page-title"/>
+            </HBox>
+
+            <GridPane hgap="12" vgap="12" maxWidth="720" styleClass="toolbar">
+                <Label text="Nom:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="tfNom" styleClass="input"
+                           GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Description:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <TextField fx:id="tfDescription" styleClass="input"
+                           GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <Button text="Enregistrer" styleClass="primary-btn"
+                        onAction="#save"
+                        GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            </GridPane>
+        </VBox>
+    </center>
+
+</BorderPane>
