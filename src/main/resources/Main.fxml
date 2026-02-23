@@ -27,9 +27,6 @@
         <!-- MENU -->
         <VBox spacing="3" style="-fx-padding: 18 10 0 10;">
 
-            <Label text="MES GESTIONS"
-                   style="-fx-text-fill: #2d4d6e; -fx-font-size: 9px;
-                          -fx-font-weight: bold; -fx-padding: 0 0 8 5;"/>
 
             <Button fx:id="btnAbonnements"
                     text="📺   Abonnements"
@@ -42,9 +39,6 @@
                            -fx-border-color: #2ecc71; -fx-border-width: 0 0 0 3;
                            -fx-border-radius: 0 8 8 0;"/>
 
-            <Label text="AUTRES MODULES"
-                   style="-fx-text-fill: #2d4d6e; -fx-font-size: 9px;
-                          -fx-font-weight: bold; -fx-padding: 10 0 8 5;"/>
 
             <Button fx:id="btnEducation"
                     text="📚   Éducative"

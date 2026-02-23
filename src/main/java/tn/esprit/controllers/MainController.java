@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
+import tn.esprit.entities.Abonnement;
 
 public class MainController {
 
@@ -72,6 +73,39 @@ public class MainController {
         load("Gestionpaiements.fxml");
         setSidebar(null);
         setTab(tabPaiements);
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // NOUVELLE MÉTHODE — Navigation vers paiements avec abonnement pré-sélectionné
+    // ══════════════════════════════════════════════════════════════════════
+    /**
+     * Ouvre la page paiements avec un abonnement pré-sélectionné dans le formulaire.
+     * Utilisé quand l'utilisateur clique sur "💳 Payer" depuis la page abonnements.
+     * @param abo L'abonnement à pré-remplir dans le formulaire de paiement
+     */
+    public void switchPaiementsAvecAbonnement(Abonnement abo) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Gestionpaiements.fxml"));
+            Parent page = loader.load();
+
+            // Récupère le controller de la page paiements
+            GestionpaiementsController ctrl = loader.getController();
+            ctrl.setMainController(this);
+
+            // Affiche la page
+            contenu.getChildren().setAll(page);
+
+            // Ouvre le formulaire pré-rempli avec l'abonnement
+            ctrl.ouvrirFormulaireAvecAbonnement(abo);
+
+            // Met à jour les styles visuels
+            setSidebar(null);
+            setTab(tabPaiements);
+
+        } catch (Exception e) {
+            System.err.println("❌ Erreur chargement Gestionpaiements.fxml avec abonnement");
+            e.printStackTrace();
+        }
     }
 
     @FXML

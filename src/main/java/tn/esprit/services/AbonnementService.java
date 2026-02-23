@@ -17,7 +17,8 @@ public class AbonnementService implements IService<Abonnement> {
 
     @Override
     public void ajouter(Abonnement abonnement) {
-        String query = "INSERT INTO abonnement (nom, prix, date_debut, frequence, categorie, actif, image_path) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        // ← MODIFIÉ : ajout de "tier" dans la requête
+        String query = "INSERT INTO abonnement (nom, prix, date_debut, frequence, categorie, actif, image_path, tier) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, abonnement.getNom());
@@ -27,6 +28,7 @@ public class AbonnementService implements IService<Abonnement> {
             ps.setString(5, abonnement.getCategorie());
             ps.setBoolean(6, abonnement.isActif());
             ps.setString(7, abonnement.getImagePath());
+            ps.setString(8, abonnement.getTier() != null ? abonnement.getTier() : "Normal"); // ← NOUVEAU
 
             ps.executeUpdate();
             System.out.println("✅ Abonnement ajouté !");
@@ -38,7 +40,8 @@ public class AbonnementService implements IService<Abonnement> {
 
     @Override
     public void modifier(Abonnement abonnement) {
-        String query = "UPDATE abonnement SET nom=?, prix=?, date_debut=?, frequence=?, categorie=?, actif=?, image_path=? WHERE id=?";
+        // ← MODIFIÉ : ajout de "tier" dans la requête
+        String query = "UPDATE abonnement SET nom=?, prix=?, date_debut=?, frequence=?, categorie=?, actif=?, image_path=?, tier=? WHERE id=?";
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, abonnement.getNom());
@@ -48,7 +51,8 @@ public class AbonnementService implements IService<Abonnement> {
             ps.setString(5, abonnement.getCategorie());
             ps.setBoolean(6, abonnement.isActif());
             ps.setString(7, abonnement.getImagePath());
-            ps.setInt(8, abonnement.getId());
+            ps.setString(8, abonnement.getTier() != null ? abonnement.getTier() : "Normal"); // ← NOUVEAU
+            ps.setInt(9, abonnement.getId());
 
             ps.executeUpdate();
             System.out.println("✅ Abonnement modifié !");
@@ -157,6 +161,7 @@ public class AbonnementService implements IService<Abonnement> {
         a.setCategorie(rs.getString("categorie"));
         a.setActif(rs.getBoolean("actif"));
         a.setImagePath(rs.getString("image_path"));
+        a.setTier(rs.getString("tier")); // ← NOUVEAU
         return a;
     }
 }

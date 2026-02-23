@@ -10,7 +10,8 @@ public class Abonnement {
     private String frequence;
     private String categorie;
     private boolean actif;
-    private String imagePath;  // Nouveau : chemin de l'image
+    private String imagePath;
+    private String tier; // ← NOUVEAU : "Normal", "Premium", "Gold"
 
     public Abonnement() {}
 
@@ -58,8 +59,12 @@ public class Abonnement {
     public String getImagePath() { return imagePath; }
     public void setImagePath(String imagePath) { this.imagePath = imagePath; }
 
+    // ← NOUVEAU getter/setter tier
+    public String getTier() { return tier; }
+    public void setTier(String tier) { this.tier = tier; }
+
     @Override
     public String toString() {
-        return "Abonnement{id=" + id + ", nom='" + nom + "', prix=" + prix + " DT}";
+        return "Abonnement{id=" + id + ", nom='" + nom + "', prix=" + prix + " DT, tier='" + tier + "'}";
     }
 }
