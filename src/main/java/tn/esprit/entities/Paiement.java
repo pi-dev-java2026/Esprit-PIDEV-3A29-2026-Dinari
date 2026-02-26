@@ -15,6 +15,7 @@ public class Paiement {
     private String dateExpiration;
     private String cvv;
     private String codeTransaction;
+    private String stripeTransactionId;
 
     public Paiement() {}
 
@@ -62,6 +63,12 @@ public class Paiement {
     public void setDateExpiration(String dateExpiration) { this.dateExpiration = dateExpiration; }
     public String getCvv() { return cvv; }
     public void setCvv(String cvv) { this.cvv = cvv; }
+    public String getStripeTransactionId() {
+        return stripeTransactionId;
+    }
+    public void setStripeTransactionId(String stripeTransactionId) {
+        this.stripeTransactionId = stripeTransactionId;
+    }
 
     @Override
     public String toString() {

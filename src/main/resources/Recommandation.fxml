@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="tn.esprit.controllers.RecommandationController"
+      style="-fx-background-color:#f0f4f8;">
+
+    <!-- HEADER fixe -->
+    <HBox alignment="CENTER_LEFT" spacing="16"
+          style="-fx-background-color:linear-gradient(to right,#0f1f3d,#1a3a7a);
+                 -fx-padding:22 32;
+                 -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.22),14,0,0,5);">
+        <Button text="&#8592; Retour" onAction="#retour"
+                style="-fx-background-color:rgba(255,255,255,0.13);-fx-text-fill:white;
+                       -fx-font-size:12px;-fx-font-weight:bold;-fx-padding:9 18;
+                       -fx-background-radius:9;-fx-cursor:hand;
+                       -fx-border-color:rgba(255,255,255,0.28);
+                       -fx-border-radius:9;-fx-border-width:1.2;"/>
+        <VBox HBox.hgrow="ALWAYS" spacing="3">
+            <Label text="Recommandations IA"
+                   style="-fx-font-size:24px;-fx-font-weight:bold;-fx-text-fill:white;"/>
+            <Label fx:id="lblSousTitre"
+                   text="Analyse personnalisee de vos abonnements par Groq AI"
+                   style="-fx-font-size:11px;-fx-text-fill:rgba(255,255,255,0.5);"/>
+        </VBox>
+        <!-- Bouton Nouvelle analyse — visible seulement après analyse -->
+        <Button fx:id="btnNouvelleAnalyse" text="&#8635; Nouvelle analyse"
+                onAction="#nouvelleAnalyse" visible="false" managed="false"
+                style="-fx-background-color:rgba(255,255,255,0.15);-fx-text-fill:white;
+                       -fx-font-size:11px;-fx-font-weight:bold;-fx-padding:8 16;
+                       -fx-background-radius:9;-fx-cursor:hand;
+                       -fx-border-color:rgba(255,255,255,0.3);
+                       -fx-border-radius:9;-fx-border-width:1;"/>
+        <Label text="Groq AI — Llama 3.3"
+               style="-fx-background-color:#6c5ce7;-fx-text-fill:white;
+                      -fx-font-size:10px;-fx-font-weight:bold;
+                      -fx-padding:7 16;-fx-background-radius:20;"/>
+    </HBox>
+
+    <!-- ZONE BUDGET — disparait apres analyse -->
+    <VBox fx:id="zoneBudget" alignment="CENTER"
+          style="-fx-background-color:white;-fx-padding:40 32;
+                 -fx-border-color:#f1f5f9;-fx-border-width:0 0 2 0;">
+        <VBox alignment="CENTER" spacing="20" maxWidth="680"
+              style="-fx-background-color:#f8fafc;-fx-padding:36 48;
+                     -fx-background-radius:20;-fx-border-color:#e2e8f0;
+                     -fx-border-width:1.5;-fx-border-radius:20;">
+
+            <Label text="&#128200; Analysez vos abonnements avec l'IA"
+                   style="-fx-font-size:20px;-fx-font-weight:bold;-fx-text-fill:#0f1f3d;"/>
+            <Label text="Entrez votre budget mensuel — l'IA generera un score de sante financiere,&#10;des recommandations de plans et des conseils personnalises"
+                   style="-fx-font-size:12px;-fx-text-fill:#94a3b8;-fx-text-alignment:center;"
+                   wrapText="true"/>
+
+            <HBox spacing="14" alignment="CENTER">
+                <TextField fx:id="txtBudget" promptText="Ex: 150"
+                           prefWidth="220"
+                           style="-fx-background-radius:12;-fx-border-radius:12;
+                                  -fx-border-color:#cbd5e1;-fx-border-width:2.5;
+                                  -fx-padding:14 20;-fx-font-size:22px;
+                                  -fx-font-weight:bold;-fx-background-color:white;"/>
+                <Label text="TND / mois"
+                       style="-fx-font-size:14px;-fx-font-weight:bold;-fx-text-fill:#64748b;"/>
+            </HBox>
+
+            <Button fx:id="btnAnalyser" text="&#129302;  Analyser avec l'IA"
+                    onAction="#analyser" maxWidth="320"
+                    style="-fx-background-color:#6c5ce7;-fx-text-fill:white;
+                           -fx-font-size:15px;-fx-font-weight:bold;
+                           -fx-padding:15 0;-fx-background-radius:12;-fx-cursor:hand;
+                           -fx-effect:dropshadow(gaussian,rgba(108,92,231,0.45),14,0,0,5);"/>
+
+            <HBox alignment="CENTER" spacing="10">
+                <ProgressIndicator fx:id="spinner" prefWidth="20" prefHeight="20"/>
+                <Label fx:id="lblStatut"
+                       style="-fx-font-size:12px;-fx-text-fill:#94a3b8;-fx-font-weight:bold;"/>
+            </HBox>
+        </VBox>
+    </VBox>
+
+    <!-- KPI ROW — visible apres analyse -->
+    <HBox fx:id="kpiRow" spacing="14" visible="false" managed="false"
+          style="-fx-padding:20 32 6 32;-fx-background-color:#f0f4f8;"/>
+
+    <!-- RESULTATS — prend tout l'espace apres analyse -->
+    <ScrollPane fx:id="scrollResultat" fitToWidth="true" VBox.vgrow="ALWAYS"
+                visible="false" managed="false"
+                style="-fx-background:#f0f4f8;-fx-background-color:#f0f4f8;-fx-border-width:0;">
+        <VBox fx:id="conteneurResultat" spacing="18"
+              style="-fx-padding:18 32 40 32;-fx-background-color:#f0f4f8;"/>
+    </ScrollPane>
+
+</VBox>

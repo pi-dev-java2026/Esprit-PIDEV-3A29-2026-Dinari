@@ -8,78 +8,53 @@
       fx:controller="tn.esprit.controllers.MainController"
       prefHeight="720.0" prefWidth="1150.0">
 
-    <!-- ========== SIDEBAR ========== -->
+    <!-- ========== SIDEBAR — NE PAS TOUCHER ========== -->
     <VBox prefWidth="235" minWidth="235"
           style="-fx-background-color: #0f1f3d;">
 
-        <!-- LOGO -->
         <VBox alignment="CENTER" prefHeight="115"
               style="-fx-background-color: #0a1628; -fx-padding: 18;">
             <ImageView fitWidth="150" fitHeight="75" preserveRatio="true">
-                <image>
-                    <Image url="@images/logo.png"/>
-                </image>
+                <image><Image url="@images/logo.png"/></image>
             </ImageView>
         </VBox>
 
         <Separator style="-fx-background-color: #1a3055;"/>
 
-        <!-- MENU -->
         <VBox spacing="3" style="-fx-padding: 18 10 0 10;">
-
-
-            <Button fx:id="btnAbonnements"
-                    text="📺   Abonnements"
-                    maxWidth="Infinity"
+            <Button fx:id="btnAbonnements" text="📺   Abonnements" maxWidth="Infinity"
                     onAction="#showAbonnements"
                     style="-fx-background-color: #1a3a7a; -fx-text-fill: white;
                            -fx-font-size: 12px; -fx-alignment: CENTER-LEFT;
-                           -fx-padding: 12 15; -fx-background-radius: 8;
-                           -fx-cursor: hand; -fx-font-weight: bold;
-                           -fx-border-color: #2ecc71; -fx-border-width: 0 0 0 3;
-                           -fx-border-radius: 0 8 8 0;"/>
-
-
-            <Button fx:id="btnEducation"
-                    text="📚   Éducative"
-                    maxWidth="Infinity"
+                           -fx-padding: 12 15; -fx-background-radius: 8; -fx-cursor: hand;
+                           -fx-font-weight: bold; -fx-border-color: #2ecc71;
+                           -fx-border-width: 0 0 0 3; -fx-border-radius: 0 8 8 0;"/>
+            <Button fx:id="btnEducation" text="📚   Éducative" maxWidth="Infinity"
                     onAction="#showEducation"
                     style="-fx-background-color: transparent; -fx-text-fill: #6a8aaa;
                            -fx-font-size: 12px; -fx-alignment: CENTER-LEFT;
-                           -fx-padding: 12 15; -fx-background-radius: 8;
-                           -fx-cursor: hand;"/>
-
-            <Button fx:id="btnDepenses"
-                    text="💸   Dépenses"
-                    maxWidth="Infinity"
+                           -fx-padding: 12 15; -fx-background-radius: 8; -fx-cursor: hand;"/>
+            <Button fx:id="btnDepenses" text="💸   Dépenses" maxWidth="Infinity"
                     onAction="#showDepenses"
                     style="-fx-background-color: transparent; -fx-text-fill: #6a8aaa;
                            -fx-font-size: 12px; -fx-alignment: CENTER-LEFT;
-                           -fx-padding: 12 15; -fx-background-radius: 8;
-                           -fx-cursor: hand;"/>
-
-            <Button fx:id="btnBudget"
-                    text="💰   Budget"
-                    maxWidth="Infinity"
+                           -fx-padding: 12 15; -fx-background-radius: 8; -fx-cursor: hand;"/>
+            <Button fx:id="btnBudget" text="💰   Budget" maxWidth="Infinity"
                     onAction="#showBudget"
                     style="-fx-background-color: transparent; -fx-text-fill: #6a8aaa;
                            -fx-font-size: 12px; -fx-alignment: CENTER-LEFT;
-                           -fx-padding: 12 15; -fx-background-radius: 8;
-                           -fx-cursor: hand;"/>
+                           -fx-padding: 12 15; -fx-background-radius: 8; -fx-cursor: hand;"/>
         </VBox>
 
         <Region VBox.vgrow="ALWAYS"/>
 
-        <!-- PROFIL -->
         <VBox style="-fx-padding: 10;">
             <Separator style="-fx-background-color: #1a3055;"/>
-            <HBox alignment="CENTER_LEFT" spacing="10"
-                  style="-fx-padding: 12 10 5 10;">
+            <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 12 10 5 10;">
                 <Label text="👤" style="-fx-font-size: 18px;"/>
                 <VBox>
                     <Label text="Utilisateur"
-                           style="-fx-text-fill: white; -fx-font-size: 12px;
-                                  -fx-font-weight: bold;"/>
+                           style="-fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold;"/>
                     <Label text="admin@dinari.tn"
                            style="-fx-text-fill: #3d5f8a; -fx-font-size: 10px;"/>
                 </VBox>
@@ -91,36 +66,45 @@
     <VBox HBox.hgrow="ALWAYS" style="-fx-background-color: #f5f6fa;">
 
         <!-- ONGLETS -->
-        <HBox style="-fx-background-color: white; -fx-padding: 0 30;
+        <HBox style="-fx-background-color: white; -fx-padding: 0 20;
                      -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 8, 0, 0, 2);">
 
-            <Button fx:id="tabAbonnements"
-                    text="📺  Abonnements"
+            <Button fx:id="tabAbonnements" text="📺  Abonnements"
                     onAction="#switchAbonnements"
                     style="-fx-background-color: transparent; -fx-text-fill: #1a3a7a;
-                           -fx-font-size: 13px; -fx-font-weight: bold;
-                           -fx-padding: 16 25; -fx-cursor: hand;
+                           -fx-font-size: 12px; -fx-font-weight: bold;
+                           -fx-padding: 16 18; -fx-cursor: hand;
                            -fx-border-color: #1a3a7a; -fx-border-width: 0 0 3 0;
                            -fx-background-radius: 0;"/>
 
-            <Button fx:id="tabPaiements"
-                    text="💳  Paiements"
+            <Button fx:id="tabPaiements" text="💳  Paiements"
                     onAction="#switchPaiements"
                     style="-fx-background-color: transparent; -fx-text-fill: #8899aa;
-                           -fx-font-size: 13px; -fx-padding: 16 25;
-                           -fx-cursor: hand; -fx-border-width: 0;
-                           -fx-background-radius: 0;"/>
+                           -fx-font-size: 12px; -fx-padding: 16 18;
+                           -fx-cursor: hand; -fx-border-width: 0; -fx-background-radius: 0;"/>
 
-            <Button fx:id="tabStats"
-                    text="📊  Statistiques"
+            <Button fx:id="tabStats" text="📊  Statistiques"
                     onAction="#switchStats"
                     style="-fx-background-color: transparent; -fx-text-fill: #8899aa;
-                           -fx-font-size: 13px; -fx-padding: 16 25;
-                           -fx-cursor: hand; -fx-border-width: 0;
-                           -fx-background-radius: 0;"/>
+                           -fx-font-size: 12px; -fx-padding: 16 18;
+                           -fx-cursor: hand; -fx-border-width: 0; -fx-background-radius: 0;"/>
+
+            <!-- ✨ Plan optimal IA -->
+            <Button fx:id="tabRecommandations" text="✨  Plan optimal IA"
+                    onAction="#switchRecommandations"
+                    style="-fx-background-color: transparent; -fx-text-fill: #8899aa;
+                           -fx-font-size: 12px; -fx-padding: 16 18;
+                           -fx-cursor: hand; -fx-border-width: 0; -fx-background-radius: 0;"/>
+
+            <!-- 🎬 Suggestions Netflix / Spotify -->
+            <Button fx:id="tabSuggestions" text="🎬  Suggestions IA"
+                    onAction="#switchSuggestions"
+                    style="-fx-background-color: transparent; -fx-text-fill: #8899aa;
+                           -fx-font-size: 12px; -fx-padding: 16 18;
+                           -fx-cursor: hand; -fx-border-width: 0; -fx-background-radius: 0;"/>
+
         </HBox>
 
-        <!-- ✅ fx:id="contenu" — correspond exactement au MainController -->
         <StackPane fx:id="contenu" VBox.vgrow="ALWAYS"
                    style="-fx-background-color: #f5f6fa;"/>
     </VBox>

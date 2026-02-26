@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="tn.esprit.controllers.SuggestionsController"
+           style="-fx-background-color:#0a0a0a;">
+
+    <!-- ═══════════════ PAGE 1 : CHOIX ═══════════════ -->
+    <VBox fx:id="pageChoix" spacing="0">
+
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT" spacing="16"
+              style="-fx-background-color:#111111;-fx-padding:20 35;
+                     -fx-border-color:#222;-fx-border-width:0 0 1 0;">
+            <Button text="← Retour" onAction="#retourListe"
+                    style="-fx-background-color:#1a1a1a;-fx-text-fill:#aaa;
+                           -fx-font-size:12px;-fx-font-weight:bold;-fx-padding:9 16;
+                           -fx-background-radius:8;-fx-cursor:hand;
+                           -fx-border-color:#333;-fx-border-radius:8;-fx-border-width:1;"/>
+            <VBox HBox.hgrow="ALWAYS" spacing="3" style="-fx-padding:0 0 0 8;">
+                <Label text="🤖  Suggestions par l'IA"
+                       style="-fx-font-size:22px;-fx-font-weight:bold;-fx-text-fill:white;"/>
+                <Label text="Choisissez un service pour des recommandations personnalisées"
+                       style="-fx-font-size:12px;-fx-text-fill:#666;"/>
+            </VBox>
+        </HBox>
+
+        <!-- Cartes choix -->
+        <VBox alignment="CENTER" VBox.vgrow="ALWAYS" spacing="30"
+              style="-fx-padding:60 0;">
+
+            <Label text="Pour quel service ?"
+                   style="-fx-font-size:20px;-fx-font-weight:bold;-fx-text-fill:white;"/>
+
+            <HBox spacing="32" alignment="CENTER">
+
+                <!-- Netflix -->
+                <VBox fx:id="carteNetflix" alignment="CENTER" spacing="16"
+                      onMouseClicked="#ouvrirNetflix"
+                      style="-fx-background-color:#1a0a0a;-fx-padding:44 55;
+                             -fx-background-radius:20;-fx-cursor:hand;
+                             -fx-border-color:#E50914;-fx-border-width:2;-fx-border-radius:20;
+                             -fx-effect:dropshadow(gaussian,rgba(229,9,20,0.3),24,0,0,8);">
+                    <Label text="🎬" style="-fx-font-size:52px;"/>
+                    <Label text="NETFLIX"
+                           style="-fx-font-size:26px;-fx-font-weight:bold;-fx-text-fill:#E50914;"/>
+                    <Label text="Films &amp; Séries"
+                           style="-fx-font-size:12px;-fx-text-fill:#666;"/>
+                    <Button text="Obtenir des suggestions" onAction="#ouvrirNetflix"
+                            style="-fx-background-color:#E50914;-fx-text-fill:white;
+                                   -fx-font-size:12px;-fx-font-weight:bold;
+                                   -fx-padding:11 24;-fx-background-radius:10;-fx-cursor:hand;
+                                   -fx-effect:dropshadow(gaussian,rgba(229,9,20,0.5),10,0,0,3);"/>
+                </VBox>
+
+                <!-- Spotify -->
+                <VBox fx:id="carteSpotify" alignment="CENTER" spacing="16"
+                      onMouseClicked="#ouvrirSpotify"
+                      style="-fx-background-color:#0a1a0f;-fx-padding:44 55;
+                             -fx-background-radius:20;-fx-cursor:hand;
+                             -fx-border-color:#1DB954;-fx-border-width:2;-fx-border-radius:20;
+                             -fx-effect:dropshadow(gaussian,rgba(29,185,84,0.3),24,0,0,8);">
+                    <Label text="🎵" style="-fx-font-size:52px;"/>
+                    <Label text="SPOTIFY"
+                           style="-fx-font-size:26px;-fx-font-weight:bold;-fx-text-fill:#1DB954;"/>
+                    <Label text="Musique &amp; Podcasts"
+                           style="-fx-font-size:12px;-fx-text-fill:#666;"/>
+                    <Button text="Obtenir des suggestions" onAction="#ouvrirSpotify"
+                            style="-fx-background-color:#1DB954;-fx-text-fill:white;
+                                   -fx-font-size:12px;-fx-font-weight:bold;
+                                   -fx-padding:11 24;-fx-background-radius:10;-fx-cursor:hand;
+                                   -fx-effect:dropshadow(gaussian,rgba(29,185,84,0.5),10,0,0,3);"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </VBox>
+
+    <!-- ═══════════════ PAGE 2 : NETFLIX QUESTIONNAIRE ═══════════════ -->
+    <VBox fx:id="pageNetflix" visible="false" managed="false" spacing="0">
+
+        <!-- Header rouge Netflix -->
+        <HBox alignment="CENTER_LEFT" spacing="16"
+              style="-fx-background-color:#E50914;-fx-padding:18 35;">
+            <Button text="← Retour" onAction="#retourChoix"
+                    style="-fx-background-color:rgba(0,0,0,0.2);-fx-text-fill:white;
+                           -fx-font-weight:bold;-fx-padding:8 16;-fx-background-radius:8;
+                           -fx-cursor:hand;-fx-border-width:0;"/>
+            <VBox HBox.hgrow="ALWAYS" spacing="2" style="-fx-padding:0 0 0 8;">
+                <Label text="🎬  Profil Netflix"
+                       style="-fx-font-size:20px;-fx-font-weight:bold;-fx-text-fill:white;"/>
+                <Label text="L'IA vous suggère les meilleurs titres selon vos goûts"
+                       style="-fx-font-size:11px;-fx-text-fill:rgba(255,255,255,0.7);"/>
+            </VBox>
+            <Label text="Powered by Groq AI"
+                   style="-fx-background-color:rgba(0,0,0,0.3);-fx-text-fill:white;
+                          -fx-font-size:10px;-fx-padding:5 12;-fx-background-radius:20;"/>
+        </HBox>
+
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                    style="-fx-background:#0a0a0a;-fx-background-color:#0a0a0a;">
+            <VBox spacing="14" style="-fx-padding:22 35 35 35;">
+
+                <!-- Age -->
+                <VBox style="-fx-background-color:#111;-fx-padding:20 24;
+                             -fx-background-radius:14;-fx-border-color:#222;
+                             -fx-border-width:1;-fx-border-radius:14;" spacing="10">
+                    <Label text="Votre âge"
+                           style="-fx-font-size:13px;-fx-font-weight:bold;-fx-text-fill:white;"/>
+                    <TextField fx:id="txtAge" promptText="Ex: 25" prefWidth="140"
+                               style="-fx-background-color:#1a1a1a;-fx-background-radius:9;
+                                      -fx-border-radius:9;-fx-border-color:#333;-fx-border-width:1.5;
+                                      -fx-padding:10 14;-fx-font-size:14px;-fx-text-fill:white;
+                                      -fx-prompt-text-fill:#555;"/>
+                </VBox>
+
+                <!-- Type -->
+                <VBox style="-fx-background-color:#111;-fx-padding:20 24;
+                             -fx-background-radius:14;-fx-border-color:#222;
+                             -fx-border-width:1;-fx-border-radius:14;" spacing="12">
+                    <Label text="Vous préférez ?"
+                           style="-fx-font-size:13px;-fx-font-weight:bold;-fx-text-fill:white;"/>
+                    <HBox spacing="24">
+                        <CheckBox fx:id="cbFilms"  text="Films"  selected="true"
+                                  style="-fx-font-size:13px;-fx-text-fill:#ccc;"/>
+                        <CheckBox fx:id="cbSeries" text="Séries" selected="true"
+                                  style="-fx-font-size:13px;-fx-text-fill:#ccc;"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Genres -->
+                <VBox style="-fx-background-color:#111;-fx-padding:20 24;
+                             -fx-background-radius:14;-fx-border-color:#222;
+                             -fx-border-width:1;-fx-border-radius:14;" spacing="12">
+                    <Label text="Genres préférés"
+                           style="-fx-font-size:13px;-fx-font-weight:bold;-fx-text-fill:white;"/>
+                    <HBox spacing="40">
+                        <VBox spacing="10">
+                            <CheckBox fx:id="cbAction"    text="Action"          style="-fx-font-size:13px;-fx-text-fill:#ccc;"/>
+                            <CheckBox fx:id="cbHorreur"   text="Horreur"         style="-fx-font-size:13px;-fx-text-fill:#ccc;"/>
+                            <CheckBox fx:id="cbRomance"   text="Romance"         style="-fx-font-size:13px;-fx-text-fill:#ccc;"/>
+                            <CheckBox fx:id="cbComedy"    text="Comédie"         style="-fx-font-size:13px;-fx-text-fill:#ccc;"/>
+                        </VBox>
+                        <VBox spacing="10">
+                            <CheckBox fx:id="cbSciFi"     text="Science-Fiction" style="-fx-font-size:13px;-fx-text-fill:#ccc;"/>
+                            <CheckBox fx:id="cbThriller"  text="Thriller"        style="-fx-font-size:13px;-fx-text-fill:#ccc;"/>
+                            <CheckBox fx:id="cbDoc"       text="Documentaire"    style="-fx-font-size:13px;-fx-text-fill:#ccc;"/>
+                            <CheckBox fx:id="cbAnimation" text="Animation"       style="-fx-font-size:13px;-fx-text-fill:#ccc;"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- Durée -->
+                <VBox style="-fx-background-color:#111;-fx-padding:20 24;
+                             -fx-background-radius:14;-fx-border-color:#222;
+                             -fx-border-width:1;-fx-border-radius:14;" spacing="12">
+                    <Label text="Temps disponible"
+                           style="-fx-font-size:13px;-fx-font-weight:bold;-fx-text-fill:white;"/>
+                    <HBox spacing="24">
+                        <RadioButton text="1 heure"        selected="false" style="-fx-font-size:13px;-fx-text-fill:#ccc;">
+                            <toggleGroup><ToggleGroup fx:id="tgDuree"/></toggleGroup>
+                        </RadioButton>
+                        <RadioButton text="2 heures"       selected="true"  style="-fx-font-size:13px;-fx-text-fill:#ccc;">
+                            <toggleGroup><fx:reference source="tgDuree"/></toggleGroup>
+                        </RadioButton>
+                        <RadioButton text="Soirée entière" selected="false" style="-fx-font-size:13px;-fx-text-fill:#ccc;">
+                            <toggleGroup><fx:reference source="tgDuree"/></toggleGroup>
+                        </RadioButton>
+                    </HBox>
+                </VBox>
+
+                <!-- Humeur -->
+                <VBox style="-fx-background-color:#111;-fx-padding:20 24;
+                             -fx-background-radius:14;-fx-border-color:#222;
+                             -fx-border-width:1;-fx-border-radius:14;" spacing="12">
+                    <Label text="Humeur du moment"
+                           style="-fx-font-size:13px;-fx-font-weight:bold;-fx-text-fill:white;"/>
+                    <HBox spacing="20">
+                        <RadioButton text="😌 Détente"    selected="true"  style="-fx-font-size:13px;-fx-text-fill:#ccc;">
+                            <toggleGroup><ToggleGroup fx:id="tgHumeur"/></toggleGroup>
+                        </RadioButton>
+                        <RadioButton text="⚡ Adrénaline" selected="false" style="-fx-font-size:13px;-fx-text-fill:#ccc;">
+                            <toggleGroup><fx:reference source="tgHumeur"/></toggleGroup>
+                        </RadioButton>
+                        <RadioButton text="🤔 Réflexion"  selected="false" style="-fx-font-size:13px;-fx-text-fill:#ccc;">
+                            <toggleGroup><fx:reference source="tgHumeur"/></toggleGroup>
+                        </RadioButton>
+                        <RadioButton text="👨‍👩‍👧 Famille"    selected="false" style="-fx-font-size:13px;-fx-text-fill:#ccc;">
+                            <toggleGroup><fx:reference source="tgHumeur"/></toggleGroup>
+                        </RadioButton>
+                    </HBox>
+                </VBox>
+
+                <!-- Déjà vu -->
+                <VBox style="-fx-background-color:#111;-fx-padding:20 24;
+                             -fx-background-radius:14;-fx-border-color:#222;
+                             -fx-border-width:1;-fx-border-radius:14;" spacing="10">
+                    <Label text="Films/Séries que vous avez aimés (optionnel)"
+                           style="-fx-font-size:13px;-fx-font-weight:bold;-fx-text-fill:white;"/>
+                    <Label text="Ex: Inception, Breaking Bad, Stranger Things"
+                           style="-fx-font-size:11px;-fx-text-fill:#555;"/>
+                    <TextField fx:id="txtDejaVu" promptText="Ex: Inception, Breaking Bad..."
+                               style="-fx-background-color:#1a1a1a;-fx-background-radius:9;
+                                      -fx-border-radius:9;-fx-border-color:#333;-fx-border-width:1.5;
+                                      -fx-padding:10 14;-fx-font-size:13px;-fx-text-fill:white;
+                                      -fx-prompt-text-fill:#555;"/>
+                </VBox>
+
+                <!-- Bouton -->
+                <Button text="🎬  Générer mes suggestions Netflix" onAction="#analyserNetflix"
+                        maxWidth="Infinity"
+                        style="-fx-background-color:#E50914;-fx-text-fill:white;
+                               -fx-font-size:15px;-fx-font-weight:bold;
+                               -fx-padding:16 0;-fx-background-radius:12;-fx-cursor:hand;
+                               -fx-effect:dropshadow(gaussian,rgba(229,9,20,0.5),14,0,0,4);"/>
+            </VBox>
+        </ScrollPane>
+    </VBox>
+
+    <!-- ═══════════════ PAGE 3 : SPOTIFY QUESTIONNAIRE ═══════════════ -->
+    <VBox fx:id="pageSpotify" visible="false" managed="false" spacing="0">
+
+        <HBox alignment="CENTER_LEFT" spacing="16"
+              style="-fx-background-color:#1DB954;-fx-padding:18 35;">
+            <Button text="← Retour" onAction="#retourChoix"
+                    style="-fx-background-color:rgba(0,0,0,0.2);-fx-text-fill:white;
+                           -fx-font-weight:bold;-fx-padding:8 16;-fx-background-radius:8;
+                           -fx-cursor:hand;-fx-border-width:0;"/>
+            <VBox HBox.hgrow="ALWAYS" spacing="2" style="-fx-padding:0 0 0 8;">
+                <Label text="🎵  Profil Spotify"
+                       style="-fx-font-size:20px;-fx-font-weight:bold;-fx-text-fill:white;"/>
+                <Label text="L'IA vous suggère la musique parfaite"
+                       style="-fx-font-size:11px;-fx-text-fill:rgba(255,255,255,0.7);"/>
+            </VBox>
+            <Label text="Powered by Groq AI"
+                   style="-fx-background-color:rgba(0,0,0,0.3);-fx-text-fill:white;
+                          -fx-font-size:10px;-fx-padding:5 12;-fx-background-radius:20;"/>
+        </HBox>
+
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                    style="-fx-background:#0a0a0a;-fx-background-color:#0a0a0a;">
+            <VBox spacing="14" style="-fx-padding:22 35 35 35;">
+
+                <!-- Genres -->
+                <VBox style="-fx-background-color:#111;-fx-padding:20 24;-fx-background-radius:14;-fx-border-color:#222;-fx-border-width:1;-fx-border-radius:14;" spacing="12">
+                    <Label text="Genres musicaux" style="-fx-font-size:13px;-fx-font-weight:bold;-fx-text-fill:white;"/>
+                    <HBox spacing="40">
+                        <VBox spacing="10">
+                            <CheckBox fx:id="cbPop"       text="Pop"           style="-fx-font-size:13px;-fx-text-fill:#ccc;"/>
+                            <CheckBox fx:id="cbRap"       text="Rap / Hip-Hop" style="-fx-font-size:13px;-fx-text-fill:#ccc;"/>
+                            <CheckBox fx:id="cbJazz"      text="Jazz"          style="-fx-font-size:13px;-fx-text-fill:#ccc;"/>
+                            <CheckBox fx:id="cbElec"      text="Electronic"    style="-fx-font-size:13px;-fx-text-fill:#ccc;"/>
+                        </VBox>
+                        <VBox spacing="10">
+                            <CheckBox fx:id="cbRock"      text="Rock"          style="-fx-font-size:13px;-fx-text-fill:#ccc;"/>
+                            <CheckBox fx:id="cbRnb"       text="R&amp;B"       style="-fx-font-size:13px;-fx-text-fill:#ccc;"/>
+                            <CheckBox fx:id="cbClassique" text="Classique"     style="-fx-font-size:13px;-fx-text-fill:#ccc;"/>
+                            <CheckBox fx:id="cbArabic"    text="Musique Arabe" style="-fx-font-size:13px;-fx-text-fill:#ccc;"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- Moment -->
+                <VBox style="-fx-background-color:#111;-fx-padding:20 24;-fx-background-radius:14;-fx-border-color:#222;-fx-border-width:1;-fx-border-radius:14;" spacing="12">
+                    <Label text="Moment d'écoute" style="-fx-font-size:13px;-fx-font-weight:bold;-fx-text-fill:white;"/>
+                    <HBox spacing="20">
+                        <RadioButton text="🏋️ Sport"   selected="true"  style="-fx-font-size:13px;-fx-text-fill:#ccc;">
+                            <toggleGroup><ToggleGroup fx:id="tgMoment"/></toggleGroup>
+                        </RadioButton>
+                        <RadioButton text="💼 Travail"  selected="false" style="-fx-font-size:13px;-fx-text-fill:#ccc;">
+                            <toggleGroup><fx:reference source="tgMoment"/></toggleGroup>
+                        </RadioButton>
+                        <RadioButton text="🎉 Soirée"   selected="false" style="-fx-font-size:13px;-fx-text-fill:#ccc;">
+                            <toggleGroup><fx:reference source="tgMoment"/></toggleGroup>
+                        </RadioButton>
+                        <RadioButton text="😴 Sommeil"  selected="false" style="-fx-font-size:13px;-fx-text-fill:#ccc;">
+                            <toggleGroup><fx:reference source="tgMoment"/></toggleGroup>
+                        </RadioButton>
+                    </HBox>
+                </VBox>
+
+                <!-- Langue -->
+                <VBox style="-fx-background-color:#111;-fx-padding:20 24;-fx-background-radius:14;-fx-border-color:#222;-fx-border-width:1;-fx-border-radius:14;" spacing="12">
+                    <Label text="Langue préférée" style="-fx-font-size:13px;-fx-font-weight:bold;-fx-text-fill:white;"/>
+                    <HBox spacing="20">
+                        <RadioButton text="Français"       selected="false" style="-fx-font-size:13px;-fx-text-fill:#ccc;">
+                            <toggleGroup><ToggleGroup fx:id="tgLang"/></toggleGroup>
+                        </RadioButton>
+                        <RadioButton text="Anglais"        selected="true"  style="-fx-font-size:13px;-fx-text-fill:#ccc;">
+                            <toggleGroup><fx:reference source="tgLang"/></toggleGroup>
+                        </RadioButton>
+                        <RadioButton text="Arabe"          selected="false" style="-fx-font-size:13px;-fx-text-fill:#ccc;">
+                            <toggleGroup><fx:reference source="tgLang"/></toggleGroup>
+                        </RadioButton>
+                        <RadioButton text="Toutes langues" selected="false" style="-fx-font-size:13px;-fx-text-fill:#ccc;">
+                            <toggleGroup><fx:reference source="tgLang"/></toggleGroup>
+                        </RadioButton>
+                    </HBox>
+                </VBox>
+
+                <!-- Artistes -->
+                <VBox style="-fx-background-color:#111;-fx-padding:20 24;-fx-background-radius:14;-fx-border-color:#222;-fx-border-width:1;-fx-border-radius:14;" spacing="10">
+                    <Label text="Artistes que vous aimez (optionnel)" style="-fx-font-size:13px;-fx-font-weight:bold;-fx-text-fill:white;"/>
+                    <Label text="Ex: Drake, Daft Punk, Fairouz" style="-fx-font-size:11px;-fx-text-fill:#555;"/>
+                    <TextField fx:id="txtArtistes" promptText="Ex: Drake, The Weeknd..."
+                               style="-fx-background-color:#1a1a1a;-fx-background-radius:9;-fx-border-radius:9;-fx-border-color:#333;-fx-border-width:1.5;-fx-padding:10 14;-fx-font-size:13px;-fx-text-fill:white;-fx-prompt-text-fill:#555;"/>
+                </VBox>
+
+                <!-- Bouton -->
+                <Button text="🎵  Générer mes suggestions Spotify" onAction="#analyserSpotify"
+                        maxWidth="Infinity"
+                        style="-fx-background-color:#1DB954;-fx-text-fill:white;-fx-font-size:15px;-fx-font-weight:bold;-fx-padding:16 0;-fx-background-radius:12;-fx-cursor:hand;-fx-effect:dropshadow(gaussian,rgba(29,185,84,0.5),14,0,0,4);"/>
+            </VBox>
+        </ScrollPane>
+    </VBox>
+
+    <!-- ═══════════════ PAGE 4 : RÉSULTATS IA (thème sombre) ═══════════════ -->
+    <VBox fx:id="pageResultat" visible="false" managed="false" spacing="0">
+
+        <HBox alignment="CENTER_LEFT" spacing="16"
+              style="-fx-background-color:#111;-fx-padding:18 35;
+                     -fx-border-color:#222;-fx-border-width:0 0 1 0;">
+            <Button text="← Retour" onAction="#retourChoix"
+                    style="-fx-background-color:#1a1a1a;-fx-text-fill:#aaa;-fx-font-weight:bold;
+                           -fx-padding:9 16;-fx-background-radius:8;-fx-cursor:hand;
+                           -fx-border-color:#333;-fx-border-radius:8;-fx-border-width:1;"/>
+            <VBox HBox.hgrow="ALWAYS" spacing="2" style="-fx-padding:0 0 0 8;">
+                <Label fx:id="lblTitre" text="Suggestions IA"
+                       style="-fx-font-size:20px;-fx-font-weight:bold;-fx-text-fill:white;"/>
+                <Label fx:id="lblStatut" text="Analyse en cours..."
+                       style="-fx-font-size:12px;-fx-text-fill:#6c5ce7;-fx-font-weight:bold;"/>
+            </VBox>
+            <HBox spacing="10">
+                <Button fx:id="btnNouveauN" text="↺  Nouveau Netflix" onAction="#nouveauNetflix"
+                        visible="false" managed="false"
+                        style="-fx-background-color:#E50914;-fx-text-fill:white;-fx-font-size:12px;-fx-font-weight:bold;-fx-padding:10 18;-fx-background-radius:9;-fx-cursor:hand;"/>
+                <Button fx:id="btnNouveauS" text="↺  Nouveau Spotify" onAction="#nouveauSpotify"
+                        visible="false" managed="false"
+                        style="-fx-background-color:#1DB954;-fx-text-fill:white;-fx-font-size:12px;-fx-font-weight:bold;-fx-padding:10 18;-fx-background-radius:9;-fx-cursor:hand;"/>
+            </HBox>
+        </HBox>
+
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                    style="-fx-background:#0a0a0a;-fx-background-color:#0a0a0a;">
+            <VBox alignment="TOP_CENTER" style="-fx-padding:28 35 35 35;" spacing="0">
+                <ProgressIndicator fx:id="spinner" prefWidth="55" prefHeight="55"
+                                   style="-fx-padding:20 0 30 0;-fx-progress-color:#E50914;"/>
+                <VBox fx:id="conteneurResultat" spacing="12" maxWidth="860"/>
+            </VBox>
+        </ScrollPane>
+    </VBox>
+
+</StackPane>
