@@ -23,7 +23,7 @@ public class GestionpaiementsController {
     @FXML private ComboBox<String> comboStatut, comboTri;
     @FXML private VBox listePaiements;
     @FXML private Label lblTitreForm;
-    @FXML private ComboBox<String> comboService;      // peut être null si caché dans FXML
+    @FXML private ComboBox<String> comboService;
     @FXML private TextField txtMontant, txtNomTitulaire, txtPrenomTitulaire;
     @FXML private TextField txtNumeroCarte, txtDateExpiration, txtCvv;
     @FXML private DatePicker datePickerPaie;
@@ -114,8 +114,6 @@ public class GestionpaiementsController {
         charger();
     }
 
-    // Ouverture du formulaire en mode AJOUT (bouton supprimé du FXML principal)
-    // Gardé pour la méthode ouvrirFormulaireAvecAbonnement()
     @FXML
     private void ouvrirFormulaire() {
         enEdition = null;
@@ -133,7 +131,6 @@ public class GestionpaiementsController {
         if (lblTitreForm != null) lblTitreForm.setText("Modifier le Paiement");
         chargerServices();
         reinitialiserErreurs();
-        // null-safe sur comboService
         if (comboService != null) comboService.setValue(getNomService(p.getAbonnementId()));
         if (txtMontant         != null) txtMontant.setText(String.valueOf(p.getMontant()));
         if (txtNomTitulaire    != null) txtNomTitulaire.setText(safe(p.getNomTitulaire(), ""));
@@ -171,7 +168,6 @@ public class GestionpaiementsController {
 
     private boolean validerFormulaire() {
         boolean ok = true;
-        // comboService peut être null (caché dans FXML) → on skip sa validation
         if (comboService != null) ok &= validerCombo(comboService, errService);
         ok &= validerTextField(txtMontant, errMontant);
         ok &= validerTextField(txtNomTitulaire, errNom);
@@ -234,7 +230,7 @@ public class GestionpaiementsController {
         try {
             double montant = Double.parseDouble(txtMontant.getText());
 
-            // Chercher l'abonnement selon comboService (s'il existe) ou enEdition
+            // Chercher l'abonnement
             Abonnement abo = null;
             if (comboService != null && comboService.getValue() != null) {
                 abo = aboService.afficher().stream()
@@ -247,19 +243,35 @@ public class GestionpaiementsController {
             }
             if (abo == null) { alerte(Alert.AlertType.ERROR, "Service introuvable !"); return; }
 
-            String mode = "Carte Bancaire";
-            Date date = datePickerPaie != null ? Date.valueOf(datePickerPaie.getValue()) : Date.valueOf(LocalDate.now());
-            String nom     = txtNomTitulaire    != null ? txtNomTitulaire.getText()    : "";
-            String prenom  = txtPrenomTitulaire != null ? txtPrenomTitulaire.getText() : "";
-            String carte   = txtNumeroCarte     != null ? txtNumeroCarte.getText()     : "";
-            String expir   = txtDateExpiration  != null ? txtDateExpiration.getText()  : "";
-            String cvv     = txtCvv             != null ? txtCvv.getText()             : "";
+            String mode   = "Carte Bancaire";
+            Date   date   = datePickerPaie != null ? Date.valueOf(datePickerPaie.getValue()) : Date.valueOf(LocalDate.now());
+            String nom    = txtNomTitulaire    != null ? txtNomTitulaire.getText()    : "";
+            String prenom = txtPrenomTitulaire != null ? txtPrenomTitulaire.getText() : "";
+            String carte  = txtNumeroCarte     != null ? txtNumeroCarte.getText()     : "";
+            String expir  = txtDateExpiration  != null ? txtDateExpiration.getText()  : "";
+            String cvv    = txtCvv             != null ? txtCvv.getText()             : "";
 
             if (enEdition == null) {
                 paieService.ajouter(new Paiement(
                         montant, date, statutSelectionne, abo.getId(),
                         nom, prenom, mode, carte, expir, cvv));
-                alerte(Alert.AlertType.INFORMATION, "Paiement ajoute !");
+
+                // ══════════════════════════════════════════════════════
+                // RENOUVELLEMENT : si statut = Paye → mettre à jour
+                // la dateDebut de l'abonnement à aujourd'hui
+                // → la prochaine expiration sera recalculée correctement
+                // ══════════════════════════════════════════════════════
+                if ("Paye".equals(statutSelectionne)) {
+                    abo.setDateDebut(Date.valueOf(LocalDate.now()));
+                    aboService.modifier(abo);
+                    alerte(Alert.AlertType.INFORMATION,
+                            "✅ Paiement confirmé !\n" +
+                                    "🔄 Abonnement « " + abo.getNom() + " » renouvelé.\n" +
+                                    "📅 Prochaine expiration : " + calculerProchaineExpiration(abo));
+                } else {
+                    alerte(Alert.AlertType.INFORMATION, "Paiement ajouté !");
+                }
+
             } else {
                 enEdition.setAbonnementId(abo.getId()); enEdition.setMontant(montant);
                 enEdition.setDatePaiement(date); enEdition.setStatut(statutSelectionne);
@@ -267,14 +279,39 @@ public class GestionpaiementsController {
                 enEdition.setModePaiement(mode); enEdition.setNumeroCarte(carte);
                 enEdition.setDateExpiration(expir); enEdition.setCvv(cvv);
                 paieService.modifier(enEdition);
-                alerte(Alert.AlertType.INFORMATION, "Paiement modifie !");
+
+                // Renouvellement lors d'une modification aussi
+                if ("Paye".equals(statutSelectionne)) {
+                    abo.setDateDebut(Date.valueOf(LocalDate.now()));
+                    aboService.modifier(abo);
+                    alerte(Alert.AlertType.INFORMATION,
+                            "✅ Paiement modifié !\n" +
+                                    "🔄 Abonnement « " + abo.getNom() + " » renouvelé.\n" +
+                                    "📅 Prochaine expiration : " + calculerProchaineExpiration(abo));
+                } else {
+                    alerte(Alert.AlertType.INFORMATION, "Paiement modifié !");
+                }
             }
-            fermerFormulaire(); charger();
+
+            fermerFormulaire();
+            charger();
+
         } catch (NumberFormatException e) {
-            if (txtMontant  != null) txtMontant.setStyle(CHAMP_ERREUR);
-            if (errMontant  != null) { errMontant.setText("Entrez un nombre valide (ex: 29.900)");
-                errMontant.setVisible(true); errMontant.setManaged(true); }
+            if (txtMontant != null) txtMontant.setStyle(CHAMP_ERREUR);
+            if (errMontant != null) {
+                errMontant.setText("Entrez un nombre valide (ex: 29.900)");
+                errMontant.setVisible(true);
+                errMontant.setManaged(true);
+            }
         }
+    }
+
+    // ── Calcule et formate la prochaine date d'expiration ─────────────
+    private String calculerProchaineExpiration(Abonnement abo) {
+        LocalDate debut = abo.getDateDebut().toLocalDate();
+        LocalDate fin   = "Annuel".equalsIgnoreCase(abo.getFrequence())
+                ? debut.plusYears(1) : debut.plusMonths(1);
+        return fin.toString();
     }
 
     private void supprimerPaiement(Paiement p) {
@@ -365,7 +402,6 @@ public class GestionpaiementsController {
     }
 
     private void viderForm() {
-        // null-safe sur tous les champs
         if (comboService       != null) { comboService.setValue(null); comboService.setDisable(false); }
         if (txtMontant         != null) { txtMontant.clear(); txtMontant.setDisable(false); }
         if (txtNomTitulaire    != null) txtNomTitulaire.clear();
@@ -388,7 +424,6 @@ public class GestionpaiementsController {
         if (n == null || n.isBlank()) return "-";
         return n.length() >= 4 ? "**** **** **** " + n.substring(n.length() - 4) : n;
     }
-
     private void alerte(Alert.AlertType t, String m) {
         Alert a = new Alert(t); a.setHeaderText(null); a.setContentText(m); a.showAndWait();
     }
@@ -416,10 +451,6 @@ public class GestionpaiementsController {
         if (mainController != null) mainController.switchAbonnements();
     }
 
-    /**
-     * Appelée depuis GestionabonnementsController quand l'utilisateur clique "Payer".
-     * Ouvre le formulaire avec l'abonnement pré-rempli.
-     */
     public void ouvrirFormulaireAvecAbonnement(Abonnement abo) {
         ouvrirFormulaire();
         if (comboService != null) {
@@ -431,5 +462,8 @@ public class GestionpaiementsController {
             txtMontant.setDisable(true);
         }
         if (lblTitreForm != null) lblTitreForm.setText("Payer " + abo.getNom());
+        // Pré-sélectionner statut "Paye" puisque c'est un renouvellement
+        statutSelectionne = "Paye";
+        majToggle();
     }
 }

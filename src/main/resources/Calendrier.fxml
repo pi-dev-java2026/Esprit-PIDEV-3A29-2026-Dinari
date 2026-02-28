@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+
+<HBox xmlns="http://javafx.openjfx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.controllers.CalendrierController"
+      spacing="24"
+      style="-fx-background-color:#f0f4fa;-fx-padding:28;">
+
+    <!-- ── PARTIE GAUCHE : Calendrier ── -->
+    <VBox spacing="16" prefWidth="420"
+          style="-fx-background-color:white;-fx-background-radius:20;
+                 -fx-padding:24;-fx-effect:dropshadow(gaussian,rgba(0,0,0,0.08),16,0,0,4);">
+
+        <!-- Header navigation -->
+        <HBox alignment="CENTER_LEFT" spacing="12">
+            <Button text="‹" onAction="#moisPrecedent"
+                    style="-fx-background-color:#f1f5f9;-fx-text-fill:#0f1f3d;-fx-font-size:18px;
+                           -fx-font-weight:bold;-fx-background-radius:10;-fx-padding:6 14;-fx-cursor:hand;"/>
+            <Label fx:id="lblMoisAnnee" text="MOIS ANNEE"
+                   style="-fx-font-size:17px;-fx-font-weight:bold;-fx-text-fill:#0f1f3d;"
+                   HBox.hgrow="ALWAYS"/>
+            <Button text="Aujourd'hui" onAction="#revenirAujourdhui"
+                    style="-fx-background-color:#e8f0ff;-fx-text-fill:#1a3a7a;-fx-font-size:11px;
+                           -fx-font-weight:bold;-fx-background-radius:10;-fx-padding:6 14;-fx-cursor:hand;"/>
+            <Button text="›" onAction="#moisSuivant"
+                    style="-fx-background-color:#f1f5f9;-fx-text-fill:#0f1f3d;-fx-font-size:18px;
+                           -fx-font-weight:bold;-fx-background-radius:10;-fx-padding:6 14;-fx-cursor:hand;"/>
+        </HBox>
+
+        <!-- Légende -->
+        <HBox spacing="16" alignment="CENTER_LEFT">
+            <HBox spacing="6" alignment="CENTER_LEFT">
+                <Circle radius="5" fill="#e74c3c"/>
+                <Label text="Expiration" style="-fx-font-size:10px;-fx-text-fill:#64748b;"/>
+            </HBox>
+            <HBox spacing="6" alignment="CENTER_LEFT">
+                <Circle radius="5" fill="#1a3a7a"/>
+                <Label text="Aujourd'hui" style="-fx-font-size:10px;-fx-text-fill:#64748b;"/>
+            </HBox>
+        </HBox>
+
+        <!-- Grille calendrier -->
+        <GridPane fx:id="grilleCal" hgap="4" vgap="4" alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints prefWidth="52" halignment="CENTER"/>
+                <ColumnConstraints prefWidth="52" halignment="CENTER"/>
+                <ColumnConstraints prefWidth="52" halignment="CENTER"/>
+                <ColumnConstraints prefWidth="52" halignment="CENTER"/>
+                <ColumnConstraints prefWidth="52" halignment="CENTER"/>
+                <ColumnConstraints prefWidth="52" halignment="CENTER"/>
+                <ColumnConstraints prefWidth="52" halignment="CENTER"/>
+            </columnConstraints>
+        </GridPane>
+    </VBox>
+
+    <!-- ── PARTIE DROITE : Liste des expirations ── -->
+    <VBox spacing="14" HBox.hgrow="ALWAYS"
+          style="-fx-background-color:white;-fx-background-radius:20;
+                 -fx-padding:24;-fx-effect:dropshadow(gaussian,rgba(0,0,0,0.08),16,0,0,4);">
+
+        <Label text="📋 Expirations du mois"
+               style="-fx-font-size:15px;-fx-font-weight:bold;-fx-text-fill:#0f1f3d;"/>
+
+        <Separator/>
+
+        <Label fx:id="lblAucunEvent" text="✅ Aucune expiration ce mois"
+               style="-fx-text-fill:#94a3b8;-fx-font-size:13px;-fx-padding:20 0;"/>
+
+        <ScrollPane fitToWidth="true"
+                    style="-fx-background:transparent;-fx-background-color:transparent;"
+                    VBox.vgrow="ALWAYS">
+            <VBox fx:id="listeExpirationsVbox" spacing="10"/>
+        </ScrollPane>
+    </VBox>
+</HBox>

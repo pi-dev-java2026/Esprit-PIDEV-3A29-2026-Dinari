@@ -148,14 +148,6 @@
                                           -fx-padding: 13 16; -fx-font-size: 14px; -fx-background-color: #fafbfc;"/>
                     </VBox>
 
-                    <VBox spacing="7">
-                        <Label text="Prix (TND) *"
-                               style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #475569;"/>
-                        <TextField fx:id="txtPrixVisible" promptText="Ex: 25.000"
-                                   style="-fx-background-radius: 10; -fx-border-radius: 10;
-                                          -fx-border-color: #e2e8f0; -fx-border-width: 1.5;
-                                          -fx-padding: 13 16; -fx-font-size: 14px; -fx-background-color: #fafbfc;"/>
-                    </VBox>
 
                     <HBox spacing="16">
                         <VBox spacing="7" HBox.hgrow="ALWAYS">

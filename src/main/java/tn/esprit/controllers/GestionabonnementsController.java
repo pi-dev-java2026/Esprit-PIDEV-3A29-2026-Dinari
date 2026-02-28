@@ -14,6 +14,7 @@ import javafx.util.Duration;
 import tn.esprit.entities.Abonnement;
 import tn.esprit.entities.Paiement;
 import tn.esprit.services.AbonnementService;
+import tn.esprit.services.GoogleCalendarService;
 import tn.esprit.services.PaiementService;
 
 import java.sql.Date;
@@ -30,7 +31,7 @@ public class GestionabonnementsController {
     @FXML private Label lblServiceNom, lblServiceSousTitre;
     @FXML private HBox statsService;
     @FXML private VBox listeAbonnementsService;
-    @FXML private TextField txtNom, txtPrixVisible;
+    @FXML private TextField txtNom;
     @FXML private ComboBox<String> comboCategorie, comboFrequence;
     @FXML private DatePicker datePicker;
     @FXML private Label lblServicePaiement, lblPrixPaiement, lblTotalDue, lblNomTierPaiement;
@@ -42,8 +43,10 @@ public class GestionabonnementsController {
     @FXML private VBox conteneurBarres, conteneurTop, conteneurHistorique;
 
     private MainController mainController;
-    private final AbonnementService aboService  = new AbonnementService();
-    private final PaiementService   paieService = new PaiementService();
+    private final AbonnementService    aboService  = new AbonnementService();
+    private final PaiementService      paieService = new PaiementService();
+    private final GoogleCalendarService calService  = new GoogleCalendarService();
+
     private List<Abonnement> tous;
     private String nomServiceSelectionne;
     private Abonnement abonnementPourPaiement;
@@ -63,9 +66,6 @@ public class GestionabonnementsController {
 
     public void setMainController(MainController mc) { this.mainController = mc; }
 
-    // ══════════════════════════════════════════════════════════════════════════
-    // INITIALIZE
-    // ══════════════════════════════════════════════════════════════════════════
     @FXML
     public void initialize() {
         comboCategorie.setItems(FXCollections.observableArrayList(
@@ -82,9 +82,6 @@ public class GestionabonnementsController {
         if (txtDateExpiration != null) txtDateExpiration.textProperty().addListener((o,v,n)->majCarteVisa());
     }
 
-    // ══════════════════════════════════════════════════════════════════════════
-    // NAVIGATION
-    // ══════════════════════════════════════════════════════════════════════════
     private void showPage(VBox page) {
         for (VBox v : new VBox[]{pageListe,pageDetailService,pageFormulaire,
                 pageFormulairePaiement,pageStatistiques})
@@ -98,12 +95,8 @@ public class GestionabonnementsController {
     @FXML private void retourListe()      { chargerTout(); showPage(pageListe); }
     @FXML private void appliquerFiltres() { filtrer(); }
 
-    // ══════════════════════════════════════════════════════════════════════════
-    // LISTE + FILTRES
-    // ══════════════════════════════════════════════════════════════════════════
     private void chargerTout() { tous = aboService.afficher(); filtrer(); }
 
-    /** Annuel → prix/12, sinon prix direct */
     private double enMensuel(Abonnement a) {
         if (a.getFrequence() != null && a.getFrequence().toLowerCase().contains("ann"))
             return a.getPrix() / 12.0;
@@ -121,11 +114,11 @@ public class GestionabonnementsController {
                 .filter(a -> c == null || "Toutes".equals(c) || c.equals(a.getCategorie()))
                 .collect(Collectors.toList());
 
-        if      ("Nom A\u2192Z".equals(t))        f.sort(Comparator.comparing(Abonnement::getNom, String.CASE_INSENSITIVE_ORDER));
-        else if ("Nom Z\u2192A".equals(t))        f.sort(Comparator.comparing(Abonnement::getNom, String.CASE_INSENSITIVE_ORDER).reversed());
-        else if ("Prix croissant".equals(t))       f.sort(Comparator.comparingDouble(Abonnement::getPrix));
-        else if ("Prix decroissant".equals(t))     f.sort(Comparator.comparingDouble(Abonnement::getPrix).reversed());
-        else                                        f.sort(Comparator.comparingDouble(Abonnement::getPrix).reversed());
+        if      ("Nom A\u2192Z".equals(t))    f.sort(Comparator.comparing(Abonnement::getNom, String.CASE_INSENSITIVE_ORDER));
+        else if ("Nom Z\u2192A".equals(t))    f.sort(Comparator.comparing(Abonnement::getNom, String.CASE_INSENSITIVE_ORDER).reversed());
+        else if ("Prix croissant".equals(t))   f.sort(Comparator.comparingDouble(Abonnement::getPrix));
+        else if ("Prix decroissant".equals(t)) f.sort(Comparator.comparingDouble(Abonnement::getPrix).reversed());
+        else                                    f.sort(Comparator.comparingDouble(Abonnement::getPrix).reversed());
 
         afficherListe(f);
         lblTotalMensuel.setText(String.format("%.3f TND", f.stream().mapToDouble(this::enMensuel).sum()));
@@ -151,11 +144,8 @@ public class GestionabonnementsController {
             listeServices.getChildren().add(ligne);
             PauseTransition pause = new PauseTransition(Duration.millis(idx[0]++ * 45));
             pause.setOnFinished(ev -> {
-                // ✅ PAS de {{ }} — instanciation directe
                 FadeTransition ft = new FadeTransition(Duration.millis(200), ligne);
-                ft.setFromValue(0);
-                ft.setToValue(1);
-                ft.play();
+                ft.setFromValue(0); ft.setToValue(1); ft.play();
             });
             pause.play();
         });
@@ -188,34 +178,12 @@ public class GestionabonnementsController {
         bp.setOnAction(e -> { e.consume(); ouvrirFormulairePaiement(abos.get(0)); });
 
         ligne.getChildren().addAll(ico, infos, pb, bp);
-
-// Bouton Suggestions IA uniquement pour Netflix et Spotify
-        String nomLower = rep.getNom().toLowerCase();
-        if (nomLower.contains("netflix") || nomLower.contains("spotify")) {
-            Button bs = new Button("🎬 Suggestions IA");
-            bs.setStyle(
-                    "-fx-background-color:#6c5ce7;" +
-                            "-fx-text-fill:white;" +
-                            "-fx-font-size:12px;" +
-                            "-fx-font-weight:bold;" +
-                            "-fx-padding:9 16;" +
-                            "-fx-background-radius:9;" +
-                            "-fx-cursor:hand;"
-            );
-            bs.setOnAction(e -> {
-                e.consume();
-                if (mainController != null) mainController.switchSuggestions();
-            });
-            ligne.getChildren().add(bs);
-        }        ligne.setOnMouseEntered(e -> ligne.setStyle(hov));
+        ligne.setOnMouseEntered(e -> ligne.setStyle(hov));
         ligne.setOnMouseExited(e  -> ligne.setStyle(base));
         ligne.setOnMouseClicked(e -> ouvrirDetail(rep.getNom(), abos));
         return ligne;
     }
 
-    // ══════════════════════════════════════════════════════════════════════════
-    // DETAIL SERVICE
-    // ══════════════════════════════════════════════════════════════════════════
     private void ouvrirDetail(String nom, List<Abonnement> abos) {
         nomServiceSelectionne = nom;
         lblServiceNom.setText(nom);
@@ -259,38 +227,43 @@ public class GestionabonnementsController {
     }
 
     // ══════════════════════════════════════════════════════════════════════════
-    // FORMULAIRE AJOUT
+    // AJOUTER — toast in-app + email dans 2 minutes
     // ══════════════════════════════════════════════════════════════════════════
     @FXML
     private void ajouter() {
         String nom = txtNom!=null ? txtNom.getText().trim() : "";
-        String px  = txtPrixVisible!=null ? txtPrixVisible.getText().trim() : "";
-        if (nom.isEmpty()||px.isEmpty()||comboCategorie.getValue()==null
+        if (nom.isEmpty()||comboCategorie.getValue()==null
                 ||comboFrequence.getValue()==null||datePicker.getValue()==null) {
             alert(Alert.AlertType.WARNING,"Remplissez tous les champs !"); return;
         }
         try {
-            double prix = Double.parseDouble(px.replace(",","."));
-            if (prix <= 0) throw new NumberFormatException();
+            double prix = PRIX_NORMAL;
             Abonnement n = new Abonnement(nom, prix, Date.valueOf(datePicker.getValue()),
                     comboFrequence.getValue(), comboCategorie.getValue(), true);
             n.setTier("Normal");
             aboService.ajouter(n);
-            alert(Alert.AlertType.INFORMATION,"Abonnement \u00ab "+nom+" \u00bb ajoute !");
+
+            // ── Google Calendar : email dans 2 minutes ──
+            new Thread(() -> calService.creerRappelExpiration(n)).start();
+
+            // ── Toast in-app : dans 2 minutes = 120 secondes ──
+            if (mainController != null) mainController.planifierToast(n, 120);
+
+            alert(Alert.AlertType.INFORMATION,
+                    "Abonnement « " + nom + " » ajouté !\n" +
+                            "🔔 Notification + email dans 2 minutes.");
             retourListe();
-        } catch (NumberFormatException ex) { alert(Alert.AlertType.ERROR,"Prix invalide !"); }
-        catch (Exception ex)               { alert(Alert.AlertType.ERROR,"Erreur !"); }
+
+        } catch (Exception ex) {
+            alert(Alert.AlertType.ERROR,"Erreur lors de l'ajout !");
+        }
     }
 
     private void viderFormulaire() {
-        if (txtNom!=null)         txtNom.clear();
-        if (txtPrixVisible!=null) txtPrixVisible.clear();
+        if (txtNom!=null) txtNom.clear();
         comboCategorie.setValue(null); comboFrequence.setValue(null); datePicker.setValue(null);
     }
 
-    // ══════════════════════════════════════════════════════════════════════════
-    // PAIEMENT — sélection tier
-    // ══════════════════════════════════════════════════════════════════════════
     private void ouvrirFormulairePaiement(Abonnement a) {
         abonnementPourPaiement = a; tierSelectionnePaie = null;
         if (carteNormalPaie !=null) carteNormalPaie.setStyle(CN_OFF);
@@ -356,8 +329,8 @@ public class GestionabonnementsController {
         }
         if (lblCarteTitulaire!=null) {
             String p=txtPrenomPaiement!=null?txtPrenomPaiement.getText():"";
-            String n=txtNomPaiement!=null?txtNomPaiement.getText():"";
-            String t=(p+" "+n).trim().toUpperCase();
+            String nv=txtNomPaiement!=null?txtNomPaiement.getText():"";
+            String t=(p+" "+nv).trim().toUpperCase();
             lblCarteTitulaire.setText(t.isEmpty()?"VOTRE NOM":t);
         }
         if (lblCarteExpiry!=null) {
@@ -366,9 +339,6 @@ public class GestionabonnementsController {
         }
     }
 
-    // ══════════════════════════════════════════════════════════════════════════
-    // CONFIRMER PAIEMENT → délégué à StripeController
-    // ══════════════════════════════════════════════════════════════════════════
     @FXML
     private void confirmerPaiement() {
         StripeController.getInstance().lancerPaiement(
@@ -402,9 +372,6 @@ public class GestionabonnementsController {
         retourListe();
     }
 
-    // ══════════════════════════════════════════════════════════════════════════
-    // MODIFIER / SUPPRIMER
-    // ══════════════════════════════════════════════════════════════════════════
     private void dialogModifier(Abonnement a) {
         Dialog<ButtonType> dlg=new Dialog<>(); dlg.setTitle(null); dlg.setHeaderText(null);
         VBox root=new VBox(0); root.setPrefWidth(460);
@@ -451,9 +418,6 @@ public class GestionabonnementsController {
         });
     }
 
-    // ══════════════════════════════════════════════════════════════════════════
-    // STATISTIQUES — TOUTES LES ANIMATIONS SANS {{ }}
-    // ══════════════════════════════════════════════════════════════════════════
     @FXML public void ouvrirStatistiques() {
         showPage(pageStatistiques);
         PauseTransition pt = new PauseTransition(Duration.millis(80));
@@ -469,7 +433,6 @@ public class GestionabonnementsController {
         long nP=ps.stream().filter(p->"Paye".equals(p.getStatut())).count();
         double vP=ps.stream().filter(p->"Paye".equals(p.getStatut())).mapToDouble(Paiement::getMontant).sum();
 
-        // ── KPI CARDS ─────────────────────────────────────────────────────────
         statsKpiRow.getChildren().clear();
         Object[][] kpis = {
                 {"💰","Total mensuel",   tM,        "TND","#1a3a7a","#e8f0ff"},
@@ -489,7 +452,6 @@ public class GestionabonnementsController {
             final VBox fc = card;
             PauseTransition d = new PauseTransition(Duration.millis(i * 90));
             d.setOnFinished(ev -> {
-                // ✅ Instanciation normale — ZERO {{ }}
                 FadeTransition ft = new FadeTransition(Duration.millis(350), fc);
                 ft.setFromValue(0); ft.setToValue(1);
                 TranslateTransition tt = new TranslateTransition(Duration.millis(350), fc);
@@ -500,7 +462,6 @@ public class GestionabonnementsController {
             d.play();
         }
 
-        // ── BARRES CATÉGORIE ──────────────────────────────────────────────────
         conteneurBarres.getChildren().clear();
         Map<String,Double> pc = l.stream().collect(Collectors.groupingBy(
                 a -> a.getCategorie()!=null ? a.getCategorie() : "Autre",
@@ -530,7 +491,6 @@ public class GestionabonnementsController {
                         final int rr = ri[0];
                         PauseTransition d2 = new PauseTransition(Duration.millis(200 + rr * 110));
                         d2.setOnFinished(ev -> {
-                            // ✅ PAS de {{ }}
                             FadeTransition ft2 = new FadeTransition(Duration.millis(280), bar);
                             ft2.setFromValue(0); ft2.setToValue(1); ft2.play();
                             double cw = ct.getWidth() > 0 ? ct.getWidth() : 400;
@@ -542,12 +502,9 @@ public class GestionabonnementsController {
                         ri[0]++;
                     });
         } else {
-            Label vide = new Label("Aucune donnee");
-            vide.setStyle("-fx-text-fill:#94a3b8;-fx-font-size:13px;");
-            conteneurBarres.getChildren().add(vide);
+            conteneurBarres.getChildren().add(new Label("Aucune donnee"));
         }
 
-        // ── TOP 5 ─────────────────────────────────────────────────────────────
         conteneurTop.getChildren().clear();
         List<Abonnement> t5 = l.stream()
                 .sorted((a,b)->Double.compare(enMensuel(b),enMensuel(a)))
@@ -570,7 +527,6 @@ public class GestionabonnementsController {
             final HBox fr = rh; final int fi = i;
             PauseTransition d3 = new PauseTransition(Duration.millis(280 + fi * 80));
             d3.setOnFinished(ev -> {
-                // ✅ PAS de {{ }}
                 FadeTransition ft3 = new FadeTransition(Duration.millis(280), fr);
                 ft3.setFromValue(0); ft3.setToValue(1);
                 TranslateTransition tt3 = new TranslateTransition(Duration.millis(280), fr);
@@ -579,13 +535,8 @@ public class GestionabonnementsController {
             });
             d3.play();
         }
-        if (t5.isEmpty()) {
-            Label vide = new Label("Aucun abonnement");
-            vide.setStyle("-fx-text-fill:#94a3b8;-fx-font-size:13px;");
-            conteneurTop.getChildren().add(vide);
-        }
+        if (t5.isEmpty()) conteneurTop.getChildren().add(new Label("Aucun abonnement"));
 
-        // ── PAIEMENTS RÉCENTS ─────────────────────────────────────────────────
         conteneurHistorique.getChildren().clear();
         List<Paiement> recents = ps.stream()
                 .sorted((a,b)->b.getDatePaiement().compareTo(a.getDatePaiement()))
@@ -611,20 +562,14 @@ public class GestionabonnementsController {
             final HBox fr2 = rh; final int fi2 = i;
             PauseTransition d4 = new PauseTransition(Duration.millis(350 + fi2 * 60));
             d4.setOnFinished(ev -> {
-                // ✅ PAS de {{ }}
                 FadeTransition ft4 = new FadeTransition(Duration.millis(260), fr2);
                 ft4.setFromValue(0); ft4.setToValue(1); ft4.play();
             });
             d4.play();
         }
-        if (ps.isEmpty()) {
-            Label vide = new Label("Aucun paiement");
-            vide.setStyle("-fx-text-fill:#94a3b8;-fx-font-size:13px;");
-            conteneurHistorique.getChildren().add(vide);
-        }
+        if (ps.isEmpty()) conteneurHistorique.getChildren().add(new Label("Aucun paiement"));
     }
 
-    // ── KPI card ──────────────────────────────────────────────────────────────
     private VBox kpiCard(String icon, String lbl, double val, String unit, String col, String bg) {
         VBox c = new VBox(6); c.setAlignment(Pos.TOP_LEFT);
         c.setStyle("-fx-background-color:"+bg+";-fx-padding:20 22;-fx-background-radius:16;-fx-effect:dropshadow(gaussian,rgba(0,0,0,0.06),10,0,0,3);");
@@ -649,7 +594,6 @@ public class GestionabonnementsController {
                 });
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
     private double    prixParTier(String t)    { return switch(t!=null?t:"Normal"){case"Premium"->PRIX_PREMIUM;case"Gold"->PRIX_GOLD;default->PRIX_NORMAL;}; }
     private Label     lbl(String t)            { Label l=new Label(t); l.setStyle("-fx-font-size:11px;-fx-font-weight:bold;-fx-text-fill:#475569;"); return l; }
     private void      styleTf(TextField tf)    { tf.setStyle("-fx-background-radius:9;-fx-border-radius:9;-fx-border-color:#e2e8f0;-fx-border-width:1.5;-fx-padding:11 14;-fx-font-size:13px;"); }
