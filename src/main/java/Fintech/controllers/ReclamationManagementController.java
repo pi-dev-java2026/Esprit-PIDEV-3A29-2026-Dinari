@@ -36,6 +36,8 @@ public class ReclamationManagementController implements Initializable {
     @FXML
     private Label profileRoleLabel;
     @FXML
+    private Label profileAvatarLabel;
+    @FXML
     private Label totalReclamationsLabel;
     @FXML
     private Label reclamationCountLabel;
@@ -50,8 +52,17 @@ public class ReclamationManagementController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Set user profile info
         if (UserSession.getInstance().getCurrentUser() != null) {
-            profileNameLabel.setText(UserSession.getInstance().getCurrentUser().getName());
-            profileRoleLabel.setText(UserSession.getInstance().getCurrentUser().getRole());
+            String userName = UserSession.getInstance().getCurrentUser().getName();
+            String userRole = UserSession.getInstance().getCurrentUser().getRole();
+
+            profileNameLabel.setText(userName);
+            profileRoleLabel.setText(userRole);
+
+            if (userName != null && !userName.trim().isEmpty()) {
+                profileAvatarLabel.setText(userName.trim().substring(0, 1).toUpperCase());
+            } else {
+                profileAvatarLabel.setText("?");
+            }
         }
 
         // Configure ListView with custom cell factory
@@ -64,7 +75,21 @@ public class ReclamationManagementController implements Initializable {
     private void loadReclamations() {
         try {
             reclamationsData.clear();
-            reclamationsData.addAll(serviceReclamation.afficher());
+            java.util.List<Reclamation> allReclamations = serviceReclamation.afficher();
+
+            if (UserSession.getInstance().isAdmin()) {
+                reclamationsData.addAll(allReclamations);
+            } else {
+                Fintech.entities.User currentUser = UserSession.getInstance().getCurrentUser();
+                if (currentUser != null && currentUser.getEmail() != null) {
+                    for (Reclamation r : allReclamations) {
+                        if (currentUser.getEmail().equalsIgnoreCase(r.getEmail())) {
+                            reclamationsData.add(r);
+                        }
+                    }
+                }
+            }
+
             filteredReclamations.setAll(reclamationsData);
             reclamationsList.setItems(filteredReclamations);
             updateReclamationCount();
@@ -114,6 +139,20 @@ public class ReclamationManagementController implements Initializable {
         navigateToReclamationForm(event);
     }
 
+    @FXML
+    private void handleChat(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fintech/views/Chat.fxml"));
+            Parent root = loader.load();
+            Stage chatStage = new Stage();
+            chatStage.setTitle("Assistant Intelligent");
+            chatStage.setScene(new Scene(root));
+            chatStage.show();
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de charger le chat: " + e.getMessage());
+        }
+    }
+
     private void navigateToReclamationForm(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fintech/views/ReclamationForm.fxml"));
@@ -129,9 +168,13 @@ public class ReclamationManagementController implements Initializable {
     }
 
     private void handleEditReclamation(Reclamation reclamation) {
-        if (!UserSession.getInstance().isAdmin()) {
+        boolean isAdmin = UserSession.getInstance().isAdmin();
+        boolean isOwner = reclamation != null
+                && reclamation.getEmail().equals(UserSession.getInstance().getCurrentUser().getEmail());
+
+        if (!isAdmin && !isOwner) {
             showAlert(Alert.AlertType.WARNING, "Accès refusé",
-                    "Seuls les administrateurs peuvent modifier les réclamations.");
+                    "Vous ne pouvez modifier que vos propres réclamations.");
             return;
         }
 
@@ -153,9 +196,13 @@ public class ReclamationManagementController implements Initializable {
     }
 
     private void handleDeleteReclamation(Reclamation reclamation) {
-        if (!UserSession.getInstance().isAdmin()) {
+        boolean isAdmin = UserSession.getInstance().isAdmin();
+        boolean isOwner = reclamation != null
+                && reclamation.getEmail().equals(UserSession.getInstance().getCurrentUser().getEmail());
+
+        if (!isAdmin && !isOwner) {
             showAlert(Alert.AlertType.WARNING, "Accès refusé",
-                    "Seuls les administrateurs peuvent supprimer les réclamations.");
+                    "Vous ne pouvez supprimer que vos propres réclamations.");
             return;
         }
 
@@ -197,7 +244,11 @@ public class ReclamationManagementController implements Initializable {
     // Navigation methods
     @FXML
     private void handleDashboard(ActionEvent event) {
-        navigateTo(event, "/Fintech/views/DashboardHome.fxml");
+        if (UserSession.getInstance().isAdmin()) {
+            navigateTo(event, "/Fintech/views/UserManagement.fxml");
+        } else {
+            navigateTo(event, "/Fintech/views/UserDashboard.fxml");
+        }
     }
 
     @FXML
@@ -249,7 +300,6 @@ public class ReclamationManagementController implements Initializable {
     // Custom ListCell for Reclamations
     private class ReclamationCell extends ListCell<Reclamation> {
         private VBox content;
-        private Label idLabel;
         private Label emailLabel;
         private Label subjectLabel;
         private Label descriptionLabel;
@@ -269,8 +319,6 @@ public class ReclamationManagementController implements Initializable {
 
             // Info section
             VBox infoBox = new VBox(5);
-            idLabel = new Label();
-            idLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #666;");
 
             emailLabel = new Label();
             emailLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #333; -fx-font-weight: bold;");
@@ -283,7 +331,7 @@ public class ReclamationManagementController implements Initializable {
             descriptionLabel.setWrapText(true);
             descriptionLabel.setMaxWidth(600);
 
-            infoBox.getChildren().addAll(idLabel, emailLabel, subjectLabel, descriptionLabel);
+            infoBox.getChildren().addAll(emailLabel, subjectLabel, descriptionLabel);
 
             // Status and Actions section
             HBox bottomBox = new HBox(15);
@@ -328,7 +376,6 @@ public class ReclamationManagementController implements Initializable {
                 setGraphic(null);
             } else {
                 // Update labels
-                idLabel.setText("ID: #" + reclamation.getId_reclamation());
                 emailLabel.setText("📧 " + reclamation.getEmail());
                 subjectLabel.setText(reclamation.getSubject());
 
@@ -359,13 +406,16 @@ public class ReclamationManagementController implements Initializable {
                     }
                 });
 
-                // Check if user is admin
+                // Check if user is admin or owner
                 boolean isAdmin = UserSession.getInstance().isAdmin();
+                boolean isOwner = reclamation.getEmail().equals(UserSession.getInstance().getCurrentUser().getEmail());
 
-                // Enable/disable controls based on admin status
-                statusComboBox.setDisable(!isAdmin);
-                editButton.setVisible(isAdmin);
-                deleteButton.setVisible(isAdmin);
+                // Enable/disable controls based on permissions
+                statusComboBox.setDisable(!isAdmin); // Only admins can change status
+
+                boolean canEditOrDelete = isAdmin || isOwner;
+                editButton.setVisible(canEditOrDelete);
+                deleteButton.setVisible(canEditOrDelete);
 
                 // Set button actions
                 editButton.setOnAction(e -> handleEditReclamation(reclamation));

@@ -16,43 +16,78 @@
     </stylesheets>
 
     <content>
-        <VBox spacing="30" style="-fx-padding: 30;">
-            <Label text="Overview" styleClass="header-label" style="-fx-alignment: CENTER_LEFT;"/>
+        <VBox spacing="30.0" style="-fx-padding: 30;">
+            <Label text="Overview" styleClass="page-title"/>
+            <Label text="Statistiques générales et aperçu de l'activité." styleClass="page-subtitle"/>
 
-            <!-- Summary Cards -->
-            <FlowPane hgap="20" vgap="20">
-                <VBox styleClass="card-summary">
-                    <Label text="Total Users" styleClass="card-title"/>
-                    <Label text="1,245" styleClass="card-value"/>
-                    <Label text="+5% from last month" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                </VBox>
+            <!-- Summary Metrics Grid -->
+            <HBox spacing="20.0" HBox.hgrow="ALWAYS">
+                <children>
+                    <VBox styleClass="card" spacing="10.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" spacing="15.0">
+                            <Label text="👥" style="-fx-font-size: 20px; -fx-text-fill: -fx-primary-color;"/>
+                            <Label text="TOTAL USERS" styleClass="field-label" style="-fx-text-transform: uppercase;"/>
+                        </HBox>
+                        <Label text="1,245" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: -fx-text-main;"/>
+                        <Label text="▲ 5% from last month" style="-fx-text-fill: #10b981; -fx-font-size: 12px; -fx-font-weight: 600;"/>
+                    </VBox>
 
-                <VBox styleClass="card-summary">
-                    <Label text="Active Users" styleClass="card-title"/>
-                    <Label text="1,081" styleClass="card-value"/>
-                    <Label text="+8% from last week" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                </VBox>
+                    <VBox styleClass="card" spacing="10.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" spacing="15.0">
+                            <Label text="⚡" style="-fx-font-size: 20px; -fx-text-fill: #eab308;"/>
+                            <Label text="ACTIVE USERS" styleClass="field-label" style="-fx-text-transform: uppercase;"/>
+                        </HBox>
+                        <Label text="1,081" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: -fx-text-main;"/>
+                        <Label text="▲ 8% from last week" style="-fx-text-fill: #10b981; -fx-font-size: 12px; -fx-font-weight: 600;"/>
+                    </VBox>
 
-                <VBox styleClass="card-summary">
-                    <Label text="Pending Requests" styleClass="card-title"/>
-                    <Label text="34" styleClass="card-value"/>
-                    <Label text="-2% from yesterday" style="-fx-text-fill: #e74c3c; -fx-font-size: 12px;"/>
-                </VBox>
-                 <VBox styleClass="card-summary">
-                    <Label text="Total Revenue" styleClass="card-title"/>
-                    <Label text="$45,200" styleClass="card-value"/>
-                     <Label text="+12% from last month" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                </VBox>
-            </FlowPane>
+                    <VBox styleClass="card" spacing="10.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" spacing="15.0">
+                            <Label text="⏳" style="-fx-font-size: 20px; -fx-text-fill: #f97316;"/>
+                            <Label text="PENDING REQUESTS" styleClass="field-label" style="-fx-text-transform: uppercase;"/>
+                        </HBox>
+                        <Label text="34" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: -fx-text-main;"/>
+                        <Label text="▼ 2% from yesterday" style="-fx-text-fill: #ef4444; -fx-font-size: 12px; -fx-font-weight: 600;"/>
+                    </VBox>
+
+                     <VBox styleClass="card" spacing="10.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" spacing="15.0">
+                            <Label text="💰" style="-fx-font-size: 20px; -fx-text-fill: #10b981;"/>
+                            <Label text="TOTAL REVENUE" styleClass="field-label" style="-fx-text-transform: uppercase;"/>
+                        </HBox>
+                        <Label text="$45,200" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: -fx-text-main;"/>
+                        <Label text="▲ 12% from last month" style="-fx-text-fill: #10b981; -fx-font-size: 12px; -fx-font-weight: 600;"/>
+                    </VBox>
+                </children>
+            </HBox>
 
             <!-- Placeholder for recent activity or chart -->
-            <VBox styleClass="card" spacing="15">
-                <Label text="Recent Activity" styleClass="section-header"/>
-                <Label text="User 'John Doe' logged in" styleClass="label"/>
+            <VBox styleClass="card" spacing="15.0" VBox.vgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <Label text="🕒" style="-fx-font-size: 20px;"/>
+                    <Label text="Activité Récente" styleClass="page-title" style="-fx-font-size: 18px;"/>
+                </HBox>
                 <Separator/>
-                <Label text="User 'Jane Smith' updated profile" styleClass="label"/>
+                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                    <Label text="🔹" style="-fx-text-fill: #3b82f6;"/>
+                    <Label text="User 'John Doe' logged in" styleClass="normal-text"/>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label text="Il y a 2 min" styleClass="normal-text" style="-fx-text-fill: #94a3b8; -fx-font-size: 12px;"/>
+                </HBox>
                 <Separator/>
-                <Label text="New user execution registered" styleClass="label"/>
+                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                    <Label text="🔹" style="-fx-text-fill: #3b82f6;"/>
+                    <Label text="User 'Jane Smith' updated profile" styleClass="normal-text"/>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label text="Il y a 15 min" styleClass="normal-text" style="-fx-text-fill: #94a3b8; -fx-font-size: 12px;"/>
+                </HBox>
+                <Separator/>
+                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                    <Label text="🔹" style="-fx-text-fill: #3b82f6;"/>
+                    <Label text="New user execution registered" styleClass="normal-text"/>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label text="Il y a 1 h" styleClass="normal-text" style="-fx-text-fill: #94a3b8; -fx-font-size: 12px;"/>
+                </HBox>
             </VBox>
 
         </VBox>

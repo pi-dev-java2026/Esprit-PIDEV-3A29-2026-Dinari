@@ -8,7 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
+
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -35,6 +35,8 @@ public class UserManagementController {
     private Label profileNameLabel;
     @FXML
     private Label profileRoleLabel;
+    @FXML
+    private Label profileAvatarLabel;
 
     private ServiceUser serviceUser;
     private ObservableList<User> usersObservableList;
@@ -46,6 +48,12 @@ public class UserManagementController {
 
     @FXML
     public void initialize() {
+        // Check if user is admin - only admins can view the user list
+        if (!UserSession.getInstance().isAdmin()) {
+            javafx.application.Platform.runLater(this::redirectToUserForm);
+            return;
+        }
+
         setupListView();
         loadUsers();
         updateUserProfile();
@@ -54,11 +62,43 @@ public class UserManagementController {
     private void updateUserProfile() {
         User currentUser = UserSession.getInstance().getCurrentUser();
         if (currentUser != null) {
-            profileNameLabel.setText(currentUser.getName());
-            profileRoleLabel.setText(currentUser.getRole());
+            String userName = currentUser.getName();
+            profileNameLabel.setText(userName);
+            profileRoleLabel.setText(currentUser.getRole() != null ? currentUser.getRole().toUpperCase() : "");
+
+            if (userName != null && !userName.trim().isEmpty()) {
+                profileAvatarLabel.setText(userName.trim().substring(0, 1).toUpperCase());
+            } else {
+                profileAvatarLabel.setText("?");
+            }
         } else {
             profileNameLabel.setText("Utilisateur");
-            profileRoleLabel.setText("Non connecté");
+            profileRoleLabel.setText("RÔLE");
+            profileAvatarLabel.setText("U");
+        }
+    }
+
+    /** Returns up to 2 uppercase initials from a name */
+    private String getInitials(String name) {
+        if (name == null || name.isEmpty())
+            return "U";
+        String[] parts = name.trim().split("\\s+");
+        if (parts.length == 1)
+            return parts[0].substring(0, Math.min(2, parts[0].length())).toUpperCase();
+        return (parts[0].charAt(0) + "" + parts[1].charAt(0)).toUpperCase();
+    }
+
+    /** Returns an avatar background color based on role */
+    private String getAvatarColor(String role) {
+        if (role == null)
+            return "#6b7280";
+        switch (role.toLowerCase()) {
+            case "admin":
+                return "#1d4ed8";
+            case "manager":
+                return "#065f46";
+            default:
+                return "#3d82dc";
         }
     }
 
@@ -67,51 +107,120 @@ public class UserManagementController {
             @Override
             protected void updateItem(User user, boolean empty) {
                 super.updateItem(user, empty);
-
                 if (empty || user == null) {
                     setText(null);
                     setGraphic(null);
+                    setStyle("-fx-background-color: transparent;");
                 } else {
-                    // Create simplified card layout showing only name
-                    HBox card = new HBox(20);
-                    card.setAlignment(Pos.CENTER_LEFT);
-                    card.setPadding(new javafx.geometry.Insets(15, 20, 15, 20));
+                    // ── Card Container ──
+                    HBox card = new HBox(16);
+                    card.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+                    card.setPadding(new javafx.geometry.Insets(14, 20, 14, 20));
+                    card.setCursor(javafx.scene.Cursor.HAND);
                     card.setStyle(
-                            "-fx-background-color: white; -fx-background-radius: 8px; -fx-border-color: #e0e0e0; -fx-border-radius: 8px; -fx-border-width: 1px;");
+                            "-fx-background-color: white;" +
+                                    "-fx-background-radius: 12px;" +
+                                    "-fx-border-color: #e5e7eb;" +
+                                    "-fx-border-radius: 12px;" +
+                                    "-fx-border-width: 1px;" +
+                                    "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.04), 6, 0, 0, 2);");
 
-                    // User icon
-                    Label userIcon = new Label("👤");
-                    userIcon.setStyle("-fx-font-size: 24px; -fx-padding: 5;");
+                    // Hover effect (lift + blue border)
+                    card.setOnMouseEntered(e -> card.setStyle(
+                            "-fx-background-color: #f8faff;" +
+                                    "-fx-background-radius: 12px;" +
+                                    "-fx-border-color: #bfdbfe;" +
+                                    "-fx-border-radius: 12px;" +
+                                    "-fx-border-width: 1.5px;" +
+                                    "-fx-effect: dropshadow(three-pass-box, rgba(15,98,254,0.10), 14, 0, 0, 5);"));
+                    card.setOnMouseExited(e -> card.setStyle(
+                            "-fx-background-color: white;" +
+                                    "-fx-background-radius: 12px;" +
+                                    "-fx-border-color: #e5e7eb;" +
+                                    "-fx-border-radius: 12px;" +
+                                    "-fx-border-width: 1px;" +
+                                    "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.04), 6, 0, 0, 2);"));
 
-                    // Name only
-                    Label nameLabel = new Label(user.getName());
-                    nameLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #1f2937;");
+                    // Click → navigate to user profile
+                    card.setOnMouseClicked(e -> handleViewProfile(user));
 
-                    // Spacer
+                    // ── Initials Avatar ──
+                    String initials = getInitials(user.getName());
+                    String avatarColor = getAvatarColor(user.getRole());
+                    Label avatar = new Label(initials);
+                    avatar.setStyle(
+                            "-fx-background-color: " + avatarColor + ";" +
+                                    "-fx-background-radius: 50%;" +
+                                    "-fx-text-fill: white;" +
+                                    "-fx-font-size: 14px;" +
+                                    "-fx-font-weight: bold;" +
+                                    "-fx-padding: 0;" +
+                                    "-fx-min-width: 44px;" +
+                                    "-fx-min-height: 44px;" +
+                                    "-fx-max-width: 44px;" +
+                                    "-fx-max-height: 44px;" +
+                                    "-fx-alignment: CENTER;");
+
+                    // ── Name + email + role badge ──
+                    Label nameLabel = new Label(user.getName() != null ? user.getName() : "");
+                    nameLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #111827;");
+
+                    String roleBadgeStyle;
+                    String role = user.getRole() != null ? user.getRole() : "user";
+                    switch (role.toLowerCase()) {
+                        case "admin":
+                            roleBadgeStyle = "-fx-background-color: #dbeafe; -fx-text-fill: #1d4ed8;";
+                            break;
+                        case "manager":
+                            roleBadgeStyle = "-fx-background-color: #d1fae5; -fx-text-fill: #065f46;";
+                            break;
+                        default:
+                            roleBadgeStyle = "-fx-background-color: #f3f4f6; -fx-text-fill: #374151;";
+                    }
+
+                    Label emailPlain = new Label(user.getEmail() != null ? user.getEmail() : "");
+                    emailPlain.setStyle("-fx-font-size: 12px; -fx-text-fill: #6b7280;");
+
+                    Label rolePill = new Label(capitalize(role));
+                    rolePill.setStyle(
+                            "-fx-font-size: 10.5px; -fx-font-weight: bold; -fx-padding: 2 8;" +
+                                    "-fx-background-radius: 20;" + roleBadgeStyle);
+
+                    HBox emailRow = new HBox(8, emailPlain, rolePill);
+                    emailRow.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+
+                    javafx.scene.layout.VBox infoBox = new javafx.scene.layout.VBox(3, nameLabel, emailRow);
+
+                    // ── Spacer ──
                     Region spacer = new Region();
                     HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
 
-                    // View Profile button
-                    Button viewProfileBtn = new Button("👁️  View Profile");
-                    viewProfileBtn.setStyle(
-                            "-fx-background-color: #3d5a80; -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 8px; -fx-padding: 10px 20px; -fx-font-size: 13px; -fx-font-weight: bold;");
+                    // ── Registration Date ──
+                    javafx.scene.layout.VBox dateBox = new javafx.scene.layout.VBox(2);
+                    Label dateTitle = new Label("Inscrit le");
+                    dateTitle.setStyle("-fx-font-size: 10px; -fx-text-fill: #9ca3af;");
+                    Label dateValue = new Label("—");
+                    dateValue.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #374151;");
+                    dateBox.getChildren().addAll(dateTitle, dateValue);
+                    dateBox.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
 
-                    viewProfileBtn.setOnMouseEntered(e -> viewProfileBtn.setStyle(
-                            "-fx-background-color: #2c4560; -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 8px; -fx-padding: 10px 20px; -fx-font-size: 13px; -fx-font-weight: bold;"));
+                    // ── Arrow indicator → ──
+                    Label arrow = new Label("→");
+                    arrow.setStyle("-fx-font-size: 16px; -fx-text-fill: #9ca3af; -fx-padding: 0 0 0 8;");
 
-                    viewProfileBtn.setOnMouseExited(e -> viewProfileBtn.setStyle(
-                            "-fx-background-color: #3d5a80; -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 8px; -fx-padding: 10px 20px; -fx-font-size: 13px; -fx-font-weight: bold;"));
-
-                    viewProfileBtn.setOnAction(e -> handleViewProfile(user));
-
-                    // Add all elements to card
-                    card.getChildren().addAll(userIcon, nameLabel, spacer, viewProfileBtn);
-
+                    card.getChildren().addAll(avatar, infoBox, spacer, dateBox, arrow);
                     setGraphic(card);
                     setText(null);
+                    setStyle("-fx-background-color: transparent; -fx-padding: 3 0;");
                 }
             }
         });
+    }
+
+    private String capitalize(String s) {
+        if (s == null || s.isEmpty())
+            return s;
+        return Character.toUpperCase(s.charAt(0)) + s.substring(1).toLowerCase();
     }
 
     private void loadUsers() {
@@ -183,6 +292,39 @@ public class UserManagementController {
         navigateTo(event, "/Fintech/views/ReclamationManagement.fxml");
     }
 
+    private void redirectToUserForm() {
+        try {
+            // Get current logged-in user
+            User currentUser = UserSession.getInstance().getCurrentUser();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fintech/views/UserProfile.fxml"));
+            Parent root = loader.load();
+
+            // Pass the current user to the profile controller
+            UserProfileController controller = loader.getController();
+            controller.setUser(currentUser);
+
+            Stage stage = null;
+            if (usersList != null && usersList.getScene() != null) {
+                stage = (Stage) usersList.getScene().getWindow();
+            } else if (profileNameLabel != null && profileNameLabel.getScene() != null) {
+                stage = (Stage) profileNameLabel.getScene().getWindow();
+            }
+
+            if (stage != null) {
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            } else {
+                // S'il n'y a pas de fenêtre active trouvée, on affiche une erreur au lieu
+                // d'ouvrir une nouvelle fenêtre
+                System.err.println("Erreur: Impossible de trouver la fenêtre principale pour la redirection.");
+            }
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de charger le profil: " + e.getMessage());
+        }
+    }
+
     private void handleViewProfile(User user) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fintech/views/UserProfile.fxml"));
@@ -223,7 +365,7 @@ public class UserManagementController {
 
     @FXML
     private void handleDashboard(ActionEvent event) {
-        navigateTo(event, "/Fintech/views/MainDashboard.fxml");
+        navigateTo(event, "/Fintech/views/UserManagement.fxml");
     }
 
     @FXML

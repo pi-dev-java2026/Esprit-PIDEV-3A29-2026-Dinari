@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+
+<BorderPane prefHeight="800.0" prefWidth="1200.0" styleClass="dashboard-root" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fintech.controllers.UserDashboardController">
+   
+   <!-- Sidebar (Identical structure to other pages) -->
+   <left>
+      <VBox prefWidth="240.0" styleClass="sidebar" BorderPane.alignment="CENTER">
+         <children>
+            <!-- Logo -->
+            <VBox styleClass="sidebar-logo-container">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="12.0">
+                     <children>
+                        <Label styleClass="logo-text" text="DINARI" />
+                     </children>
+                  </HBox>
+                  <Label styleClass="logo-subtitle" text="Gestion Financière" />
+               </children>
+               <padding><Insets bottom="20.0" left="22.0" right="22.0" top="28.0" /></padding>
+            </VBox>
+
+            <!-- Divider -->
+            <Separator styleClass="sidebar-divider-top">
+               <VBox.margin><Insets left="20.0" right="20.0" top="10.0" bottom="20.0"/></VBox.margin>
+            </Separator>
+
+            <!-- Menu Items -->
+            <VBox spacing="4.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#handleDashboard" styleClass="sidebar-menu-item" maxWidth="Infinity">
+                     <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                           <Label text="Abonnements"/>
+                        </HBox>
+                     </graphic>
+                     <VBox.margin><Insets left="0" right="0"/></VBox.margin>
+                     <padding><Insets top="12" bottom="12" left="22" right="22"/></padding>
+                  </Button>
+
+                  <Button mnemonicParsing="false" onAction="#handleTransactions" styleClass="sidebar-menu-item" maxWidth="Infinity">
+                     <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                           <Label text="Éducative"/>
+                        </HBox>
+                     </graphic>
+                     <VBox.margin><Insets left="0" right="0"/></VBox.margin>
+                     <padding><Insets top="12" bottom="12" left="22" right="22"/></padding>
+                  </Button>
+
+                  <Button mnemonicParsing="false" onAction="#handleBudgets" styleClass="sidebar-menu-item" maxWidth="Infinity">
+                     <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                           <Label text="Dépenses"/>
+                        </HBox>
+                     </graphic>
+                     <VBox.margin><Insets left="0" right="0"/></VBox.margin>
+                     <padding><Insets top="12" bottom="12" left="22" right="22"/></padding>
+                  </Button>
+
+                  <Button mnemonicParsing="false" onAction="#handleUsers" styleClass="sidebar-menu-item, sidebar-menu-item-active" maxWidth="Infinity">
+                     <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                           <Label text="Tableau de bord"/>
+                        </HBox>
+                     </graphic>
+                     <VBox.margin><Insets left="0" right="20.0"/></VBox.margin>
+                     <padding><Insets top="12" bottom="12" left="22" right="22"/></padding>
+                  </Button>
+
+                  <Button mnemonicParsing="false" onAction="#handleReclamations" styleClass="sidebar-menu-item" maxWidth="Infinity">
+                     <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                           <Label text="Réclamation"/>
+                        </HBox>
+                     </graphic>
+                     <VBox.margin><Insets left="0" right="0"/></VBox.margin>
+                     <padding><Insets top="12" bottom="12" left="22" right="22"/></padding>
+                  </Button>
+
+               </children>
+            </VBox>
+
+            <!-- Divider -->
+            <Separator styleClass="sidebar-divider-bottom">
+               <VBox.margin><Insets left="20.0" right="20.0" bottom="20.0"/></VBox.margin>
+            </Separator>
+
+            <!-- User Info & Logout -->
+            <VBox styleClass="sidebar-user-container" spacing="15.0">
+               <padding><Insets bottom="30.0" left="22.0" right="22.0" top="10.0" /></padding>
+               <children>
+                  <VBox spacing="2.0">
+                     <children>
+                        <Label styleClass="sidebar-user-label" text="Utilisateur" />
+                        <Label fx:id="sidebarEmailLabel" styleClass="sidebar-user-email" text="user@dinari.tn" />
+                     </children>
+                  </VBox>
+                  <Button mnemonicParsing="false" onAction="#handleLogout" styleClass="sidebar-menu-item, logout-btn" maxWidth="Infinity">
+                     <graphic>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                           <Label text="⎋" styleClass="nav-icon" style="-fx-text-fill: #EF4444;"/>
+                           <Label text="Déconnexion" style="-fx-text-fill: #EF4444;"/>
+                        </HBox>
+                     </graphic>
+                     <padding><Insets top="8" bottom="8" left="0" right="0"/></padding>
+                  </Button>
+               </children>
+            </VBox>
+
+         </children>
+      </VBox>
+   </left>
+   
+   <!-- Main Dashboard Area -->
+   <center>
+      <VBox styleClass="main-content" style="-fx-background-color: #F8FAFC;" BorderPane.alignment="CENTER">
+         <children>
+            
+            <!-- Dashboard Grid Layout -->
+            <GridPane hgap="24.0" vgap="24.0" VBox.vgrow="ALWAYS">
+               <padding>
+                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+               </padding>
+               <columnConstraints>
+                  <!-- Left narrow column -->
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="280.0" prefWidth="300.0" maxWidth="320.0"/>
+                  <!-- Right wider column -->
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="600.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints vgrow="SOMETIMES" valignment="TOP" />
+                  <RowConstraints vgrow="ALWAYS" valignment="TOP" />
+               </rowConstraints>
+               
+               <children>
+                  
+                  <!-- LEFT COLUMN CONTAINER -->
+                  <VBox spacing="24.0" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.rowSpan="2">
+                     <!-- 1. Profile Header Card -->
+                     <VBox styleClass="dashboard-card" style="-fx-background-color: linear-gradient(to bottom, #E0F2FE 0%, #FFFFFF 100%);" alignment="TOP_CENTER" spacing="16.0">
+                         <padding><Insets top="24.0" right="24.0" bottom="24.0" left="24.0"/></padding>
+                         
+                         <!-- Title Top Left -->
+                         <HBox alignment="CENTER_LEFT" maxWidth="Infinity">
+                            <Label text="Profile Header" style="-fx-font-weight: 800; -fx-font-size: 15px; -fx-text-fill: #0F172A;" />
+                         </HBox>
+                         
+                         <HBox alignment="CENTER" spacing="10.0">
+                             <ImageView fx:id="userAvatarImage" fitHeight="80.0" fitWidth="80.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" />
+                             <VBox alignment="CENTER_LEFT">
+                                 <Label fx:id="userRoleBadge" style="-fx-background-color: #DBEAFE; -fx-text-fill: #1E40AF; -fx-padding: 4 12; -fx-background-radius: 20; -fx-font-size: 11px; -fx-font-weight: 700;" text="🛡️ Utilisateur" />
+                             </VBox>
+                         </HBox>
+                         
+                         <Label fx:id="userNameLabel" style="-fx-font-size: 26px; -fx-font-weight: 800; -fx-text-fill: #0F172A;" text="John Doe" />
+                         <Label fx:id="memberSinceLabel" style="-fx-font-size: 13px; -fx-text-fill: #64748B;" text="Membre depuis —" />
+                     </VBox>
+
+                     <!-- 2. Action Menu Card -->
+                     <VBox styleClass="dashboard-card" spacing="16.0">
+                         <padding><Insets top="24.0" right="24.0" bottom="24.0" left="24.0"/></padding>
+                         <Label text="Menu d'Actions" style="-fx-font-weight: 800; -fx-font-size: 15px; -fx-text-fill: #0F172A;" />
+                         
+                         <Button focusTraversable="false" onAction="#handleEdit" styleClass="btn-edit-action" text="✏️ Modifier l'utilisateur" maxWidth="Infinity"/>
+                         <Button focusTraversable="false" onAction="#handleDelete" styleClass="btn-delete-action" text="🗑️ Supprimer l'utilisateur" maxWidth="Infinity"/>
+                     </VBox>
+                  </VBox>
+
+
+                  <!-- RIGHT COLUMN CONTAINER (Top Row) -->
+                  <HBox spacing="24.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                     <!-- 3. Informations Personnelles Card -->
+                     <VBox styleClass="dashboard-card" HBox.hgrow="SOMETIMES" spacing="0">
+                         <padding><Insets top="24.0" right="24.0" bottom="8.0" left="24.0"/></padding>
+                         <Label text="Informations Personnelles" style="-fx-font-weight: 800; -fx-font-size: 15px; -fx-text-fill: #0F172A;" >
+                             <VBox.margin><Insets bottom="16.0"/></VBox.margin>
+                         </Label>
+
+                         <!-- Info Grid with border rows -->
+                         <GridPane vgap="0">
+                             <columnConstraints>
+                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="160.0" prefWidth="180.0"/>
+                                 <ColumnConstraints hgrow="ALWAYS" />
+                             </columnConstraints>
+
+                             <!-- Name Row -->
+                             <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="info-row" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                 <Label text="👤" style="-fx-text-fill: #64748B; -fx-font-size: 16px;"/>
+                                 <Label text="Nom complet:" styleClass="field-label-dash"/>
+                             </HBox>
+                             <HBox alignment="CENTER_LEFT" styleClass="info-row-value" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                 <Label fx:id="userNameDetailLabel" styleClass="value-label-dash" text="John Doe" />
+                             </HBox>
+
+                             <!-- Email Row -->
+                             <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="info-row" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                 <Label text="✉️" style="-fx-text-fill: #64748B; -fx-font-size: 16px;"/>
+                                 <Label text="Email:" styleClass="field-label-dash"/>
+                             </HBox>
+                             <HBox alignment="CENTER_LEFT" styleClass="info-row-value" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <Label fx:id="userEmailLabel" styleClass="value-label-dash" text="email@example.com" />
+                             </HBox>
+
+                             <!-- Phone Row -->
+                             <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="info-row" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                                 <Label text="📞" style="-fx-text-fill: #64748B; -fx-font-size: 16px;"/>
+                                 <Label text="Téléphone:" styleClass="field-label-dash"/>
+                             </HBox>
+                             <HBox alignment="CENTER_LEFT" styleClass="info-row-value" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <Label fx:id="userPhoneLabel" styleClass="value-label-dash" text="+216 12 345 678" />
+                             </HBox>
+
+                             <!-- Password Row -->
+                             <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="info-row" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                                 <Label text="🔒" style="-fx-text-fill: #64748B; -fx-font-size: 16px;"/>
+                                 <Label text="Mot de passe:" styleClass="field-label-dash"/>
+                             </HBox>
+                             <HBox alignment="CENTER_LEFT" styleClass="info-row-value" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                 <Label fx:id="userPasswordLabel" style="-fx-font-size: 18px; -fx-font-weight: 800; -fx-text-fill: #0F172A;" text="••••••••" HBox.hgrow="ALWAYS" />
+                                 <Region HBox.hgrow="ALWAYS" />
+                                 <Label text="👁" style="-fx-text-fill: #0F62FE; -fx-cursor: hand; -fx-font-size: 16px;" onMouseClicked="#togglePasswordVisibility"/>
+                             </HBox>
+
+                             <!-- Role Row -->
+                             <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="info-row" GridPane.columnIndex="0" GridPane.rowIndex="4" style="-fx-border-width: 0;">
+                                 <Label text="🎨" style="-fx-text-fill: #64748B; -fx-font-size: 16px;"/>
+                                 <Label text="Rôle système:" styleClass="field-label-dash"/>
+                             </HBox>
+                             <HBox alignment="CENTER_LEFT" styleClass="info-row-value" GridPane.columnIndex="1" GridPane.rowIndex="4" style="-fx-border-width: 0;">
+                                 <Label fx:id="userRoleLabel" styleClass="value-label-dash" text="Utilisateur" />
+                             </HBox>
+                         </GridPane>
+                     </VBox>
+
+                     <!-- 4. Compétences & Formation Card -->
+                     <VBox styleClass="dashboard-card" HBox.hgrow="SOMETIMES" spacing="20.0">
+                         <padding><Insets top="24.0" right="24.0" bottom="24.0" left="24.0"/></padding>
+                         <Label text="Compétences &amp; Formation" style="-fx-font-weight: 800; -fx-font-size: 15px; -fx-text-fill: #0F172A;" />
+                         
+                         <HBox spacing="16.0">
+                             <!-- Languages Badge -->
+                             <VBox styleClass="badge-gradient-blue-green" spacing="8.0" HBox.hgrow="ALWAYS">
+                                 <padding><Insets top="16.0" right="16.0" bottom="16.0" left="16.0"/></padding>
+                                 <Label text="Langues" style="-fx-font-weight: 700; -fx-font-size: 13px; -fx-text-fill: #0F172A;" />
+                                 <Label text="Français (Avancé)" style="-fx-font-size: 13px; -fx-text-fill: #334155; -fx-wrap-text: true;" />
+                             </VBox>
+                             
+                             <!-- Formations Badge -->
+                             <VBox styleClass="badge-white" spacing="8.0" HBox.hgrow="ALWAYS">
+                                 <padding><Insets top="16.0" right="16.0" bottom="16.0" left="16.0"/></padding>
+                                 <Label text="Formations" style="-fx-font-weight: 700; -fx-font-size: 13px; -fx-text-fill: #0F172A;" />
+                                 <Label text="(3)" style="-fx-font-size: 13px; -fx-text-fill: #64748B;" />
+                             </VBox>
+                         </HBox>
+
+                         <HBox styleClass="badge-white" alignment="CENTER_LEFT" spacing="12.0">
+                             <padding><Insets top="12.0" right="24.0" bottom="12.0" left="16.0"/></padding>
+                             <Label text="Certifications (2)" style="-fx-font-weight: 700; -fx-font-size: 13px; -fx-text-fill: #0F172A;" />
+                             <Region HBox.hgrow="ALWAYS" />
+                             <HBox alignment="CENTER" spacing="8.0">
+                                 <Label text="📜" style="-fx-font-size:16px;" />
+                                 <Label text="2" style="-fx-font-weight:800; -fx-font-size:16px;" />
+                                 <Label text="3" style="-fx-text-fill: #0F62FE; -fx-font-weight:800; -fx-font-size:14px; -fx-padding: 0 0 0 10;"/>
+                             </HBox>
+                         </HBox>
+
+                         <VBox spacing="8.0">
+                             <VBox.margin><Insets top="10.0"/></VBox.margin>
+                             <Label text="Progression &amp; Statut" style="-fx-font-weight: 800; -fx-font-size: 15px; -fx-text-fill: #0F172A;" />
+                             <HBox alignment="CENTER_LEFT">
+                                 <Label text="Complétion du profil:" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #0F172A;" />
+                                 <Region HBox.hgrow="ALWAYS" />
+                                 <Label text="✔ 750/1000" style="-fx-font-size: 13px; -fx-font-weight: 700; -fx-text-fill: #0F62FE;" />
+                             </HBox>
+                             <ProgressBar progress="0.75" prefWidth="1000.0" style="-fx-accent: #0F62FE; -fx-min-height: 8px;" />
+                         </VBox>
+                     </VBox>
+                  </HBox>
+
+                  <!-- RIGHT COLUMN CONTAINER (Bottom Row) -->
+                  <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <!-- 5. Activité Récente & Timeline Card -->
+                     <VBox styleClass="dashboard-card" HBox.hgrow="ALWAYS" spacing="16.0">
+                         <padding><Insets top="24.0" right="24.0" bottom="24.0" left="24.0"/></padding>
+                         
+                         <HBox alignment="CENTER_LEFT">
+                            <Label text="Activité Récente &amp; Timeline" style="-fx-font-weight: 800; -fx-font-size: 15px; -fx-text-fill: #0F172A;" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <HBox alignment="CENTER" spacing="6.0">
+                                <Label text="📍" style="-fx-font-size: 14px; -fx-text-fill: #64748B;" />
+                            <Label fx:id="lastConnectionLabel" text="📍 Dernière Connexion: —" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #334155;" />
+                            </HBox>
+                         </HBox>
+
+                         <HBox spacing="30.0" VBox.vgrow="ALWAYS">
+                             <!-- Timeline Left side -->
+                             <VBox spacing="0" prefWidth="250.0">
+                                 <!-- Timeline Item 1 -->
+                                 <HBox spacing="10.0" alignment="TOP_LEFT">
+                                     <VBox alignment="TOP_CENTER" spacing="2.0">
+                                         <Circle radius="5.0" fill="#0F62FE" />
+                                         <Line endY="35.0" startX="0" endX="0" stroke="#CBD5E1" strokeWidth="2.0" />
+                                     </VBox>
+                                     <VBox spacing="4.0">
+                                         <HBox spacing="6.0" alignment="CENTER_LEFT">
+                                             <Label text="✉️" />
+                                             <Label fx:id="timelineEmailLabel" style="-fx-font-size: 13px; -fx-text-fill: #334155;" wrapText="true"/>
+                                         </HBox>
+                                         <HBox spacing="6.0" alignment="CENTER_LEFT">
+                                             <Label text="🎨" />
+                                             <Label fx:id="timelineRoleLabel" style="-fx-font-size: 13px; -fx-text-fill: #334155;"/>
+                                         </HBox>
+                                     </VBox>
+                                 </HBox>
+
+                                 <!-- Timeline Item 2 -->
+                                 <HBox spacing="10.0" alignment="TOP_LEFT">
+                                     <VBox alignment="TOP_CENTER">
+                                         <Circle radius="5.0" fill="#A855F7" />
+                                     </VBox>
+                                     <VBox spacing="4.0">
+                                         <HBox spacing="6.0" alignment="CENTER_LEFT" style="-fx-padding: -4 0 0 0;">
+                                             <Label text="🟣" style="-fx-font-size: 10px;"/>
+                                             <Label text="Profil mis à jour" style="-fx-font-size: 13px; -fx-text-fill: #334155;" wrapText="true"/>
+                                         </HBox>
+                                     </VBox>
+                                 </HBox>
+                             </VBox>
+
+                             <!-- Area Chart Right side -->
+                             <VBox HBox.hgrow="ALWAYS" alignment="CENTER">
+                                 <AreaChart fx:id="activityChart" legendVisible="false" VBox.vgrow="ALWAYS" style="-fx-padding: 0; -fx-background-color: transparent;">
+                                     <xAxis>
+                                         <CategoryAxis side="BOTTOM" />
+                                     </xAxis>
+                                     <yAxis>
+                                         <NumberAxis side="LEFT" tickLabelsVisible="false" minorTickVisible="false" tickMarkVisible="false" visible="false"/>
+                                     </yAxis>
+                                 </AreaChart>
+                             </VBox>
+                         </HBox>
+                     </VBox>
+                  </HBox>
+
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

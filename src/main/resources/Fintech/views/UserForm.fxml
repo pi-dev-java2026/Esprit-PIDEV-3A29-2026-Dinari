@@ -5,124 +5,143 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="700.0" prefWidth="500.0" styleClass="login-container" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fintech.controllers.UserFormController">
+<StackPane styleClass="login-container" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fintech.controllers.UserFormController">
    <children>
-      <VBox alignment="TOP_CENTER" layoutX="50.0" layoutY="50.0" prefHeight="600.0" prefWidth="400.0" spacing="10.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="40.0">
+       <VBox alignment="TOP_CENTER" maxWidth="700.0" spacing="20.0" styleClass="card" StackPane.alignment="CENTER">
          <children>
-            <!-- Logo Area -->
-            <HBox alignment="CENTER" spacing="0" styleClass="logo-container">
+            <!-- Header Section -->
+            <HBox alignment="CENTER_LEFT" spacing="15.0">
                <children>
-                   <Label styleClass="logo-text-id" text="ID" />
-                   <Label styleClass="logo-text-dinari" text="INARI" />
+                  <VBox>
+                     <Label styleClass="page-title" text="Gestion Utilisateur" />
+                     <Label styleClass="page-subtitle" text="Ajoutez ou modifiez les informations utilisateur" />
+                  </VBox>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <HBox alignment="CENTER" spacing="5" styleClass="logo-container">
+                     <Label styleClass="logo-text-id" text="ID" style="-fx-font-size: 24px;"/>
+                     <Label styleClass="logo-text-dinari" text="INARI" style="-fx-font-size: 24px;"/>
+                  </HBox>
                </children>
+               <VBox.margin><Insets bottom="10.0" /></VBox.margin>
+            </HBox>
+            
+            <Separator />
+
+            <!-- Form Grid -->
+            <GridPane hgap="30.0" vgap="25.0">
+               <columnConstraints>
+                  <ColumnConstraints percentWidth="50.0" />
+                  <ColumnConstraints percentWidth="50.0" />
+               </columnConstraints>
+               <children>
+                  <!-- Full Name Field -->
+                  <VBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                     <children>
+                        <Label styleClass="field-label" text="Nom complet" />
+                        <HBox alignment="CENTER_LEFT" styleClass="input-box">
+                            <Label styleClass="input-icon" text="👤" />
+                            <TextField fx:id="nameField" promptText="Saisir le nom" styleClass="input-field-inner" HBox.hgrow="ALWAYS" />
+                        </HBox>
+                     </children>
+                  </VBox>
+                  
+                  <!-- Email Field -->
+                  <VBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                     <children>
+                        <Label styleClass="field-label" text="Adresse Email" />
+                        <HBox alignment="CENTER_LEFT" styleClass="input-box">
+                            <Label styleClass="input-icon" text="✉" />
+                            <TextField fx:id="emailField" promptText="nom@exemple.com" styleClass="input-field-inner" HBox.hgrow="ALWAYS" />
+                        </HBox>
+                     </children>
+                  </VBox>
+                  
+                  <!-- Phone Field -->
+                  <VBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                     <children>
+                        <Label styleClass="field-label" text="Téléphone" />
+                        <HBox alignment="CENTER_LEFT" styleClass="input-box">
+                            <Label styleClass="input-icon" text="📱" />
+                            <TextField fx:id="phoneField" promptText="Numéro de contact" styleClass="input-field-inner" HBox.hgrow="ALWAYS" />
+                        </HBox>
+                     </children>
+                  </VBox>
+                  
+                  <!-- Role Field -->
+                  <VBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <Label styleClass="field-label" text="Rôle système" />
+                        <HBox alignment="CENTER_LEFT" styleClass="input-box">
+                            <Label styleClass="input-icon" text="⚙" />
+                            <ComboBox fx:id="roleComboBox" promptText="Sélectionner..." styleClass="input-field-inner" maxWidth="Infinity" HBox.hgrow="ALWAYS" />
+                        </HBox>
+                     </children>
+                  </VBox>
+
+                  <!-- Password Field -->
+                  <VBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2">
+                     <children>
+                        <Label styleClass="field-label" text="Mot de passe (Obligatoire pour nouveau compte)" />
+                        <HBox alignment="CENTER_LEFT" styleClass="input-box">
+                            <Label styleClass="input-icon" text="🔒" />
+                            <PasswordField fx:id="passwordField" promptText="Saisir le mot de passe secure" styleClass="input-field-inner" HBox.hgrow="ALWAYS" />
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </GridPane>
+
+            <!-- Photo Capture Section -->
+            <HBox fx:id="photoSection" alignment="CENTER" spacing="20.0">
+               <children>
+                  <VBox alignment="CENTER" spacing="8.0">
+                     <children>
+                        <StackPane style="-fx-background-color: #f0f4ff; -fx-border-color: #c0d0f0; -fx-border-radius: 50; -fx-background-radius: 50;" prefWidth="90.0" prefHeight="90.0">
+                           <children>
+                              <ImageView fx:id="photoPreview" fitWidth="86.0" fitHeight="86.0" preserveRatio="true" />
+                              <Label fx:id="photoPlaceholder" text="👤" style="-fx-font-size: 36px;" />
+                           </children>
+                        </StackPane>
+                        <Label fx:id="photoStatusLabel" text="Aucune photo" style="-fx-font-size: 11px; -fx-text-fill: #888;" />
+                     </children>
+                  </VBox>
+                  <Button fx:id="capturePhotoButton" text="📸  Prendre une photo" onAction="#handleCapturePhoto"
+                          styleClass="btn-outline"
+                          style="-fx-font-size: 13px; -fx-padding: 10 18 10 18;" />
+               </children>
+               <VBox.margin><Insets top="5.0" bottom="5.0" /></VBox.margin>
             </HBox>
 
-            <!-- Title -->
-            <Label styleClass="welcome-title" text="Gestion Utilisateur" />
-            <Label styleClass="welcome-subtitle" text="Ajoutez ou modifiez les informations utilisateur" />
+            <Separator>
+               <VBox.margin><Insets top="10.0" bottom="5.0" /></VBox.margin>
+            </Separator>
             
-            <!-- Full Name Field -->
-            <VBox alignment="CENTER_LEFT" spacing="8.0">
+            <!-- Action Buttons Footer -->
+            <HBox alignment="CENTER_RIGHT" spacing="15.0">
                <children>
-                  <Label styleClass="field-label" text="Nom complet" />
-                  <HBox alignment="CENTER_LEFT" styleClass="input-box">
-                      <Label styleClass="input-icon" text="👤" />
-                      <TextField fx:id="nameField" promptText="Entrez le nom complet" styleClass="input-field-inner" HBox.hgrow="ALWAYS" />
-                  </HBox>
+                  <Button fx:id="clearButton" mnemonicParsing="false" onAction="#handleClear" prefWidth="120.0" styleClass="btn-outline" text="Effacer" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#handleCancel" prefWidth="120.0" styleClass="btn-outline" text="Annuler" />
+                  <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSave" prefWidth="140.0" styleClass="btn-primary" text="Enregistrer" />
                </children>
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
-            </VBox>
-            
-            <!-- Email Field -->
-            <VBox alignment="CENTER_LEFT" spacing="8.0">
-               <children>
-                  <Label styleClass="field-label" text="Email" />
-                  <HBox alignment="CENTER_LEFT" styleClass="input-box">
-                      <Label styleClass="input-icon" text="✉" />
-                      <TextField fx:id="emailField" promptText="nom@exemple.com" styleClass="input-field-inner" HBox.hgrow="ALWAYS" />
-                  </HBox>
-               </children>
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </VBox>
-            
-            <!-- Phone Field -->
-            <VBox alignment="CENTER_LEFT" spacing="8.0">
-               <children>
-                  <Label styleClass="field-label" text="Téléphone" />
-                  <HBox alignment="CENTER_LEFT" styleClass="input-box">
-                      <Label styleClass="input-icon" text="📱" />
-                      <TextField fx:id="phoneField" promptText="Entrez le numéro de téléphone" styleClass="input-field-inner" HBox.hgrow="ALWAYS" />
-                  </HBox>
-               </children>
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </VBox>
-            
-            <!-- Password Field -->
-            <VBox alignment="CENTER_LEFT" spacing="8.0">
-               <children>
-                  <Label styleClass="field-label" text="Mot de passe" />
-                  <HBox alignment="CENTER_LEFT" styleClass="input-box">
-                      <Label styleClass="input-icon" text="🔒" />
-                      <PasswordField fx:id="passwordField" promptText="........" styleClass="input-field-inner" HBox.hgrow="ALWAYS" />
-                      <Label styleClass="input-icon" text="👁" />
-                  </HBox>
-               </children>
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </VBox>
-            
-            <!-- Role Field -->
-            <VBox alignment="CENTER_LEFT" spacing="8.0">
-               <children>
-                  <Label styleClass="field-label" text="Rôle" />
-                  <HBox alignment="CENTER_LEFT" styleClass="input-box">
-                      <Label styleClass="input-icon" text="⚙" />
-                      <ComboBox fx:id="roleComboBox" promptText="Sélectionner un rôle" styleClass="input-field-inner" maxWidth="Infinity" HBox.hgrow="ALWAYS" />
-                  </HBox>
-               </children>
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </VBox>
-            
-            <!-- Action Buttons -->
-            <HBox alignment="CENTER" spacing="15.0">
-               <children>
-                  <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSave" prefWidth="150.0" styleClass="login-btn" text="Enregistrer">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="clearButton" mnemonicParsing="false" onAction="#handleClear" prefWidth="150.0" styleClass="social-btn" text="Effacer">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Button>
-               </children>
-               <VBox.margin>
-                  <Insets top="25.0" bottom="10.0" />
-               </VBox.margin>
             </HBox>
-            
-            <!-- Footer -->
-            <Label styleClass="footer-text" text="GÉREZ VOS UTILISATEURS AVEC DINARI" wrapText="true" textAlignment="CENTER">
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin>
-            </Label>
          </children>
+         <StackPane.margin>
+             <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+         </StackPane.margin>
       </VBox>
    </children>
-</AnchorPane>
+</StackPane>

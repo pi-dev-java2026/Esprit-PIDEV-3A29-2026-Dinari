@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="700.0" prefWidth="900.0" styleClass="dashboard-root" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Fintech.controllers.ChatController">
+    <!-- Header -->
+    <top>
+        <HBox alignment="CENTER_LEFT" styleClass="content-header">
+            <children>
+                <VBox HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label styleClass="page-title" text="Assistant IA &amp; Réclamations" />
+                        <Label styleClass="page-subtitle" text="Posez vos questions ou décrivez votre problème à notre IA" />
+                    </children>
+                </VBox>
+                <Label style="-fx-font-size: 32px;" text="🤖" />
+            </children>
+            <padding>
+                <javafx.geometry.Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
+            </padding>
+        </HBox>
+    </top>
+    
+    <!-- Chat Area -->
+    <center>
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" style="-fx-background-color: transparent; -fx-border-color: transparent;">
+            <content>
+                <VBox fx:id="chatArea" spacing="20.0" style="-fx-padding: 30;" />
+            </content>
+        </ScrollPane>
+    </center>
+    
+    <!-- Input Area -->
+    <bottom>
+        <VBox spacing="10.0" style="-fx-background-color: -fx-surface-color; -fx-border-color: -fx-theme-border transparent transparent transparent; -fx-border-width: 1px;">
+            <children>
+                <HBox spacing="15.0" alignment="CENTER_LEFT">
+                    <HBox alignment="CENTER_LEFT" styleClass="input-box" HBox.hgrow="ALWAYS">
+                        <children>
+                            <Label styleClass="input-icon" text="⌨" />
+                            <TextField fx:id="messageField" onAction="#handleSend" promptText="Saisissez votre message..." styleClass="input-field-inner" HBox.hgrow="ALWAYS" />
+                        </children>
+                    </HBox>
+                    <Button fx:id="sendButton" onAction="#handleSend" text="Envoyer" styleClass="btn-primary" prefWidth="120.0" />
+                </HBox>
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Statut: " styleClass="field-label" />
+                    <Label fx:id="statusLabel" text="Prêt" styleClass="normal-text" style="-fx-text-fill: #10b981; -fx-font-weight: 600;" />
+                </HBox>
+            </children>
+            <padding>
+                <javafx.geometry.Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
+            </padding>
+        </VBox>
+    </bottom>
+</BorderPane>

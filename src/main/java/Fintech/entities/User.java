@@ -1,4 +1,7 @@
 package Fintech.entities;
+
+import java.sql.Timestamp;
+
 public class User {
 
     private int id;
@@ -7,28 +10,31 @@ public class User {
     private String phone;
     private String password;
     private String role;
-
+    private String faceImage;
+    private Timestamp lastLogin;
+    private Timestamp createdAt;
 
     public User() {
     }
 
-    public User(int id, String name, String email, String phone, String password, String role) {
+    public User(int id, String name, String email, String phone, String password, String role, String faceImage) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.password = password;
         this.role = role;
+        this.faceImage = faceImage;
     }
 
-    public User(String name, String email, String phone, String password, String role) {
+    public User(String name, String email, String phone, String password, String role, String faceImage) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.password = password;
         this.role = role;
+        this.faceImage = faceImage;
     }
-
 
     public int getId() {
         return id;
@@ -78,15 +84,38 @@ public class User {
         this.role = role;
     }
 
+    public String getFaceImage() {
+        return faceImage;
+    }
+
+    public void setFaceImage(String faceImage) {
+        this.faceImage = faceImage;
+    }
+
+    public Timestamp getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Timestamp lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
+                ", lastLogin=" + lastLogin +
                 '}';
     }
 }

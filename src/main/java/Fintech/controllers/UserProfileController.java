@@ -13,7 +13,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -25,9 +29,13 @@ public class UserProfileController {
     private Label profileNameLabel;
     @FXML
     private Label profileRoleLabel;
+    @FXML
+    private ImageView topRightAvatar;
+    @FXML
+    private Label profileAvatarLabel;
 
     @FXML
-    private Label userIdLabel;
+    private ImageView userAvatarImage;
     @FXML
     private Label userNameLabel;
     @FXML
@@ -37,6 +45,8 @@ public class UserProfileController {
     @FXML
     private Label userPhoneLabel;
     @FXML
+    private Label userPasswordLabel;
+    @FXML
     private Label userRoleLabel;
     @FXML
     private Label userRoleBadge;
@@ -45,6 +55,8 @@ public class UserProfileController {
     private Button editButton;
     @FXML
     private Button deleteButton;
+    @FXML
+    private Button backButton;
 
     private User currentUser;
     private ServiceUser serviceUser;
@@ -62,11 +74,40 @@ public class UserProfileController {
     private void updateUserProfile() {
         User loggedInUser = UserSession.getInstance().getCurrentUser();
         if (loggedInUser != null) {
-            profileNameLabel.setText(loggedInUser.getName());
+            String userName = loggedInUser.getName();
+            profileNameLabel.setText(userName);
             profileRoleLabel.setText(loggedInUser.getRole());
+
+            // Try to load custom avatar image if available
+            boolean hasImage = loadAvatar(topRightAvatar, loggedInUser.getFaceImage());
+
+            if (!hasImage && profileAvatarLabel != null) {
+                topRightAvatar.setVisible(false);
+                topRightAvatar.setManaged(false);
+                profileAvatarLabel.setVisible(true);
+                profileAvatarLabel.setManaged(true);
+                if (userName != null && !userName.trim().isEmpty()) {
+                    profileAvatarLabel.setText(userName.trim().substring(0, 1).toUpperCase());
+                } else {
+                    profileAvatarLabel.setText("?");
+                }
+            } else if (hasImage && profileAvatarLabel != null) {
+                topRightAvatar.setVisible(true);
+                topRightAvatar.setManaged(true);
+                profileAvatarLabel.setVisible(false);
+                profileAvatarLabel.setManaged(false);
+            }
         } else {
             profileNameLabel.setText("Utilisateur");
             profileRoleLabel.setText("Non connecté");
+            loadAvatar(topRightAvatar, null);
+            if (profileAvatarLabel != null) {
+                profileAvatarLabel.setText("U");
+                profileAvatarLabel.setVisible(true);
+                profileAvatarLabel.setManaged(true);
+                topRightAvatar.setVisible(false);
+                topRightAvatar.setManaged(false);
+            }
         }
     }
 
@@ -78,12 +119,25 @@ public class UserProfileController {
 
     private void displayUserDetails() {
         if (currentUser != null) {
-            userIdLabel.setText("#" + currentUser.getId());
             userNameLabel.setText(currentUser.getName());
             userNameDetailLabel.setText(currentUser.getName());
             userEmailLabel.setText(currentUser.getEmail());
             userPhoneLabel.setText(currentUser.getPhone());
             userRoleLabel.setText(currentUser.getRole());
+
+            loadAvatar(userAvatarImage, currentUser.getFaceImage());
+
+            // Display password based on admin status
+            boolean isAdmin = UserSession.getInstance().isAdmin();
+            if (isAdmin) {
+                // Admin can see the real password
+                userPasswordLabel.setText("🔒 " + currentUser.getPassword());
+                userPasswordLabel.setStyle("-fx-text-fill: #1f2937; -fx-font-size: 14px;");
+            } else {
+                // Other users see masked password
+                userPasswordLabel.setText("🔒 " + "*".repeat(currentUser.getPassword().length()));
+                userPasswordLabel.setStyle("-fx-text-fill: #999; -fx-font-size: 14px;");
+            }
 
             // Set role badge
             userRoleBadge.setText(currentUser.getRole());
@@ -99,27 +153,77 @@ public class UserProfileController {
         }
     }
 
+    private boolean loadAvatar(ImageView imageView, String imagePath) {
+        if (imageView == null)
+            return false;
+
+        try {
+            if (imagePath != null && !imagePath.trim().isEmpty()) {
+                File file = new File(imagePath);
+                if (file.exists()) {
+                    Image image = new Image(file.toURI().toString());
+                    imageView.setImage(image);
+                    return true;
+                }
+            }
+
+            imageView.setImage(null);
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            imageView.setImage(null);
+            return false;
+        }
+    }
+
     private void checkAdminPermissions() {
         boolean isAdmin = UserSession.getInstance().isAdmin();
-        editButton.setDisable(!isAdmin);
-        deleteButton.setDisable(!isAdmin);
+        boolean isOwnProfile = false;
 
-        if (!isAdmin) {
+        if (currentUser != null && UserSession.getInstance().getCurrentUser() != null) {
+            isOwnProfile = currentUser.getId() == UserSession.getInstance().getCurrentUser().getId();
+        }
+
+        // Allow edit if admin OR if it's their own profile
+        boolean canEdit = isAdmin || isOwnProfile;
+
+        editButton.setDisable(!canEdit);
+        deleteButton.setDisable(!isAdmin); // Only admins can delete accounts
+
+        if (!canEdit) {
             editButton.setStyle(editButton.getStyle() + "-fx-opacity: 0.5;");
+        }
+        if (!isAdmin) {
             deleteButton.setStyle(deleteButton.getStyle() + "-fx-opacity: 0.5;");
+            if (backButton != null) {
+                backButton.setVisible(false);
+                backButton.setManaged(false); // Remove it from the layout
+            }
+        } else if (backButton != null) {
+            backButton.setVisible(true);
+            backButton.setManaged(true);
         }
     }
 
     @FXML
     private void handleBack(ActionEvent event) {
+        if (!UserSession.getInstance().isAdmin()) {
+            // Un utilisateur normal ne devrait pas retourner à la liste des utilisateurs ni
+            // au dashboard (supprimé)
+            return;
+        }
         navigateTo(event, "/Fintech/views/UserManagement.fxml");
     }
 
     @FXML
     private void handleEdit(ActionEvent event) {
-        if (!UserSession.getInstance().isAdmin()) {
+        boolean isAdmin = UserSession.getInstance().isAdmin();
+        boolean isOwnProfile = currentUser != null && UserSession.getInstance().getCurrentUser() != null
+                && currentUser.getId() == UserSession.getInstance().getCurrentUser().getId();
+
+        if (!isAdmin && !isOwnProfile) {
             showAlert(Alert.AlertType.ERROR, "Accès refusé",
-                    "Seuls les administrateurs peuvent modifier les utilisateurs.");
+                    "Vous ne pouvez modifier que votre propre profil.");
             return;
         }
 
@@ -166,12 +270,20 @@ public class UserProfileController {
 
     @FXML
     private void handleUsers(ActionEvent event) {
+        if (!UserSession.getInstance().isAdmin()) {
+            // Already on their profile, if they click users nothing else should happen
+            return;
+        }
         navigateTo(event, "/Fintech/views/UserManagement.fxml");
     }
 
     @FXML
     private void handleDashboard(ActionEvent event) {
-        navigateTo(event, "/Fintech/views/MainDashboard.fxml");
+        if (UserSession.getInstance().isAdmin()) {
+            navigateTo(event, "/Fintech/views/UserManagement.fxml");
+        } else {
+            navigateTo(event, "/Fintech/views/UserDashboard.fxml");
+        }
     }
 
     @FXML

@@ -10,49 +10,158 @@
 <BorderPane xmlns="http://javafx.com/javafx/8.0.171"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="Fintech.controllers.MainDashboardController"
-            prefHeight="700.0" prefWidth="1000.0">
+            prefHeight="800.0" prefWidth="1200.0" styleClass="dashboard-root" stylesheets="@../styles/styles.css">
 
-    <stylesheets>
-        <URL value="@styles.css" />
-    </stylesheets>
-
-    <!-- Sidebar -->
+    <!-- ═══════════ SIDEBAR ═══════════ -->
     <left>
-        <VBox spacing="10" styleClass="sidebar" prefWidth="250">
-            <Label text="Fintech App" styleClass="sidebar-title"/>
-            
-            <VBox spacing="5">
-                <Button text="Dashboard" onAction="#showDashboard" maxWidth="Infinity" styleClass="sidebar-button"/>
-                <Button text="User Management" onAction="#showUsers" maxWidth="Infinity" styleClass="sidebar-button"/>
-                <Button text="Réclamations" onAction="#showReclamations" maxWidth="Infinity" styleClass="sidebar-button"/>
-                <Button text="Reports" maxWidth="Infinity" styleClass="sidebar-button"/>
-                <Button text="Settings" maxWidth="Infinity" styleClass="sidebar-button"/>
-            </VBox>
-            
-            <Region VBox.vgrow="ALWAYS"/>
-            
-            <Button text="Logout" maxWidth="Infinity" styleClass="sidebar-button"/>
+        <VBox prefWidth="240.0" styleClass="sidebar" BorderPane.alignment="CENTER">
+            <children>
+
+                <!-- Logo -->
+                <VBox styleClass="sidebar-logo-container">
+                   <children>
+                      <HBox alignment="CENTER_LEFT" spacing="12.0">
+                         <children>
+                            <Label styleClass="logo-text" text="DINARI" />
+                         </children>
+                      </HBox>
+                      <Label styleClass="logo-subtitle" text="Gestion Financière" />
+                   </children>
+                   <padding><javafx.geometry.Insets bottom="20.0" left="22.0" right="22.0" top="28.0" /></padding>
+                </VBox>
+
+                <!-- Divider -->
+                <Separator styleClass="sidebar-divider-top">
+                   <VBox.margin><javafx.geometry.Insets left="20.0" right="20.0" top="10.0" bottom="20.0"/></VBox.margin>
+                </Separator>
+
+                <!-- Menu Items -->
+                <VBox spacing="4.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#showDashboard" styleClass="sidebar-menu-item" maxWidth="Infinity">
+                            <graphic>
+                                <HBox spacing="12" alignment="CENTER_LEFT">
+                                   <Label text="Abonnements"/>
+                                </HBox>
+                            </graphic>
+                            <VBox.margin><javafx.geometry.Insets left="0" right="0"/></VBox.margin>
+                            <padding><javafx.geometry.Insets top="12" bottom="12" left="22" right="22"/></padding>
+                        </Button>
+
+                        <Button mnemonicParsing="false" styleClass="sidebar-menu-item" maxWidth="Infinity">
+                            <graphic>
+                                <HBox spacing="12" alignment="CENTER_LEFT">
+                                   <Label text="Éducative"/>
+                                </HBox>
+                            </graphic>
+                            <VBox.margin><javafx.geometry.Insets left="0" right="0"/></VBox.margin>
+                            <padding><javafx.geometry.Insets top="12" bottom="12" left="22" right="22"/></padding>
+                        </Button>
+
+                        <Button mnemonicParsing="false" styleClass="sidebar-menu-item" maxWidth="Infinity">
+                            <graphic>
+                                <HBox spacing="12" alignment="CENTER_LEFT">
+                                   <Label text="Dépenses"/>
+                                </HBox>
+                            </graphic>
+                            <VBox.margin><javafx.geometry.Insets left="0" right="0"/></VBox.margin>
+                            <padding><javafx.geometry.Insets top="12" bottom="12" left="22" right="22"/></padding>
+                        </Button>
+
+                        <Button mnemonicParsing="false" onAction="#showUsers" styleClass="sidebar-menu-item" maxWidth="Infinity">
+                            <graphic>
+                                <HBox spacing="12" alignment="CENTER_LEFT">
+                                   <Label text="Budget"/>
+                                </HBox>
+                            </graphic>
+                            <VBox.margin><javafx.geometry.Insets left="0" right="0"/></VBox.margin>
+                            <padding><javafx.geometry.Insets top="12" bottom="12" left="22" right="22"/></padding>
+                        </Button>
+
+                        <Button mnemonicParsing="false" styleClass="sidebar-menu-item, sidebar-menu-item-active" maxWidth="Infinity">
+                            <graphic>
+                                <HBox spacing="12" alignment="CENTER_LEFT">
+                                   <Label text="Utilisateurs"/>
+                                </HBox>
+                            </graphic>
+                            <VBox.margin><javafx.geometry.Insets left="0" right="20.0"/></VBox.margin>
+                            <padding><javafx.geometry.Insets top="12" bottom="12" left="22" right="22"/></padding>
+                        </Button>
+
+                        <Button mnemonicParsing="false" onAction="#showReclamations" styleClass="sidebar-menu-item" maxWidth="Infinity">
+                            <graphic>
+                                <HBox spacing="12" alignment="CENTER_LEFT">
+                                   <Label text="Réclamation"/>
+                                </HBox>
+                            </graphic>
+                            <VBox.margin><javafx.geometry.Insets left="0" right="0"/></VBox.margin>
+                            <padding><javafx.geometry.Insets top="12" bottom="12" left="22" right="22"/></padding>
+                        </Button>
+
+                    </children>
+                </VBox>
+
+                <!-- Divider -->
+                <Separator styleClass="sidebar-divider-bottom">
+                   <VBox.margin><javafx.geometry.Insets left="20.0" right="20.0" bottom="20.0"/></VBox.margin>
+                </Separator>
+
+                <!-- User Info & Logout -->
+                <VBox styleClass="sidebar-user-container" spacing="15.0">
+                   <padding><javafx.geometry.Insets bottom="30.0" left="22.0" right="22.0" top="10.0" /></padding>
+                   <children>
+                      <VBox spacing="2.0">
+                         <children>
+                            <Label styleClass="sidebar-user-label" text="Utilisateur" />
+                            <Label fx:id="sidebarEmailLabel" styleClass="sidebar-user-email" text="admin@dinari.tn" />
+                         </children>
+                      </VBox>
+                      <Button mnemonicParsing="false" onAction="#handleLogout" styleClass="sidebar-menu-item, logout-btn" maxWidth="Infinity">
+                         <graphic>
+                            <HBox spacing="12" alignment="CENTER_LEFT">
+                               <Label text="⎋" styleClass="nav-icon" style="-fx-text-fill: #EF4444;"/>
+                               <Label text="Déconnexion" style="-fx-text-fill: #EF4444;"/>
+                            </HBox>
+                         </graphic>
+                         <padding><javafx.geometry.Insets top="8" bottom="8" left="0" right="0"/></padding>
+                      </Button>
+                   </children>
+                </VBox>
+
+            </children>
         </VBox>
     </left>
 
-    <!-- Main Content Area -->
+    <!-- ═══════════ MAIN CONTENT ═══════════ -->
     <center>
         <BorderPane>
-            <!-- Top Bar -->
+            <!-- ── TOP HEADER BAR ── -->
             <top>
-                <HBox styleClass="top-bar" alignment="CENTER_RIGHT" spacing="20">
-                    <TextField promptText="Search here..." style="-fx-background-radius: 20;"/>
-                    <Label text="Welcome, Admin" style="-fx-font-weight: bold;"/>
-                    <!-- Placeholder for Avatar -->
-                    <StackPane style="-fx-background-color: #ccc; -fx-background-radius: 50; -fx-min-width: 35; -fx-min-height: 35;">
-                        <Label text="A" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
-                    </StackPane>
+                <HBox alignment="CENTER_RIGHT" styleClass="content-header" spacing="20.0">
+                    <children>
+                        <!-- Search Box -->
+                        <HBox styleClass="search-wrapper" alignment="CENTER_LEFT">
+                            <children>
+                                <Label text="🔍" style="-fx-font-size: 13px; -fx-text-fill: #9ca3af; -fx-padding: 0 6 0 12;"/>
+                                <TextField promptText="Rechercher..." styleClass="search-field-inner" HBox.hgrow="ALWAYS"/>
+                            </children>
+                        </HBox>
+                        
+                        <!-- User Profile Chip -->
+                        <HBox alignment="CENTER" spacing="10.0" styleClass="user-profile-chip">
+                            <children>
+                                <Label text="Welcome, Admin" styleClass="profile-name"/>
+                                <Label styleClass="header-avatar" text="A" />
+                            </children>
+                        </HBox>
+                    </children>
+                    <padding><javafx.geometry.Insets bottom="15.0" left="30.0" right="30.0" top="15.0" /></padding>
                 </HBox>
             </top>
             
             <!-- Dynamic View Container -->
             <center>
-                <StackPane fx:id="contentArea" style="-fx-background-color: #f4f6f9;">
+                <StackPane fx:id="contentArea" style="-fx-background-color: -fx-bg-color;">
                     <!-- Views will be loaded here -->
                 </StackPane>
             </center>
