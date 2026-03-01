@@ -13,7 +13,7 @@
         <Region/>
     </top>
 
-    <!-- ✅ Sidebar (ما تبدّلش) -->
+    <!-- ✅ Sidebar -->
     <left>
         <VBox prefWidth="235" minWidth="235"
               style="-fx-background-color: #0f1f3d;">
@@ -101,11 +101,11 @@
                                    -fx-padding:8 14; -fx-background-radius:10; -fx-cursor: hand;"/>
                 </HBox>
 
-                <Label text="Filtrer et trier vos dépenses rapidement."
+                <Label text="La recherche et le tri se font automatiquement."
                        style="-fx-text-fill:#7b8794; -fx-font-size:12px;"/>
             </VBox>
 
-            <!-- Filter Card -->
+            <!-- Filter Card (بدون button) -->
             <VBox spacing="10"
                   style="-fx-background-color:white; -fx-background-radius:14; -fx-padding:14;
                          -fx-effect:dropshadow(gaussian, rgba(0,0,0,0.06), 10, 0.2, 0, 2);">
@@ -136,14 +136,6 @@
                             <ComboBox fx:id="triChampCombo" style="-fx-background-radius:10;"/>
                             <ComboBox fx:id="triTypeCombo" style="-fx-background-radius:10;"/>
                         </HBox>
-                    </VBox>
-
-                    <!-- زر Filtrer (اختياري) -->
-                    <VBox spacing="4">
-                        <Label text=""/>
-                        <Button text="Filtrer" onAction="#filterDepenses"
-                                style="-fx-background-color:#f3f4f6; -fx-text-fill:#334e68; -fx-font-weight:bold;
-                                       -fx-padding:8 14; -fx-background-radius:10; -fx-cursor: hand;"/>
                     </VBox>
 
                 </HBox>
