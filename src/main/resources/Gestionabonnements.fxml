@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="tn.esprit.controllers.GestionabonnementsController"
+           style="-fx-background-color: #f0f4f8;">
+
+    <!-- ═══════════════════════════════════
+         PAGE 1 : LISTE
+    ═══════════════════════════════════ -->
+    <VBox fx:id="pageListe" style="-fx-background-color: #f0f4f8;">
+
+        <!-- Header : titre + 2 boutons -->
+        <HBox alignment="CENTER_LEFT"
+              style="-fx-background-color: white; -fx-padding: 22 35;
+                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 10, 0, 0, 3);">
+            <VBox HBox.hgrow="ALWAYS" spacing="3">
+                <Label text="Mes Abonnements"
+                       style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #0f1f3d;"/>
+                <Label text="Gerez vos services et paiements recurrents."
+                       style="-fx-font-size: 12px; -fx-text-fill: #8899aa;"/>
+            </VBox>
+            <HBox spacing="12" alignment="CENTER">
+                <Button text="Statistiques" onAction="#ouvrirStatistiques"
+                        style="-fx-background-color: #6c5ce7; -fx-text-fill: white;
+                               -fx-font-size: 13px; -fx-font-weight: bold;
+                               -fx-padding: 11 22; -fx-background-radius: 10; -fx-cursor: hand;"/>
+                <Button text="+ Ajouter" onAction="#ouvrirFormulaire"
+                        style="-fx-background-color: #1a3a7a; -fx-text-fill: white;
+                               -fx-font-size: 13px; -fx-font-weight: bold;
+                               -fx-padding: 11 24; -fx-background-radius: 10; -fx-cursor: hand;"/>
+            </HBox>
+        </HBox>
+
+        <!-- Barre recherche + filtre catégorie + tri -->
+        <HBox spacing="10" alignment="CENTER_LEFT"
+              style="-fx-padding: 12 35; -fx-background-color: white;
+                     -fx-border-color: #eef0f5; -fx-border-width: 0 0 1 0;">
+
+            <!-- Champ de recherche -->
+            <TextField fx:id="txtRecherche" promptText="🔍  Rechercher un abonnement..."
+                       HBox.hgrow="ALWAYS" onKeyReleased="#appliquerFiltres"
+                       style="-fx-background-color: #f5f7fa; -fx-border-color: #e2e8f0;
+                              -fx-border-width: 1.5; -fx-border-radius: 10;
+                              -fx-background-radius: 10; -fx-padding: 11 16; -fx-font-size: 13px;"/>
+
+            <!-- Filtre catégorie -->
+            <ComboBox fx:id="comboFiltreCategorie" promptText="Categorie"
+                      onAction="#appliquerFiltres" prefWidth="145"
+                      style="-fx-background-color: white; -fx-background-radius: 10;
+                             -fx-border-color: #e2e8f0; -fx-border-width: 1.5;
+                             -fx-border-radius: 10; -fx-font-size: 12px; -fx-padding: 5 8;"/>
+
+            <!-- Tri -->
+            <ComboBox fx:id="comboTri" promptText="Trier par..."
+                      onAction="#appliquerFiltres" prefWidth="155"
+                      style="-fx-background-color: white; -fx-background-radius: 10;
+                             -fx-border-color: #e2e8f0; -fx-border-width: 1.5;
+                             -fx-border-radius: 10; -fx-font-size: 12px; -fx-padding: 5 8;"/>
+        </HBox>
+
+        <!-- Liste scrollable -->
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                    style="-fx-background: #f0f4f8; -fx-background-color: #f0f4f8;">
+            <VBox fx:id="listeServices" spacing="10" style="-fx-padding: 18 35;"/>
+        </ScrollPane>
+
+        <!-- Footer total mensuel -->
+        <HBox alignment="CENTER_LEFT" spacing="16"
+              style="-fx-background-color: white; -fx-padding: 13 35;
+                     -fx-border-color: #eef0f5; -fx-border-width: 1.5 0 0 0;">
+            <Label text="Total mensuel"
+                   style="-fx-font-size: 13px; -fx-text-fill: #8899aa;"/>
+            <Label fx:id="lblTotalMensuel" text="0.000 TND"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0f1f3d;"/>
+        </HBox>
+    </VBox>
+
+    <!-- ═══════════════════════════════════
+         PAGE 2 : DETAIL SERVICE
+    ═══════════════════════════════════ -->
+    <VBox fx:id="pageDetailService" visible="false" managed="false"
+          style="-fx-background-color: #f0f4f8;">
+        <HBox alignment="CENTER_LEFT" spacing="15"
+              style="-fx-background-color: white; -fx-padding: 18 35;
+                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 8, 0, 0, 2);">
+            <Button text="← Retour" onAction="#retourListe"
+                    style="-fx-background-color: #f0f4f8; -fx-text-fill: #0f1f3d;
+                           -fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 9 18;
+                           -fx-background-radius: 8; -fx-cursor: hand;
+                           -fx-border-color: #dde3ea; -fx-border-radius: 8; -fx-border-width: 1.5;"/>
+            <VBox HBox.hgrow="ALWAYS">
+                <Label fx:id="lblServiceNom" text=""
+                       style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0f1f3d;"/>
+                <Label fx:id="lblServiceSousTitre" text=""
+                       style="-fx-font-size: 12px; -fx-text-fill: #8899aa;"/>
+            </VBox>
+            <Button text="+ Ajouter" onAction="#ouvrirFormulaire"
+                    style="-fx-background-color: #1a3a7a; -fx-text-fill: white;
+                           -fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 9 20;
+                           -fx-background-radius: 8; -fx-cursor: hand;"/>
+        </HBox>
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                    style="-fx-background: #f0f4f8; -fx-background-color: #f0f4f8;">
+            <VBox spacing="12" style="-fx-padding: 22 35;">
+                <HBox spacing="14" fx:id="statsService"/>
+                <VBox fx:id="listeAbonnementsService" spacing="10"/>
+            </VBox>
+        </ScrollPane>
+    </VBox>
+
+    <!-- ═══════════════════════════════════
+         PAGE 3 : FORMULAIRE AJOUT
+    ═══════════════════════════════════ -->
+    <VBox fx:id="pageFormulaire" visible="false" managed="false"
+          style="-fx-background-color: #f0f4f8;">
+        <HBox alignment="CENTER_LEFT" spacing="15"
+              style="-fx-background-color: white; -fx-padding: 18 35;
+                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 8, 0, 0, 2);">
+            <Button text="← Retour" onAction="#retourListe"
+                    style="-fx-background-color: #f0f4f8; -fx-text-fill: #0f1f3d;
+                           -fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 9 18;
+                           -fx-background-radius: 8; -fx-cursor: hand;
+                           -fx-border-color: #dde3ea; -fx-border-radius: 8; -fx-border-width: 1.5;"/>
+            <VBox>
+                <Label text="Ajouter un Abonnement"
+                       style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0f1f3d;"/>
+                <Label text="Remplissez les informations ci-dessous"
+                       style="-fx-font-size: 12px; -fx-text-fill: #8899aa;"/>
+            </VBox>
+        </HBox>
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                    style="-fx-background: #f0f4f8; -fx-background-color: #f0f4f8;">
+            <VBox alignment="TOP_CENTER" style="-fx-padding: 30;">
+                <VBox prefWidth="540" spacing="20"
+                      style="-fx-background-color: white; -fx-padding: 36;
+                             -fx-background-radius: 18;
+                             -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 16, 0, 0, 4);">
+
+                    <VBox spacing="7">
+                        <Label text="Nom du service *"
+                               style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #475569;"/>
+                        <TextField fx:id="txtNom" promptText="Ex: Netflix, Spotify..."
+                                   style="-fx-background-radius: 10; -fx-border-radius: 10;
+                                          -fx-border-color: #e2e8f0; -fx-border-width: 1.5;
+                                          -fx-padding: 13 16; -fx-font-size: 14px; -fx-background-color: #fafbfc;"/>
+                    </VBox>
+
+
+                    <HBox spacing="16">
+                        <VBox spacing="7" HBox.hgrow="ALWAYS">
+                            <Label text="Categorie *"
+                                   style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #475569;"/>
+                            <ComboBox fx:id="comboCategorie" maxWidth="Infinity"
+                                      style="-fx-background-radius: 10; -fx-font-size: 13px;
+                                             -fx-border-color: #e2e8f0; -fx-border-width: 1.5;
+                                             -fx-border-radius: 10; -fx-background-color: white; -fx-padding: 4;"/>
+                        </VBox>
+                        <VBox spacing="7" HBox.hgrow="ALWAYS">
+                            <Label text="Frequence *"
+                                   style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #475569;"/>
+                            <ComboBox fx:id="comboFrequence" maxWidth="Infinity"
+                                      style="-fx-background-radius: 10; -fx-font-size: 13px;
+                                             -fx-border-color: #e2e8f0; -fx-border-width: 1.5;
+                                             -fx-border-radius: 10; -fx-background-color: white; -fx-padding: 4;"/>
+                        </VBox>
+                    </HBox>
+
+                    <VBox spacing="7">
+                        <Label text="Date de debut *"
+                               style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #475569;"/>
+                        <DatePicker fx:id="datePicker" maxWidth="Infinity"
+                                    style="-fx-background-radius: 10; -fx-font-size: 13px;
+                                           -fx-border-color: #e2e8f0; -fx-border-width: 1.5; -fx-border-radius: 10;"/>
+                    </VBox>
+
+                    <Separator/>
+
+                    <HBox spacing="12">
+                        <Button text="Ajouter" onAction="#ajouter"
+                                style="-fx-background-color: #1a3a7a; -fx-text-fill: white;
+                                       -fx-font-size: 14px; -fx-font-weight: bold;
+                                       -fx-padding: 13 35; -fx-background-radius: 10; -fx-cursor: hand;"/>
+                        <Button text="Annuler" onAction="#retourListe"
+                                style="-fx-background-color: white; -fx-text-fill: #64748b;
+                                       -fx-font-size: 13px; -fx-padding: 13 22; -fx-background-radius: 10;
+                                       -fx-border-color: #e2e8f0; -fx-border-radius: 10;
+                                       -fx-border-width: 1.5; -fx-cursor: hand;"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </VBox>
+
+    <!-- ═══════════════════════════════════
+         PAGE 4 : PAIEMENT
+    ═══════════════════════════════════ -->
+    <VBox fx:id="pageFormulairePaiement" visible="false" managed="false"
+          style="-fx-background-color: #f0f4f8;">
+        <HBox alignment="CENTER_LEFT"
+              style="-fx-background-color: white; -fx-padding: 18 35;
+                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 8, 0, 0, 3);">
+            <Button text="← Retour" onAction="#annulerPaiement"
+                    style="-fx-background-color: transparent; -fx-text-fill: #64748b;
+                           -fx-font-size: 12px; -fx-font-weight: bold;
+                           -fx-padding: 8 0; -fx-cursor: hand; -fx-border-width: 0;"/>
+        </HBox>
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                    style="-fx-background: #f0f4f8; -fx-background-color: #f0f4f8;">
+            <VBox alignment="TOP_CENTER" style="-fx-padding: 26 36 46 36;">
+                <HBox spacing="22" alignment="TOP_CENTER" maxWidth="880">
+
+                    <!-- Gauche : cartes plan + carte VISA -->
+                    <VBox spacing="16" prefWidth="300">
+                        <VBox style="-fx-background-color: white; -fx-background-radius: 14;
+                                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 12, 0, 0, 3);">
+                            <Label text="CHOISIR UN PLAN"
+                                   style="-fx-font-size: 9px; -fx-font-weight: bold;
+                                          -fx-text-fill: #94a3b8; -fx-padding: 14 18 8 18;"/>
+                            <HBox spacing="9" style="-fx-padding: 0 13 13 13;">
+                                <VBox fx:id="carteNormalPaie" HBox.hgrow="ALWAYS" spacing="4"
+                                      alignment="CENTER" onMouseClicked="#selectionnerNormalPaie"
+                                      style="-fx-background-color:#f0f7ff;-fx-padding:13 7;-fx-background-radius:11;-fx-border-color:#3498db;-fx-border-width:2;-fx-border-radius:11;-fx-cursor:hand;">
+                                    <Label text="Normal"   style="-fx-font-size:11px;-fx-font-weight:bold;-fx-text-fill:#2980b9;"/>
+                                    <Label text="15.000"   style="-fx-font-size:13px;-fx-font-weight:bold;-fx-text-fill:#0f1f3d;"/>
+                                    <Label text="TND/mois" style="-fx-font-size:9px;-fx-text-fill:#94a3b8;"/>
+                                </VBox>
+                                <VBox fx:id="cartePremiumPaie" HBox.hgrow="ALWAYS" spacing="4"
+                                      alignment="CENTER" onMouseClicked="#selectionnerPremiumPaie"
+                                      style="-fx-background-color:#f5f3ff;-fx-padding:13 7;-fx-background-radius:11;-fx-border-color:#6c5ce7;-fx-border-width:2;-fx-border-radius:11;-fx-cursor:hand;">
+                                    <Label text="Premium"  style="-fx-font-size:11px;-fx-font-weight:bold;-fx-text-fill:#6c5ce7;"/>
+                                    <Label text="40.000"   style="-fx-font-size:13px;-fx-font-weight:bold;-fx-text-fill:#0f1f3d;"/>
+                                    <Label text="TND/mois" style="-fx-font-size:9px;-fx-text-fill:#94a3b8;"/>
+                                </VBox>
+                                <VBox fx:id="carteGoldPaie" HBox.hgrow="ALWAYS" spacing="4"
+                                      alignment="CENTER" onMouseClicked="#selectionnerGoldPaie"
+                                      style="-fx-background-color:#fffbeb;-fx-padding:13 7;-fx-background-radius:11;-fx-border-color:#f39c12;-fx-border-width:2;-fx-border-radius:11;-fx-cursor:hand;">
+                                    <Label text="Gold"     style="-fx-font-size:11px;-fx-font-weight:bold;-fx-text-fill:#d97706;"/>
+                                    <Label text="80.000"   style="-fx-font-size:13px;-fx-font-weight:bold;-fx-text-fill:#0f1f3d;"/>
+                                    <Label text="TND/mois" style="-fx-font-size:9px;-fx-text-fill:#94a3b8;"/>
+                                </VBox>
+                            </HBox>
+                            <Label fx:id="lblNomTierPaiement" text="Selectionnez un plan"
+                                   style="-fx-font-size: 11px; -fx-text-fill: #94a3b8; -fx-padding: 0 18 13 18;"/>
+                        </VBox>
+
+                        <!-- Carte VISA visuelle -->
+                        <VBox style="-fx-background-color: #0f1f3d; -fx-background-radius: 16;
+                                     -fx-padding: 20 20 16 20;
+                                     -fx-effect: dropshadow(gaussian, rgba(15,31,61,0.4), 18, 0, 0, 7);">
+                            <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 0 13 0;">
+                                <StackPane prefWidth="28" prefHeight="20"
+                                           style="-fx-background-color: #c8a951; -fx-background-radius: 4;"/>
+                                <Label HBox.hgrow="ALWAYS" text=""/>
+                                <Label text="VISA"
+                                       style="-fx-font-size: 17px; -fx-font-weight: bold;
+                                              -fx-text-fill: white; -fx-font-style: italic;"/>
+                            </HBox>
+                            <Label fx:id="lblCarteNumero" text="• • • •  • • • •  • • • •  • • • •"
+                                   style="-fx-font-size: 13px; -fx-text-fill: rgba(255,255,255,0.85);
+                                          -fx-font-weight: bold; -fx-padding: 0 0 12 0;"/>
+                            <HBox>
+                                <VBox HBox.hgrow="ALWAYS" spacing="2">
+                                    <Label text="CARD HOLDER"
+                                           style="-fx-font-size: 8px; -fx-text-fill: rgba(255,255,255,0.45); -fx-font-weight: bold;"/>
+                                    <Label fx:id="lblCarteTitulaire" text="VOTRE NOM"
+                                           style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                                </VBox>
+                                <VBox alignment="CENTER_RIGHT" spacing="2">
+                                    <Label text="EXPIRES"
+                                           style="-fx-font-size: 8px; -fx-text-fill: rgba(255,255,255,0.45); -fx-font-weight: bold;"/>
+                                    <Label fx:id="lblCarteExpiry" text="MM/YY"
+                                           style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+                    </VBox>
+
+                    <!-- Droite : formulaire paiement -->
+                    <VBox spacing="0" HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: white; -fx-background-radius: 18;
+                                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 14, 0, 0, 4);">
+                        <HBox alignment="CENTER_LEFT" spacing="10"
+                              style="-fx-padding: 20 24 14 24;
+                                     -fx-border-color: #f1f5f9; -fx-border-width: 0 0 1.5 0;">
+                            <Label fx:id="lblServicePaiement" text="---"
+                                   style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #0f1f3d;"
+                                   HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="lblPrixPaiement" text="---"
+                                   style="-fx-font-size: 19px; -fx-font-weight: bold; -fx-text-fill: #1a3a7a;"/>
+                        </HBox>
+                        <VBox spacing="13" style="-fx-padding: 18 24 24 24;">
+                            <HBox spacing="13">
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <Label text="PRENOM"
+                                           style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #94a3b8;"/>
+                                    <TextField fx:id="txtPrenomPaiement" promptText="Alex"
+                                               style="-fx-border-color:#e2e8f0;-fx-border-width:1.5;-fx-border-radius:9;-fx-background-radius:9;-fx-padding:11 13;-fx-font-size:13px;"/>
+                                </VBox>
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <Label text="NOM"
+                                           style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #94a3b8;"/>
+                                    <TextField fx:id="txtNomPaiement" promptText="Morgan"
+                                               style="-fx-border-color:#e2e8f0;-fx-border-width:1.5;-fx-border-radius:9;-fx-background-radius:9;-fx-padding:11 13;-fx-font-size:13px;"/>
+                                </VBox>
+                            </HBox>
+                            <VBox spacing="6">
+                                <Label text="NUMERO DE CARTE"
+                                       style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #94a3b8;"/>
+                                <TextField fx:id="txtNumeroCarte" promptText="0000 0000 0000 0000"
+                                           style="-fx-border-color:#e2e8f0;-fx-border-width:1.5;-fx-border-radius:9;-fx-background-radius:9;-fx-padding:11 13;-fx-font-size:13px;"/>
+                            </VBox>
+                            <HBox spacing="13">
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <Label text="EXPIRATION"
+                                           style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #94a3b8;"/>
+                                    <TextField fx:id="txtDateExpiration" promptText="MM/YY"
+                                               style="-fx-border-color:#e2e8f0;-fx-border-width:1.5;-fx-border-radius:9;-fx-background-radius:9;-fx-padding:11 13;-fx-font-size:13px;"/>
+                                </VBox>
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <Label text="CVV"
+                                           style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #94a3b8;"/>
+                                    <TextField fx:id="txtCvv" promptText="•••"
+                                               style="-fx-border-color:#e2e8f0;-fx-border-width:1.5;-fx-border-radius:9;-fx-background-radius:9;-fx-padding:11 13;-fx-font-size:13px;"/>
+                                </VBox>
+                            </HBox>
+                            <Separator/>
+                            <HBox alignment="CENTER_LEFT">
+                                <Label text="Total" style="-fx-font-size:13px;-fx-text-fill:#64748b;"
+                                       HBox.hgrow="ALWAYS"/>
+                                <Label fx:id="lblTotalDue" text="---"
+                                       style="-fx-font-size:22px;-fx-font-weight:bold;-fx-text-fill:#0f1f3d;"/>
+                            </HBox>
+                            <Button fx:id="btnPayerDynamique" text="Confirmer le paiement"
+                                    onAction="#confirmerPaiement" maxWidth="Infinity"
+                                    style="-fx-background-color:#1a3a7a;-fx-text-fill:white;
+                                           -fx-font-size:14px;-fx-font-weight:bold;
+                                           -fx-padding:14 0;-fx-background-radius:12;-fx-cursor:hand;"/>
+                            <Button text="Annuler" onAction="#annulerPaiement" maxWidth="Infinity"
+                                    style="-fx-background-color:transparent;-fx-text-fill:#94a3b8;
+                                           -fx-font-size:12px;-fx-padding:4 0;
+                                           -fx-cursor:hand;-fx-border-width:0;"/>
+                        </VBox>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </ScrollPane>
+    </VBox>
+
+    <!-- ═══════════════════════════════════
+         PAGE 5 : STATISTIQUES
+    ═══════════════════════════════════ -->
+    <VBox fx:id="pageStatistiques" visible="false" managed="false"
+          style="-fx-background-color: #f0f4f8;">
+
+        <HBox alignment="CENTER_LEFT" spacing="16"
+              style="-fx-background-color: white; -fx-padding: 20 35;
+                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 8, 0, 0, 3);">
+            <Button text="← Retour" onAction="#retourListe"
+                    style="-fx-background-color: #f0f4f8; -fx-text-fill: #0f1f3d;
+                           -fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 9 18;
+                           -fx-background-radius: 8; -fx-cursor: hand;
+                           -fx-border-color: #dde3ea; -fx-border-radius: 8; -fx-border-width: 1.5;"/>
+            <VBox HBox.hgrow="ALWAYS">
+                <Label text="Subscription Analytics"
+                       style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #0f1f3d;"/>
+                <Label text="Detailed overview of your recurring digital expenditure."
+                       style="-fx-font-size: 12px; -fx-text-fill: #8899aa;"/>
+            </VBox>
+        </HBox>
+
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                    style="-fx-background: #f0f4f8; -fx-background-color: #f0f4f8;">
+            <VBox spacing="18" style="-fx-padding: 24 35 35 35; -fx-background-color: #f0f4f8;">
+
+                <!-- Ligne KPI — remplie dynamiquement par le controller -->
+                <HBox fx:id="statsKpiRow" spacing="14"/>
+
+                <!-- Barres par catégorie -->
+                <VBox spacing="14"
+                      style="-fx-background-color: white; -fx-padding: 24 28;
+                             -fx-background-radius: 18;
+                             -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 14, 0, 0, 4);">
+                    <Label text="Depenses par categorie"
+                           style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #0f1f3d;"/>
+                    <Label text="Repartition mensuelle par type de service"
+                           style="-fx-font-size: 11px; -fx-text-fill: #94a3b8;"/>
+                    <VBox fx:id="conteneurBarres" spacing="14"/>
+                </VBox>
+
+                <!-- Top services + Paiements récents -->
+                <HBox spacing="16" alignment="TOP_LEFT">
+                    <VBox HBox.hgrow="ALWAYS" spacing="10"
+                          style="-fx-background-color: white; -fx-padding: 24 28;
+                                 -fx-background-radius: 18;
+                                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 14, 0, 0, 4);">
+                        <Label text="Top services"
+                               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #0f1f3d;"/>
+                        <Label text="Par montant mensuel"
+                               style="-fx-font-size: 11px; -fx-text-fill: #94a3b8;"/>
+                        <VBox fx:id="conteneurTop" spacing="4"/>
+                    </VBox>
+
+                    <VBox prefWidth="290" spacing="10"
+                          style="-fx-background-color: white; -fx-padding: 24 28;
+                                 -fx-background-radius: 18;
+                                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 14, 0, 0, 4);">
+                        <Label text="Paiements recents"
+                               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #0f1f3d;"/>
+                        <Label text="Historique des derniers reglements"
+                               style="-fx-font-size: 11px; -fx-text-fill: #94a3b8;"/>
+                        <VBox fx:id="conteneurHistorique" spacing="8"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </ScrollPane>
+    </VBox>
+
+</StackPane>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="tn.esprit.controllers.MainController"
+      prefHeight="720.0" prefWidth="1150.0">
+
+    <!-- ========== SIDEBAR — NE PAS TOUCHER ========== -->
+    <VBox prefWidth="235" minWidth="235"
+          style="-fx-background-color: #0f1f3d;">
+
+        <!-- Logo texte (image supprimée) -->
+        <VBox alignment="CENTER" prefHeight="115"
+              style="-fx-background-color: #0a1628; -fx-padding: 18;">
+            <Label text="💎 DINARI"
+                   style="-fx-font-size: 22px; -fx-font-weight: bold;
+                          -fx-text-fill: white;"/>
+            <Label text="Gestion Financière"
+                   style="-fx-font-size: 10px; -fx-text-fill: #3d5f8a;"/>
+        </VBox>
+
+        <Separator style="-fx-background-color: #1a3055;"/>
+
+        <VBox spacing="3" style="-fx-padding: 18 10 0 10;">
+            <Button fx:id="btnAbonnements" text="📺   Abonnements" maxWidth="Infinity"
+                    onAction="#showAbonnements"
+                    style="-fx-background-color: #1a3a7a; -fx-text-fill: white;
+                           -fx-font-size: 12px; -fx-alignment: CENTER-LEFT;
+                           -fx-padding: 12 15; -fx-background-radius: 8; -fx-cursor: hand;
+                           -fx-font-weight: bold; -fx-border-color: #2ecc71;
+                           -fx-border-width: 0 0 0 3; -fx-border-radius: 0 8 8 0;"/>
+            <Button fx:id="btnEducation" text="📚   Éducative" maxWidth="Infinity"
+                    onAction="#showEducation"
+                    style="-fx-background-color: transparent; -fx-text-fill: #6a8aaa;
+                           -fx-font-size: 12px; -fx-alignment: CENTER-LEFT;
+                           -fx-padding: 12 15; -fx-background-radius: 8; -fx-cursor: hand;"/>
+            <Button fx:id="btnDepenses" text="💸   Dépenses" maxWidth="Infinity"
+                    onAction="#showDepenses"
+                    style="-fx-background-color: transparent; -fx-text-fill: #6a8aaa;
+                           -fx-font-size: 12px; -fx-alignment: CENTER-LEFT;
+                           -fx-padding: 12 15; -fx-background-radius: 8; -fx-cursor: hand;"/>
+            <Button fx:id="btnBudget" text="💰   Budget" maxWidth="Infinity"
+                    onAction="#showBudget"
+                    style="-fx-background-color: transparent; -fx-text-fill: #6a8aaa;
+                           -fx-font-size: 12px; -fx-alignment: CENTER-LEFT;
+                           -fx-padding: 12 15; -fx-background-radius: 8; -fx-cursor: hand;"/>
+        </VBox>
+
+        <Region VBox.vgrow="ALWAYS"/>
+
+        <VBox style="-fx-padding: 10;">
+            <Separator style="-fx-background-color: #1a3055;"/>
+            <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 12 10 5 10;">
+                <Label text="👤" style="-fx-font-size: 18px;"/>
+                <VBox>
+                    <Label text="Utilisateur"
+                           style="-fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold;"/>
+                    <Label text="admin@dinari.tn"
+                           style="-fx-text-fill: #3d5f8a; -fx-font-size: 10px;"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </VBox>
+
+    <!-- ========== ZONE CONTENU ========== -->
+    <VBox HBox.hgrow="ALWAYS" style="-fx-background-color: #f5f6fa;">
+
+        <!-- ONGLETS + CLOCHE -->
+        <HBox alignment="CENTER_LEFT"
+              style="-fx-background-color: white; -fx-padding: 0 20;
+                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 8, 0, 0, 2);">
+
+            <Button fx:id="tabAbonnements" text="📺  Abonnements"
+                    onAction="#switchAbonnements"
+                    style="-fx-background-color: transparent; -fx-text-fill: #1a3a7a;
+                           -fx-font-size: 12px; -fx-font-weight: bold;
+                           -fx-padding: 16 18; -fx-cursor: hand;
+                           -fx-border-color: #1a3a7a; -fx-border-width: 0 0 3 0;
+                           -fx-background-radius: 0;"/>
+
+            <Button fx:id="tabPaiements" text="💳  Paiements"
+                    onAction="#switchPaiements"
+                    style="-fx-background-color: transparent; -fx-text-fill: #8899aa;
+                           -fx-font-size: 12px; -fx-padding: 16 18;
+                           -fx-cursor: hand; -fx-border-width: 0; -fx-background-radius: 0;"/>
+
+            <Button fx:id="tabRecommandations" text="✨  Plan optimal IA"
+                    onAction="#switchRecommandations"
+                    style="-fx-background-color: transparent; -fx-text-fill: #8899aa;
+                           -fx-font-size: 12px; -fx-padding: 16 18;
+                           -fx-cursor: hand; -fx-border-width: 0; -fx-background-radius: 0;"/>
+
+            <Button fx:id="tabSuggestions" text="🎬  Suggestions IA"
+                    onAction="#switchSuggestions"
+                    style="-fx-background-color: transparent; -fx-text-fill: #8899aa;
+                           -fx-font-size: 12px; -fx-padding: 16 18;
+                           -fx-cursor: hand; -fx-border-width: 0; -fx-background-radius: 0;"/>
+
+            <Button fx:id="tabCalendar" text="📅  Calendrier"
+                    onAction="#switchCalendar"
+                    style="-fx-background-color: transparent; -fx-text-fill: #8899aa;
+                           -fx-font-size: 12px; -fx-padding: 16 18;
+                           -fx-cursor: hand; -fx-border-width: 0; -fx-background-radius: 0;"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- 🔔 Toggle notifications -->
+            <Button fx:id="btnNotifToggle" text="🔔"
+                    onAction="#toggleNotifications"
+                    style="-fx-background-color: transparent; -fx-text-fill: #6a8aaa;
+                           -fx-font-size: 18px; -fx-cursor: hand;
+                           -fx-border-width: 0; -fx-padding: 8 14;">
+                <tooltip><Tooltip text="Activer / Désactiver les notifications"/></tooltip>
+            </Button>
+
+        </HBox>
+
+        <!-- StackPane principal — toasts s'affichent par-dessus -->
+        <StackPane fx:id="contenu" VBox.vgrow="ALWAYS"
+                   style="-fx-background-color: #f5f6fa;"/>
+    </VBox>
+
+</HBox>
