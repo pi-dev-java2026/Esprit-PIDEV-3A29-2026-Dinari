@@ -67,8 +67,7 @@
             />
             <Button text="Retour" onAction="#naviguer"
                     style="-fx-background-color:#28A745; -fx-text-fill:white; -fx-font-weight:bold; -fx-background-radius:8;"/>
-            <Button text="Retour" onAction="#naviguer"
-                    style="-fx-background-color:#28A745; -fx-text-fill:white; -fx-font-weight:bold; -fx-background-radius:8;"/>
+
         </HBox>
     </GridPane>
 

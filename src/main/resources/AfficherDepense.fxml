@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane prefHeight="600" prefWidth="900"
@@ -10,123 +9,148 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controllers.AfficherDepense">
 
-    <!-- Logo -->
+    <!-- (اختياري) Top فارغ -->
     <top>
-        <HBox spacing="10" style="-fx-padding:10; -fx-alignment:center-left;">
-            <ImageView fx:id="logoView" fitHeight="80" fitWidth="80" pickOnBounds="true" preserveRatio="true">
-                <image>
-                    <Image url="@images/logo.png" />
-                </image>
-            </ImageView>
-            <Label style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#2C3E50;" text="Gestion des Dépenses" />
-        </HBox>
+        <Region/>
     </top>
 
-    <!-- Sidebar fixe gauche -->
+    <!-- ✅ SIDEBAR الجديدة (كيف الصورة) -->
     <left>
-        <VBox prefWidth="220" spacing="15" style="-fx-background-color:#1E1E2F; -fx-padding:20;">
-            <Separator />
-             <Button onAction="#showDepenses" text="💳 Dépenses" />
-            <Button onAction="#showAbonnement" text="📦 Abonnement" />
-            <Button onAction="#showEducative" text="🎓 Educative" />
-            <Button onAction="#showBudget" text="📊 Budget" />
+        <VBox prefWidth="235" minWidth="235"
+              style="-fx-background-color: #0f1f3d;">
+
+            <!-- Header -->
+            <VBox alignment="CENTER" prefHeight="115"
+                  style="-fx-background-color: #0a1628; -fx-padding: 18;">
+                <Label text="DINARI"
+                       style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                <Label text="Gestion Financière"
+                       style="-fx-font-size: 10px; -fx-text-fill: #3d5f8a;"/>
+            </VBox>
+
+            <Separator style="-fx-background-color: #1a3055;"/>
+
+            <!-- Menu -->
+            <VBox spacing="3" style="-fx-padding: 18 10 0 10;">
+
+                <Button fx:id="btnAbonnements" text="📺   Abonnements" maxWidth="Infinity"
+                        onAction="#showAbonnement"
+                        style="-fx-background-color: transparent; -fx-text-fill: #6a8aaa;
+                               -fx-font-size: 12px; -fx-alignment: CENTER-LEFT;
+                               -fx-padding: 12 15; -fx-background-radius: 8; -fx-cursor: hand;"/>
+
+                <Button fx:id="btnEducation" text="📚   Éducative" maxWidth="Infinity"
+                        onAction="#showEducative"
+                        style="-fx-background-color: transparent; -fx-text-fill: #6a8aaa;
+                               -fx-font-size: 12px; -fx-alignment: CENTER-LEFT;
+                               -fx-padding: 12 15; -fx-background-radius: 8; -fx-cursor: hand;"/>
+
+                <!-- ACTIVE -->
+                <Button fx:id="btnDepenses" text="💸   Dépenses" maxWidth="Infinity"
+                        onAction="#showDepenses"
+                        style="-fx-background-color: #1a3a7a; -fx-text-fill: white;
+                               -fx-font-size: 12px; -fx-alignment: CENTER-LEFT;
+                               -fx-padding: 12 15; -fx-background-radius: 8; -fx-cursor: hand;
+                               -fx-font-weight: bold; -fx-border-color: #2ecc71;
+                               -fx-border-width: 0 0 0 3; -fx-border-radius: 0 8 8 0;"/>
+
+                <Button fx:id="btnBudget" text="💰   Budget" maxWidth="Infinity"
+                        onAction="#showBudget"
+                        style="-fx-background-color: transparent; -fx-text-fill: #6a8aaa;
+                               -fx-font-size: 12px; -fx-alignment: CENTER-LEFT;
+                               -fx-padding: 12 15; -fx-background-radius: 8; -fx-cursor: hand;"/>
+            </VBox>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <!-- Footer user -->
+            <VBox style="-fx-padding: 10;">
+                <Separator style="-fx-background-color: #1a3055;"/>
+                <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 12 10 5 10;">
+                    <Label text="👤" style="-fx-font-size: 18px;"/>
+                    <VBox>
+                        <Label text="Utilisateur"
+                               style="-fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold;"/>
+                        <Label text="admin@dinari.tn"
+                               style="-fx-text-fill: #3d5f8a; -fx-font-size: 10px;"/>
+                    </VBox>
+                </HBox>
+            </VBox>
         </VBox>
     </left>
 
-    <!-- Content area -->
+    <!-- ✅ Content area (نفس متاعك) -->
     <center>
         <VBox spacing="10" style="-fx-padding:20;">
 
             <!-- Barre recherche & tri -->
             <HBox spacing="15" style="-fx-padding:5; -fx-alignment:center-left;">
 
-                <!-- Champ Montant -->
                 <VBox spacing="3">
-                    <Label text="Montant" style="-fx-font-weight:bold;" />
-                    <TextField fx:id="montantField" promptText="Montant" />
+                    <Label text="Montant" style="-fx-font-weight:bold;"/>
+                    <TextField fx:id="montantField" promptText="Montant"/>
                 </VBox>
 
-                <!-- ComboBox Mode Paiement avec label -->
                 <VBox spacing="3">
-                    <Label text="Mode de paiement" style="-fx-font-weight:bold;" />
-                    <ComboBox fx:id="paiementBox" />
+                    <Label text="Mode de paiement" style="-fx-font-weight:bold;"/>
+                    <ComboBox fx:id="paiementBox"/>
                 </VBox>
 
-                <!-- ComboBox Catégorie avec label -->
                 <VBox spacing="3">
-                    <Label text="Catégorie" style="-fx-font-weight:bold;" />
-                    <ComboBox fx:id="categorieCombo" />
+                    <Label text="Catégorie" style="-fx-font-weight:bold;"/>
+                    <ComboBox fx:id="categorieCombo"/>
                 </VBox>
 
-                <!-- ComboBox Champ pour trier -->
                 <VBox spacing="3">
-                    <Label text="Trier par champ" style="-fx-font-weight:bold;" />
-                    <ComboBox fx:id="triChampCombo" promptText="Champ" />
+                    <Label text="Trier par champ" style="-fx-font-weight:bold;"/>
+                    <ComboBox fx:id="triChampCombo" promptText="Champ"/>
                 </VBox>
 
-                <!-- ComboBox Type de tri ASC / DESC -->
                 <VBox spacing="3">
-                    <Label text="Type de tri" style="-fx-font-weight:bold;" />
-                    <ComboBox fx:id="triTypeCombo" promptText="ASC/DESC" />
+                    <Label text="Type de tri" style="-fx-font-weight:bold;"/>
+                    <ComboBox fx:id="triTypeCombo" promptText="ASC/DESC"/>
                 </VBox>
 
-
-                <!-- Bouton Filtrer -->
                 <VBox spacing="3">
-                    <Label text="" />
-                    <Button onAction="#filterDepenses" text="Filtrer" />
+                    <Label text=""/>
+                    <Button onAction="#filterDepenses" text="Filtrer"/>
                 </VBox>
 
             </HBox>
 
-            <!-- Titre + bouton Ajouter -->
+            <!-- Titre + boutons -->
             <HBox spacing="10" style="-fx-alignment:center-left;">
-                <Label style="-fx-font-size:26px; -fx-font-weight:bold; -fx-text-fill:#2C3E50;" text="📋 Liste des Dépenses" />
-                <!-- Prediction IA -->
-                               <!-- Region vide pour pousser le bouton à droite -->
-                <Region HBox.hgrow="ALWAYS" />
+                <Label style="-fx-font-size:26px; -fx-font-weight:bold; -fx-text-fill:#2C3E50;"
+                       text="📋 Liste des Dépenses"/>
 
+                <Region HBox.hgrow="ALWAYS"/>
 
                 <Button text="📊 Prédiction IA"
                         onAction="#showDashboard"
-                        style="
-            -fx-background-color: linear-gradient(to right,#2C3E50,#4A90E2);
-            -fx-text-fill:white;
-            -fx-font-weight:bold;
-            -fx-padding:8 15 8 15;
-            -fx-background-radius:8;
-            -fx-cursor: hand;
-            "/>
+                        style="-fx-background-color: linear-gradient(to right,#2C3E50,#4A90E2);
+                               -fx-text-fill:white; -fx-font-weight:bold;
+                               -fx-padding:8 15 8 15; -fx-background-radius:8; -fx-cursor: hand;"/>
 
+                <Button text="➕ Ajouter Dépense"
+                        onAction="#openAjouterDepense"
+                        style="-fx-background-color: linear-gradient(to right,#2C3E50,#4A90E2);
+                               -fx-text-fill:white; -fx-font-weight:bold;
+                               -fx-padding:8 15 8 15; -fx-background-radius:8; -fx-cursor: hand;"/>
 
-
-
-                <Button onAction="#openAjouterDepense"
-                        style="
-            -fx-background-color: linear-gradient(to right,#2C3E50,#4A90E2);
-            -fx-text-fill:white;
-            -fx-font-weight:bold;
-            -fx-padding:8 15 8 15;
-            -fx-background-radius:8;
-            -fx-cursor: hand;"
-                                    text="➕ Ajouter Dépense" />
-
-                <Button onAction="#HistoriqueDepense"
-                        style="
-            -fx-background-color: linear-gradient(to right,#2C3E50,#4A90E2);
-            -fx-text-fill:white;
-            -fx-font-weight:bold;
-            -fx-padding:8 15 8 15;
-            -fx-background-radius:8;
-            -fx-cursor: hand;"
-                        text="Historique " />
+                <Button text="Historique"
+                        onAction="#HistoriqueDepense"
+                        style="-fx-background-color: linear-gradient(to right,#2C3E50,#4A90E2);
+                               -fx-text-fill:white; -fx-font-weight:bold;
+                               -fx-padding:8 15 8 15; -fx-background-radius:8; -fx-cursor: hand;"/>
             </HBox>
 
             <!-- Scrollable VBox pour les cartes -->
-            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color:transparent;" vbarPolicy="AS_NEEDED">
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER"
+                        style="-fx-background-color:transparent;"
+                        vbarPolicy="AS_NEEDED">
                 <content>
                     <VBox fx:id="vboxDepenses" spacing="15" style="-fx-padding:10;">
-                        <!-- Les cartes Dépenses seront ajoutées ici dynamiquement -->
+                        <!-- cartes dynamiques -->
                     </VBox>
                 </content>
             </ScrollPane>
