@@ -101,11 +101,9 @@
                                    -fx-padding:8 14; -fx-background-radius:10; -fx-cursor: hand;"/>
                 </HBox>
 
-                <Label text="La recherche et le tri se font automatiquement."
-                       style="-fx-text-fill:#7b8794; -fx-font-size:12px;"/>
             </VBox>
 
-            <!-- Filter Card (بدون button) -->
+
             <VBox spacing="10"
                   style="-fx-background-color:white; -fx-background-radius:14; -fx-padding:14;
                          -fx-effect:dropshadow(gaussian, rgba(0,0,0,0.06), 10, 0.2, 0, 2);">

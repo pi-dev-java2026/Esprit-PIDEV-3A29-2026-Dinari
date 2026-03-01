@@ -37,7 +37,7 @@ public class AfficherDepense {
 
     private final ServiceDepense service = new ServiceDepense();
 
-    // ✅ debounce: filter بعد 250ms من آخر حرف
+    // ✅ debounce: filter
     private final PauseTransition debounce = new PauseTransition(Duration.millis(250));
 
     @FXML
@@ -83,16 +83,16 @@ public class AfficherDepense {
     }
 
     // ========================
-    // ✅ Auto Filter + Tri (بدل زر Filtrer)
+    // ✅ Auto Filter + Tri
     // ========================
     private void applyFilterSort() {
         try {
-            // قيم الفورم
+            //
             String montantText = (montantField.getText() == null) ? "" : montantField.getText().trim();
             String categorie = categorieCombo.getValue();
             String mode = paiementBox.getValue();
 
-            // ✅ parse montant بدون ما نكسّر الlambda
+
             Double tmpMontant = null;
             if (!montantText.isEmpty()) {
                 try {
@@ -102,7 +102,7 @@ public class AfficherDepense {
                 }
             }
 
-            // ✅ لازم final للـ stream lambdas
+
             final Double montant = tmpMontant;
             final String cat = categorie;
             final String pay = mode;
@@ -294,7 +294,7 @@ public class AfficherDepense {
         }
     }
 
-    // ✅ showDashboard وحدة برك
+
     @FXML
     private void showDashboard() {
         try {
