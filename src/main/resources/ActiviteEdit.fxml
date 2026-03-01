@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.controllers.ActiviteEditController"
+      spacing="18">
+
+    <padding>
+        <Insets top="24" right="24" bottom="24" left="24"/>
+    </padding>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="← Retour" onAction="#backToList" styleClass="secondary-btn"/>
+        <VBox>
+            <Label text="Modifier une Activité" style="-fx-font-size: 22; -fx-font-weight: bold;"/>
+            <Label text="Mettez à jour les informations ci-dessous" style="-fx-text-fill: #6c778a;"/>
+        </VBox>
+    </HBox>
+
+    <VBox styleClass="card" spacing="14">
+        <Label text="Informations de l'activité" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+
+        <GridPane hgap="14" vgap="12">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <!-- Description -->
+            <VBox spacing="6" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                <Label text="Description *"/>
+                <TextField fx:id="descriptionTF" styleClass="input"/>
+            </VBox>
+
+            <!-- Montant + Devise -->
+            <VBox spacing="6" GridPane.rowIndex="0" GridPane.columnIndex="1">
+                <Label text="Montant *"/>
+                <TextField fx:id="montantTF" styleClass="input"/>
+                <ComboBox fx:id="deviseCB" promptText="Devise" styleClass="input"/>
+            </VBox>
+
+            <!-- Date -->
+            <VBox spacing="6" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                <Label text="Date *"/>
+                <DatePicker fx:id="dateDP" styleClass="input"/>
+            </VBox>
+
+            <!-- Catégorie -->
+            <VBox spacing="6" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                <Label text="Catégorie *"/>
+                <ComboBox fx:id="categorieCB" styleClass="input"/>
+            </VBox>
+
+            <!-- Fréquence -->
+            <VBox spacing="6" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                <Label text="Fréquence"/>
+                <ComboBox fx:id="frequenceCB" styleClass="input"/>
+            </VBox>
+
+            <!-- Fin récurrence -->
+            <VBox spacing="6" GridPane.rowIndex="2" GridPane.columnIndex="1">
+                <Label text="Fin récurrence"/>
+                <DatePicker fx:id="finRecDP" styleClass="input"/>
+            </VBox>
+
+        </GridPane>
+
+        <HBox spacing="12">
+            <padding>
+                <Insets top="10" right="0" bottom="0" left="0"/>
+            </padding>
+
+            <Button text="Enregistrer" onAction="#save" styleClass="primary-btn"/>
+            <Button text="Annuler" onAction="#backToList" styleClass="secondary-btn"/>
+            <Label fx:id="msgLabel" style="-fx-text-fill: #d22;"/>
+        </HBox>
+    </VBox>
+
+</VBox>

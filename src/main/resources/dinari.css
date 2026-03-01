@@ -1,0 +1,45 @@
+.side-menu {
+    -fx-background-color: #0f1b2d;
+    -fx-padding: 20;
+}
+
+.side-title {
+    -fx-text-fill: white;
+    -fx-font-size: 22;
+    -fx-font-weight: bold;
+}
+
+.side-subtitle {
+    -fx-text-fill: #5fa8ff;
+}
+
+.side-sep {
+    -fx-padding: 15 0 15 0;
+}
+
+.side-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #cfd8dc;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 10 10 12;
+    -fx-background-radius: 10;
+}
+
+.side-btn-active {
+    -fx-background-color: #1e3a5f;
+    -fx-text-fill: white;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 10 10 12;
+    -fx-background-radius: 10;
+    -fx-border-color: #35e38a;
+    -fx-border-width: 0 0 0 4;
+}
+
+.side-user-title {
+    -fx-text-fill: white;
+    -fx-padding: 10 0 0 0;
+}
+
+.side-user-mail {
+    -fx-text-fill: #5fa8ff;
+}

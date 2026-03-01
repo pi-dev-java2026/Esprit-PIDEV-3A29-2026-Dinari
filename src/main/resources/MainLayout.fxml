@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/22"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.controllers.MainLayoutController">
+
+    <!-- MENU GAUCHE GLOBAL -->
+    <left>
+        <VBox prefWidth="240" styleClass="side-menu">
+            <Label text="DINARI" styleClass="side-title"/>
+            <Label text="Gestion Financière" styleClass="side-subtitle"/>
+
+            <Separator styleClass="side-sep"/>
+
+            <!-- boutons non fonctionnels -->
+            <Button text="Abonnements" styleClass="side-btn" disable="true"/>
+            <Button text="Éducative" styleClass="side-btn" disable="true"/>
+            <Button text="Dépenses" styleClass="side-btn" disable="true"/>
+
+            <!-- seul fonctionnel -->
+            <Button text="Budget" styleClass="side-btn-active" onAction="#goBudget"/>
+
+            <!-- ajout réclamation -->
+            <Button text="Réclamation" styleClass="side-btn" disable="true"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <Separator styleClass="side-sep"/>
+            <Label text="Utilisateur" styleClass="side-user-title"/>
+            <Label text="admin@dinari.tn" styleClass="side-user-mail"/>
+        </VBox>
+    </left>
+
+    <!-- CONTENU CENTRAL -->
+    <center>
+        <StackPane fx:id="mainContentPane"/>
+    </center>
+
+</BorderPane>

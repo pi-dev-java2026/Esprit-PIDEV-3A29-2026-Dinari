@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="14"
+      xmlns="http://javafx.com/javafx/25"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.controllers.ActiviteListController">
+
+    <padding>
+        <Insets bottom="24" left="24" right="24" top="24" />
+    </padding>
+
+    <!-- En-tête -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Button onAction="#goAdd"
+                styleClass="primary-btn"
+                text="← Ajouter" />
+        <Button text="📊 Analyse du mois"
+                onAction="#goAnalyseMois"
+                styleClass="secondary-btn"/>
+
+        <VBox>
+            <Label style="-fx-font-size: 22; -fx-font-weight: bold;"
+                   text="Liste des Activités" />
+        </VBox>
+
+        <Region HBox.hgrow="ALWAYS" />
+    </HBox>
+
+    <!-- Filtres -->
+    <HBox alignment="CENTER_LEFT"
+          spacing="10"
+          styleClass="card">
+
+        <padding>
+            <Insets bottom="12" left="12" right="12" top="12" />
+        </padding>
+
+        <ComboBox fx:id="frequenceCB"
+                  prefWidth="170"
+                  promptText="Fréquence"
+                  styleClass="input" />
+
+        <DatePicker fx:id="dateFromDP"
+                    promptText="Date min" />
+
+        <DatePicker fx:id="dateToDP"
+                    promptText="Date max" />
+
+        <TextField fx:id="minTF"
+                   prefWidth="120"
+                   promptText="Montant min"
+                   styleClass="input" />
+
+        <TextField fx:id="maxTF"
+                   prefWidth="120"
+                   promptText="Montant max"
+                   styleClass="input" />
+
+        <ComboBox fx:id="sortCB"
+                  prefWidth="190"
+                  styleClass="input" />
+
+        <Button onAction="#applyFilterSort"
+                styleClass="primary-btn"
+                text="Appliquer" />
+
+        <Button onAction="#resetFilterSort"
+                styleClass="secondary-btn"
+                text="Reset" />
+        <TextField fx:id="searchTF"
+                   prefWidth="220"
+                   promptText="🔎 Rechercher (description / catégorie)"
+                   styleClass="input"
+                   onKeyReleased="#applyFilterSort"/>
+    </HBox>
+
+    <Label fx:id="filterMsgLabel" />
+
+    <!-- Liste des activités + bouton calendrier -->
+    <VBox spacing="10" styleClass="card">
+        <ListView fx:id="activiteLV"
+                  prefHeight="520" />
+
+        <Button text="📅 Calendrier"
+                onAction="#goCalendar"
+                styleClass="secondary-btn" />
+        
+    </VBox>
+
+</VBox>

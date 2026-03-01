@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.controllers.PlanificationListController"
+      spacing="14">
+
+    <padding>
+        <Insets top="24" right="24" bottom="24" left="24"/>
+    </padding>
+
+    <!-- Header -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="← Ajouter"
+                onAction="#goAdd"
+                styleClass="secondary-btn"/>
+
+        <VBox>
+            <Label text="Liste des Planifications"
+                   style="-fx-font-size: 22; -fx-font-weight: bold;"/>
+        </VBox>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Button text="Rafraîchir"
+                onAction="#refresh"
+                styleClass="secondary-btn"/>
+    </HBox>
+
+    <!-- ✅ Filtres + Tri -->
+    <VBox spacing="8" styleClass="card">
+        <padding>
+            <Insets top="12" right="12" bottom="12" left="12"/>
+        </padding>
+
+        <!-- ligne 1 : filtres -->
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <ComboBox fx:id="categorieCB"
+                      promptText="Catégorie"
+                      prefWidth="200"
+                      styleClass="input"/>
+
+            <ComboBox fx:id="prioriteCB"
+                      promptText="Priorité"
+                      prefWidth="170"
+                      styleClass="input"/>
+
+            <ComboBox fx:id="moisCB"
+                      promptText="Mois"
+                      prefWidth="180"
+                      styleClass="input"/>
+
+            <TextField fx:id="minTF"
+                       promptText="Montant min"
+                       prefWidth="120"
+                       styleClass="input"/>
+
+            <TextField fx:id="maxTF"
+                       promptText="Montant max"
+                       prefWidth="120"
+                       styleClass="input"/>
+
+            <ComboBox fx:id="sortCB"
+                      promptText="Tri"
+                      prefWidth="190"
+                      styleClass="input"/>
+            <TextField fx:id="searchTF"
+                       prefWidth="220"
+                       promptText="🔎 Rechercher (catégorie/mois/priorité)"
+                       styleClass="input"
+                       onKeyReleased="#applyFilterSort"/>
+        </HBox>
+
+        <!-- ligne 2 : boutons + message -->
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Button text="Appliquer"
+                    onAction="#applyFilterSort"
+                    styleClass="primary-btn"/>
+
+            <Button text="Reset"
+                    onAction="#resetFilterSort"
+                    styleClass="secondary-btn"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label fx:id="filterMsgLabel"
+                   style="-fx-text-fill: #d22;"/>
+        </HBox>
+    </VBox>
+
+    <!-- List -->
+    <VBox styleClass="card" spacing="10">
+        <ListView fx:id="planifLV" prefHeight="520"/>
+    </VBox>
+
+</VBox>

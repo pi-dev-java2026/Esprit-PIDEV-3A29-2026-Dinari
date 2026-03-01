@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.controllers.ActiviteAddController"
+      spacing="18">
+
+    <padding>
+        <Insets top="24" right="24" bottom="24" left="24"/>
+    </padding>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+
+        <VBox>
+            <Label text="Ajouter une Activité" style="-fx-font-size: 22; -fx-font-weight: bold;"/>
+
+        </VBox>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Button text="Liste des activités" onAction="#goList" styleClass="secondary-btn"/>
+    </HBox>
+
+    <VBox styleClass="card" spacing="14">
+        <Label text="Informations de l'activité" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+
+        <GridPane hgap="14" vgap="12">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <!-- Ligne 0 -->
+            <VBox spacing="6" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                <Label text="Description *"/>
+                <TextField fx:id="descriptionTF" promptText="Ex: Loyer, Abonnement..." styleClass="input"/>
+            </VBox>
+
+            <VBox spacing="6" GridPane.rowIndex="0" GridPane.columnIndex="1">
+                <Label text="Montant *"/>
+                <TextField fx:id="montantTF" promptText="Ex: 120" styleClass="input"/>
+                <ComboBox fx:id="deviseCB" promptText="Devise"/>
+            </VBox>
+
+            <!-- Ligne 1 -->
+            <VBox spacing="6" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                <Label text="Date début *"/>
+                <DatePicker fx:id="dateDP" styleClass="input"/>
+                <Button text="Vérifier météo" onAction="#checkMeteo"/>
+            </VBox>
+
+            <VBox spacing="6" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                <Label text="Catégorie *"/>
+                <ComboBox fx:id="categorieCB" promptText="Choisir ou taper" editable="true" styleClass="input"/>
+            </VBox>
+
+            <!-- Ligne 2 -->
+            <VBox spacing="6" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                <Label text="Fréquence"/>
+                <ComboBox fx:id="frequenceCB" promptText="AUCUNE / HEBDOMADAIRE / MENSUELLE" styleClass="input"/>
+            </VBox>
+
+            <VBox spacing="6" GridPane.rowIndex="2" GridPane.columnIndex="1">
+                <Label text="Fin récurrence (si récurrente)"/>
+                <DatePicker fx:id="finRecDP" styleClass="input"/>
+            </VBox>
+        </GridPane>
+
+        <HBox spacing="12">
+            <padding>
+                <Insets top="10" right="0" bottom="0" left="0"/>
+            </padding>
+
+            <Button text="Ajouter" onAction="#ajouter" styleClass="primary-btn"/>
+            <Button text="Annuler" onAction="#clear" styleClass="secondary-btn"/>
+            <Button text="📷 Scanner facture"
+                    onAction="#handleScanReceipt"
+                    styleClass="secondary-btn"/>
+
+
+
+
+
+            <Label fx:id="msgLabel" style="-fx-text-fill: #d22;"/>
+        </HBox>
+    </VBox>
+
+</VBox>
