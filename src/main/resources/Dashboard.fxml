@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.DashboardController"
+            style="-fx-background-color:#f5f7fb;">
+
+    <top>
+        <HBox spacing="20"
+              style="-fx-padding:20; -fx-alignment:center_left;">
+
+            <Label text="📊 Dashboard Admin IA"
+                   style="-fx-font-size:26px;-fx-font-weight:bold;"/>
+
+        </HBox>
+    </top>
+
+    <center>
+
+        <VBox spacing="25"
+              style="-fx-padding:40; -fx-alignment:center;">
+
+            <Label text="🤖 Prédiction Dépense Mois Prochain"
+                   style="-fx-font-size:22px;-fx-font-weight:bold;"/>
+
+            <Label fx:id="predictionLabel"
+                   text="Chargement..."
+                   style="-fx-font-size:40px;-fx-text-fill:#2C3E50;"/>
+
+            <HBox spacing="20" style="-fx-alignment:center;">
+
+                <Button text="🔄 Rafraîchir Prediction"
+                        onAction="#loadPrediction"
+                        style="-fx-background-color:#2C3E50;-fx-text-fill:white;"/>
+
+                <Button text="🔁 Re-entraîner modèle"
+                        onAction="#retrainModel"
+                        style="-fx-background-color:#D32F2F;-fx-text-fill:white;"/>
+
+            </HBox>
+
+        </VBox>
+
+    </center>
+
+</BorderPane>

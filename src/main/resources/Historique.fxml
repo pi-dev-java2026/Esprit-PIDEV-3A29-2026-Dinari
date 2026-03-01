@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.HistoriqueController"
+            prefHeight="400.0" prefWidth="600.0">
+    <TableView fx:id="tableLog" prefHeight="500" prefWidth="1000">
+
+        <columns>
+
+            <TableColumn fx:id="dateCol" text="Date" prefWidth="180"/>
+            <TableColumn fx:id="actionCol" text="Action" prefWidth="120"/>
+            <TableColumn fx:id="entityCol" text="Entity" prefWidth="120"/>
+            <TableColumn fx:id="detailsCol" text="Details" prefWidth="500"/>
+
+        </columns>
+
+    </TableView>
+</AnchorPane>

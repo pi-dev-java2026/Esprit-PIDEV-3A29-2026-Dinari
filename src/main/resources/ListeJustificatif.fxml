@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="600" prefWidth="900" style="-fx-background-color: linear-gradient(to bottom right, #f0f4f7, #d9e2ec);" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AffichierJustificatif">
+
+    <!-- Logo -->
+    <top>
+        <HBox spacing="10" style="-fx-padding:10; -fx-alignment:center-left;">
+            <ImageView fx:id="logoView" fitHeight="80" fitWidth="80" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@images/logo.png" />
+                </image>
+            </ImageView>
+            <Label style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#2C3E50;" text="Gestion des Justificatifs" />
+        </HBox>
+    </top>
+
+    <!-- Sidebar fixe gauche -->
+    <left>
+        <VBox prefWidth="220" spacing="15" style="-fx-background-color:#1E1E2F; -fx-padding:20;">
+            <Separator />
+             <Button onAction="#showHome" text="🏠 Home" />
+            <Button onAction="#showDepenses" text="💳 Dépenses" />
+            <Button onAction="#showAbonnement" text="📦 Abonnement" />
+            <Button onAction="#showEducative" text="🎓 Educative" />
+            <Button onAction="#showBudget" text="📊 Budget" />
+        </VBox>
+    </left>
+
+    <!-- Content area -->
+    <center>
+        <VBox spacing="10" style="-fx-padding:20;">
+
+            <!-- Titre + bouton Ajouter -->
+            <HBox spacing="10" style="-fx-alignment:center-left;">
+                <Label style="-fx-font-size:26px; -fx-font-weight:bold; -fx-text-fill:#2C3E50;" text="📋 Liste des Justificatifs" />
+
+                <!-- Region vide pour pousser le bouton à droite -->
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Button onAction="#openAjouterJustifDepense"
+                        style="
+            -fx-background-color: linear-gradient(to right,#2C3E50,#4A90E2);
+            -fx-text-fill:white;
+            -fx-font-weight:bold;
+            -fx-padding:8 15 8 15;
+            -fx-background-radius:8;
+            -fx-cursor: hand;"                        text="➕ Ajouter Justificatif" />
+            </HBox>
+
+
+            <!-- Scrollable VBox pour les cartes -->
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color:transparent;" vbarPolicy="AS_NEEDED">
+                <content>
+                    <VBox fx:id="vboxDepenses" spacing="15" style="-fx-padding:10;">
+                        <!-- Les cartes Dépenses seront ajoutées ici dynamiquement -->
+                    </VBox>
+                </content>
+            </ScrollPane>
+
+        </VBox>
+    </center>
+
+</BorderPane>

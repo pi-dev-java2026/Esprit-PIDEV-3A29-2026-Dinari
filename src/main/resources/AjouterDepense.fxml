@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.AjouterDepense"
+            prefHeight="600" prefWidth="750"
+            style="-fx-background-color: #f5f7fa;">
+
+    <!-- Header avec logo et titre -->
+    <HBox spacing="15" layoutX="20" layoutY="20" alignment="CENTER_LEFT" style="-fx-padding:10;">
+        <ImageView fx:id="logoView" fitHeight="80" fitWidth="80" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@images/logo.png"/>
+            </image>
+        </ImageView>
+        <Label text="📝 Ajouter Une Dépense"
+               style="-fx-font-size:28px; -fx-font-weight:bold; -fx-text-fill:#2C3E50;
+                      -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.25) , 2,0,0,1 );"/>
+    </HBox>
+
+    <!-- Formulaire central -->
+    <GridPane layoutX="50" layoutY="130" hgap="20" vgap="15" alignment="TOP_CENTER">
+        <padding>
+            <Insets top="20" right="40" bottom="20" left="40"/>
+        </padding>
+
+        <!-- Date -->
+        <Label text="Date :" GridPane.rowIndex="0" style="-fx-font-weight:bold; -fx-font-size:14px;"/>
+        <DatePicker fx:id="dateField" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                    style="-fx-background-radius:8; -fx-padding:6; -fx-border-color:#d1d9e6; -fx-border-radius:8;"/>
+
+        <!-- Catégorie -->
+        <Label text="Catégorie :" GridPane.rowIndex="1" style="-fx-font-weight:bold; -fx-font-size:14px;"/>
+        <ComboBox fx:id="categorieBox" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                  promptText="Sélectionner une catégorie"
+                  style="-fx-background-radius:8; -fx-padding:6; -fx-border-color:#d1d9e6; -fx-border-radius:8;"/>
+
+        <!-- Montant -->
+        <Label text="Montant (DT) :" GridPane.rowIndex="2" style="-fx-font-weight:bold; -fx-font-size:14px;"/>
+        <TextField fx:id="montantField" GridPane.columnIndex="1" GridPane.rowIndex="2"
+                   promptText="Ex: 25.500"
+                   style="-fx-background-radius:8; -fx-padding:6; -fx-border-color:#d1d9e6; -fx-border-radius:8;"/>
+
+        <!-- Mode de paiement -->
+        <Label text="Mode de paiement :" GridPane.rowIndex="3" style="-fx-font-weight:bold; -fx-font-size:14px;"/>
+        <ComboBox fx:id="paiementBox" GridPane.columnIndex="1" GridPane.rowIndex="3"
+                  promptText="Sélectionner le mode de paiement"
+                  style="-fx-background-radius:8; -fx-padding:6; -fx-border-color:#d1d9e6; -fx-border-radius:8;"/>
+
+        <!-- Description -->
+        <Label text="Description :" GridPane.rowIndex="4" style="-fx-font-weight:bold; -fx-font-size:14px;"/>
+        <TextArea fx:id="descriptionArea" GridPane.columnIndex="1" GridPane.rowIndex="4"
+                  prefRowCount="3" promptText="Ajouter un détail si nécessaire…"
+                  style="-fx-background-radius:8; -fx-padding:6; -fx-border-color:#d1d9e6; -fx-border-radius:8;"/>
+
+        <!-- Boutons -->
+        <HBox GridPane.columnIndex="1" GridPane.rowIndex="5" spacing="10" alignment="CENTER_RIGHT">
+            <Button fx:id="btnAjouter" text="Ajouter"
+                    onAction="#ajouterD"
+                    style="-fx-background-color:#2C3E50; -fx-text-fill:white; -fx-font-weight:bold; -fx-background-radius:8;"
+            />
+            <Button text="Retour" onAction="#naviguer"
+                    style="-fx-background-color:#28A745; -fx-text-fill:white; -fx-font-weight:bold; -fx-background-radius:8;"/>
+            <Button text="Retour" onAction="#naviguer"
+                    style="-fx-background-color:#28A745; -fx-text-fill:white; -fx-font-weight:bold; -fx-background-radius:8;"/>
+        </HBox>
+    </GridPane>
+
+</AnchorPane>
+

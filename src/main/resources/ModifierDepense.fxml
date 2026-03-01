@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="600" prefWidth="500" style="-fx-background-color: linear-gradient(to bottom right, #f0f4f7, #d9e2ec);" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierDepense">
+
+    <!-- Header -->
+    <top>
+        <HBox spacing="10" style="-fx-padding:15; -fx-alignment:center;">
+            <ImageView fitHeight="60" fitWidth="60" preserveRatio="true">
+                <image>
+                    <Image url="@images/logo.png" />
+                </image>
+            </ImageView>
+            <Label style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#2C3E50;" text="Modifier Dépense" />
+        </HBox>
+    </top>
+
+    <!-- Form -->
+    <center>
+        <VBox spacing="15" style="-fx-background-color:white; -fx-background-radius:15;">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+
+            <Label text="Date" />
+            <DatePicker fx:id="dateField" disable="true" />
+
+            <Label text="Catégorie" />
+            <ComboBox fx:id="categorieCombo" />
+
+            <Label text="Montant (DT)" />
+            <TextField fx:id="montantField" />
+
+            <Label text="Mode de paiement" />
+            <ComboBox fx:id="modePaiementCombo" />
+
+            <Label text="Description" />
+            <TextField fx:id="descriptionField" />
+        </VBox>
+    </center>
+
+    <!-- Buttons -->
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="15">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+
+            <Button onAction="#closeWindow" style="-fx-background-color:#B0BEC5; -fx-text-fill:black; -fx-background-radius:5;" text="Annuler" />
+
+            <Button onAction="#modifierDepense" style="-fx-background-color:#2C3E50; -fx-text-fill:white; -fx-font-weight:bold; -fx-background-radius:5;" text="Enregistrer" />
+        </HBox>
+    </bottom>
+
+</BorderPane>
