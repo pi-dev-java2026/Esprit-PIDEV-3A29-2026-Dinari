@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="user.controllers.UserQuizView"
+            stylesheets="@/app.css"
+            prefWidth="600.0" prefHeight="500.0">
+
+    <center>
+        <VBox spacing="18" styleClass="content">
+            <padding>
+                <Insets top="25" right="25" bottom="25" left="25"/>
+            </padding>
+
+            <!-- Quiz Header -->
+            <VBox spacing="8" style="-fx-background-color: white;
+                                     -fx-background-radius: 12;
+                                     -fx-padding: 20;
+                                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 12, 0, 0, 3);">
+                <Label fx:id="lblTitre"
+                       text="Titre du Quiz"
+                       style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+                <Label fx:id="lblScore"
+                       text="Score: 10 points"
+                       style="-fx-text-fill: #10B981; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+            </VBox>
+
+            <!-- Question Section -->
+            <VBox spacing="12" style="-fx-background-color: white;
+                                      -fx-background-radius: 12;
+                                      -fx-padding: 20;
+                                      -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 12, 0, 0, 3);">
+                <Label fx:id="lblQuestion"
+                       text="Question:"
+                       style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #1F2937;"/>
+                <Label text="Sélectionnez la bonne réponse:"
+                       style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+                <ScrollPane fitToWidth="true" prefHeight="300" maxHeight="400">
+                    <VBox fx:id="answersContainer" spacing="10">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </padding>
+                    </VBox>
+                </ScrollPane>
+            </VBox>
+
+            <!-- Result Label -->
+            <Label fx:id="lblResult"
+                   text=""
+                   visible="false"
+                   wrapText="true"
+                   style="-fx-background-color: white;
+                          -fx-background-radius: 12;
+                          -fx-padding: 15;
+                          -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 12, 0, 0, 3);"/>
+
+            <!-- Action Buttons -->
+            <HBox spacing="12" alignment="CENTER">
+                <Button fx:id="btnSubmit"
+                        text="✅ Soumettre Réponse"
+                        styleClass="primary-btn"
+                        onAction="#submitAnswer"
+                        style="-fx-font-size: 14px; -fx-padding: 12 24;"/>
+                <Button text="❌ Fermer"
+                        styleClass="ghost-btn"
+                        onAction="#closeWindow"
+                        style="-fx-font-size: 14px; -fx-padding: 12 24;"/>
+            </HBox>
+
+        </VBox>
+    </center>
+
+</BorderPane>

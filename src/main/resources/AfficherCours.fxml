@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.AfficherCours"
+            prefWidth="900.0" prefHeight="650.0">
+
+    <children>
+        <ScrollPane fitToWidth="true"
+                    AnchorPane.topAnchor="0.0"
+                    AnchorPane.bottomAnchor="0.0"
+                    AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0"
+                    style="-fx-background-color: transparent; -fx-background: transparent;">
+            
+            <content>
+                <VBox spacing="14.0">
+
+                    <padding>
+                        <Insets top="20" right="25" bottom="25" left="25"/>
+                    </padding>
+
+                    <!-- Top bar -->
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Button text="⬅ Retour"
+                                onAction="#goListeCours"
+                                style="-fx-background-color: transparent;
+                                       -fx-text-fill: #2563EB;
+                                       -fx-padding: 8 10;
+                                       -fx-background-radius: 10;"/>
+                        <Pane HBox.hgrow="ALWAYS"/>
+
+                        <Button text="➕ Ajouter Quiz"
+                                onAction="#onAjouterQuiz"
+                                style="-fx-background-color: #2E86DE;
+                                       -fx-text-fill: white;
+                                       -fx-font-size: 14px;
+                                       -fx-padding: 10 18;
+                                       -fx-background-radius: 10;"/>
+                    </HBox>
+
+                    <!-- Title -->
+                    <Label fx:id="lblNomCours"
+                           text="Module de Formation"
+                           style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #111827;"
+                           VBox.vgrow="NEVER"/>
+
+                    <Label fx:id="lblDate"
+                           text="Créé le: ..."
+                           style="-fx-text-fill: #10B981; -fx-font-weight: bold;"/>
+
+                    <!-- Course content card -->
+                    <VBox spacing="16"
+                          style="-fx-background-color: white;
+                                 -fx-background-radius: 12;
+                                 -fx-padding: 24;
+                                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 12, 0, 0, 3);">
+
+                        <Label text="📋 À Propos de ce Module"
+                               style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #111827;"/>
+                        
+                        <Separator style="-fx-background-color: #E5E7EB;"/>
+                        
+                        <!-- Description Section with all content -->
+                        <VBox spacing="8">
+                            <Label text="Description"
+                                   style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #374151;"/>
+                            <ScrollPane fitToWidth="true" 
+                                       prefHeight="400"
+                                       style="-fx-background-color: #F9FAFB; 
+                                              -fx-border-color: #E5E7EB; 
+                                              -fx-border-radius: 8;
+                                              -fx-background-radius: 8;
+                                              -fx-padding: 0;">
+                                <content>
+                                    <TextArea fx:id="txtDescription"
+                                              editable="false"
+                                              wrapText="true"
+                                              style="-fx-background-color: transparent; 
+                                                     -fx-padding: 16;
+                                                     -fx-font-size: 14px;
+                                                     -fx-text-fill: #374151;
+                                                     -fx-border-color: transparent;
+                                                     -fx-focus-color: transparent;
+                                                     -fx-faint-focus-color: transparent;
+                                                     -fx-line-spacing: 0.3em;"/>
+                                </content>
+                            </ScrollPane>
+                        </VBox>
+                        
+                    </VBox>
+
+                    <!-- Quiz section -->
+                    <Label text="📝 Quiz Associés"
+                           style="-fx-font-size: 18px; 
+                                  -fx-font-weight: bold; 
+                                  -fx-text-fill: #111827;
+                                  -fx-opacity: 1.0;"
+                           VBox.vgrow="NEVER"/>
+
+                    <!-- Quiz container -->
+                    <VBox fx:id="quizContainer" spacing="10" />
+
+                </VBox>
+            </content>
+        </ScrollPane>
+    </children>
+</AnchorPane>

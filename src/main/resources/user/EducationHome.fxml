@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="user.controllers.EducationHomeController"
+            stylesheets="@/app.css"
+            prefWidth="1050.0" prefHeight="650.0">
+
+    <left>
+        <VBox prefWidth="230.0" styleClass="sidebar">
+            <Label text="DINARI" styleClass="brand"/>
+            <Label text="STUDENT PORTAL" styleClass="brand-sub"/>
+
+            <Separator opacity="0.2"/>
+
+            <Button text="🏠 Accueil" styleClass="nav-btn" onAction="#goHome"/>
+            <Button text="📚 Éducative" styleClass="nav-btn nav-btn-active" onAction="#goEducation"/>
+            <Button text="💳 Abonnements" styleClass="nav-btn"/>
+            <Button text="💰 Dépenses" styleClass="nav-btn"/>
+            <Button text="📊 Budget" styleClass="nav-btn"/>
+            <Button text="👤 Profile" styleClass="nav-btn"/>
+            <Button text="📢 Réclamation" styleClass="nav-btn"/>
+
+            <Pane VBox.vgrow="ALWAYS"/>
+
+            <Label text="Étudiant" styleClass="sidebar-footer"/>
+            <Label text="student@dinari.com" styleClass="sidebar-footer"/>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox styleClass="content">
+            <Label text="Espace Éducatif" styleClass="page-title"/>
+            
+            <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE"/>
+        </VBox>
+    </center>
+
+</BorderPane>

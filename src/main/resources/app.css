@@ -1,0 +1,205 @@
+
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: #f4f6f9;
+}
+
+
+.sidebar {
+    -fx-background-color: #1a2332;
+    -fx-padding: 18;
+    -fx-spacing: 12;
+}
+
+.brand {
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.brand-sub {
+    -fx-text-fill: #9CA3AF;
+    -fx-font-size: 11px;
+}
+
+.nav-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #E5E7EB;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 12;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+.nav-btn:hover {
+    -fx-background-color: rgba(255,255,255,0.08);
+}
+
+.nav-btn-active {
+    -fx-background-color: rgba(59,130,246,0.18);
+    -fx-text-fill: white;
+}
+
+.sidebar-footer {
+    -fx-text-fill: #9CA3AF;
+    -fx-font-size: 11px;
+}
+
+
+.content {
+    -fx-padding: 22;
+    -fx-spacing: 14;
+}
+
+.page-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.toolbar {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-padding: 12;
+    -fx-spacing: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 12, 0, 0, 3);
+}
+
+.input {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #D1D5DB;
+    -fx-padding: 10;
+    -fx-background-color: #fff;
+}
+
+.primary-btn {
+    -fx-background-color: #2563EB;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-padding: 10 16;
+    -fx-font-weight: bold;
+}
+
+.primary-btn:hover { -fx-background-color: #1D4ED8; }
+
+.ghost-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #374151;
+    -fx-padding: 10 14;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #D1D5DB;
+}
+
+.ghost-btn:hover { -fx-background-color: #F3F4F6; }
+
+.list-view {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 8 0;
+}
+
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-padding: 14;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 12, 0, 0, 3);
+}
+
+.card-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.card-sub {
+    -fx-text-fill: #6B7280;
+}
+
+.danger-btn {
+    -fx-background-color: #DC2626;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-padding: 8 12;
+}
+
+.danger-btn:hover { -fx-background-color: #B91C1C; }
+
+.link-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2563EB;
+    -fx-padding: 8 10;
+    -fx-background-radius: 10;
+}
+/* =========================
+   ComboBox (same as .input)
+   ========================= */
+.input-combo {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #D1D5DB;
+    -fx-border-width: 1;
+    -fx-padding: 6 10;
+    -fx-font-size: 14px;
+}
+
+/* inner area */
+.input-combo .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #111827;
+    -fx-padding: 6 10;
+}
+
+/* arrow button */
+.input-combo .arrow-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10;
+    -fx-padding: 0 10 0 0;
+}
+
+.input-combo .arrow {
+    -fx-background-color: #4f6cc8;
+}
+
+/* hover + focus like inputs */
+.input-combo:hover {
+    -fx-border-color: #9CA3AF;
+}
+
+.input-combo:focused {
+    -fx-border-color: #2563EB;
+    -fx-border-width: 2;
+}
+
+/* dropdown list popup */
+.combo-box-popup .list-view {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #E5E7EB;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 12, 0, 0, 3);
+    -fx-padding: 6;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 10 10;
+    -fx-background-radius: 10;
+    -fx-text-fill: #111827;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: rgba(37,99,235,0.10);
+}
+
+.combo-box-popup .list-cell:selected {
+    -fx-background-color: rgba(59,130,246,0.18);
+    -fx-text-fill: #111827;
+}
+
+
+.link-btn:hover { -fx-background-color: rgba(37,99,235,0.10); }

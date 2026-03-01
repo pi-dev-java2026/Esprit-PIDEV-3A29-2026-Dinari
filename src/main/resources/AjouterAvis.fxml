@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.AjouterAvisController"
+            stylesheets="@app.css"
+            prefWidth="1050" prefHeight="650">
+
+    <left>
+        <VBox prefWidth="230" styleClass="sidebar">
+            <Label text="DINARI" styleClass="brand"/>
+            <Label text="FINTECH MANAGEMENT" styleClass="brand-sub"/>
+
+            <Separator opacity="0.2"/>
+
+            <Button text="📘 Cours" styleClass="nav-btn" onAction="#goListeCours"/>
+            <Button text="📝 Quiz" styleClass="nav-btn" onAction="#goListeQuiz"/>
+            <Button text="⭐ Avis" styleClass="nav-btn nav-btn-active"/>
+
+            <Pane VBox.vgrow="ALWAYS"/>
+
+            <Label text="Utilisateur" styleClass="sidebar-footer"/>
+            <Label text="admin@..." styleClass="sidebar-footer"/>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox spacing="15" styleClass="content">
+
+            <Label text="⭐ Ajouter Avis" styleClass="page-title"/>
+
+            <Label text="Choisir Quiz:"/>
+            <ComboBox fx:id="cbQuiz" styleClass="input"/>
+
+            <Label text="Commentaire:"/>
+            <TextField fx:id="tfCommentaire" promptText="Votre avis..." styleClass="input"/>
+
+            <Label text="Note (0-10):"/>
+            <TextField fx:id="tfNote" promptText="Ex: 8" styleClass="input"/>
+
+            <Button text="Ajouter Avis"
+                    styleClass="primary-btn"
+                    onAction="#ajouterAvis"/>
+
+        </VBox>
+    </center>
+
+</BorderPane>
