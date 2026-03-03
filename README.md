@@ -257,3 +257,6 @@ Special thanks to the developers of JavaFX, MySQL, Stripe, Google APIs, and all 
 ---
 
 **License:** This project is developed for academic purposes as part of the curriculum at Esprit School of Engineering.
+## Deployment
+
+This desktop application is packaged as an executable JAR file and can be deployed locally on any machine with Java 17 installed.
